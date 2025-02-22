@@ -46,6 +46,11 @@ public class ElevatorPivotToLevel2Command extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    double angleError = Math.abs(elevatorPivot.getCurrentAngle() - ElevatorPivotConstants.kLevel2Angle);
+    double extensionError = Math.abs(elevatorPivot.getCurrentExtension() - ElevatorExtensionConstants.kLevel2Extend);
+
+    return
+    angleError < ElevatorPivotConstants.kAngleErrorAllowed &&
+    extensionError < ElevatorExtensionConstants.kExtensionErrorAllowed;
   }
 }

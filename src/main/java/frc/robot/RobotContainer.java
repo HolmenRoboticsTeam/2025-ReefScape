@@ -34,15 +34,18 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems
-  // private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  // private final ElevatorPivotSubsystem m_robotElevatorPivot = new ElevatorPivotSubsystem();
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ElevatorPivotSubsystem m_robotElevatorPivot = new ElevatorPivotSubsystem();
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-front");
   private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-back");
 
   // The driver's controller
-  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  private final XboxController m_buttonBox = new XboxController(OIConstants.kButtonBoxControllerPort);
 
-  // private final SendableChooser<Command> autoChooser;
+  // private final JoystickButton m_AprilTagLevel2Place
+
+  private final SendableChooser<Command> autoChooser;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -50,26 +53,26 @@ public class RobotContainer {
   
   public RobotContainer() {
 
-    // // Configure default commands
-    // m_robotDrive.setDefaultCommand(
-    //     // The left stick controls translation of the robot.
-    //     // Turning is controlled by the X axis of the right stick.
-    //     new RunCommand(
-    //         () -> m_robotDrive.headingDrive(
-    //             MathUtil.applyDeadband(this.m_driverController.getRightTriggerAxis(), 0.05),
-    //             MathUtil.applyDeadband(-this.m_driverController.getLeftY(), 0.1),
-    //             MathUtil.applyDeadband(-this.m_driverController.getLeftX(), 0.1),
-    //             MathUtil.applyDeadband(this.m_driverController.getRightX(), 0.1),
-    //             MathUtil.applyDeadband(this.m_driverController.getRightY(), 0.1),
-    //             true
-    //             ),
-    //         m_robotDrive));
+    // Configure default commands
+    m_robotDrive.setDefaultCommand(
+        // The left stick controls translation of the robot.
+        // Turning is controlled by the X axis of the right stick.
+        new RunCommand(
+            () -> m_robotDrive.headingDrive(
+                MathUtil.applyDeadband(this.m_driverController.getRightTriggerAxis(), 0.05),
+                MathUtil.applyDeadband(-this.m_driverController.getLeftY(), 0.1),
+                MathUtil.applyDeadband(-this.m_driverController.getLeftX(), 0.1),
+                MathUtil.applyDeadband(this.m_driverController.getRightX(), 0.1),
+                MathUtil.applyDeadband(this.m_driverController.getRightY(), 0.1),
+                true
+                ),
+            m_robotDrive));
 
-    // autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser();
 
-    // // Another option that allows you to specify the default auto by its name
-    // // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    // Another option that allows you to specify the default auto by its name
+    // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -87,24 +90,21 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // this.m_driverController.leftBumper()
-    //   .whileTrue(new RunCommand(
-    //     () -> m_robotDrive.setX(),
-    //     m_robotDrive
-    //     ));
+    this.m_driverController.x()
+      .whileTrue(new RunCommand(
+        () -> m_robotDrive.setX(),
+        m_robotDrive
+        ));
 
-    // this.m_driverController.a().whileTrue(
-    //   new ElevatorPivotToLevel1Command(this.m_robotElevatorPivot)
-    // );
-    // this.m_driverController.x().whileTrue(
-    //   new ElevatorPivotToLevel2Command(this.m_robotElevatorPivot)
-    // );
-    // this.m_driverController.y().whileTrue(
-    //   new ElevatorPivotToLevel3Command(this.m_robotElevatorPivot)
-    // );
-    // this.m_driverController.b().whileTrue(
-    //   new ElevatorPivotToLevel4Command(this.m_robotElevatorPivot)
-    // );
+    this.m_driverController.a().onTrue(
+      new ElevatorPivotToLevel2Command(this.m_robotElevatorPivot)
+    );
+    this.m_driverController.b().onTrue(
+      new ElevatorPivotToLevel3Command(this.m_robotElevatorPivot)
+    );
+    this.m_driverController.y().onTrue(
+      new ElevatorPivotToLevel4Command(this.m_robotElevatorPivot)
+    );
   }
 
   /**
@@ -113,7 +113,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return autoChooser.getSelected(); 
-    return null;
+    return autoChooser.getSelected(); 
   }
 }

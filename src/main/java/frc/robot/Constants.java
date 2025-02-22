@@ -87,6 +87,8 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kButtonBoxControllerPort = 1;
+
     public static final double kDriveDeadband = 0.05;
   }
 
@@ -109,6 +111,8 @@ public final class Constants {
 
     public static final double kMaxExtensionSpeed = 0.1;
 
+    public static final double kExtensionErrorAllowed = 0.1;
+
     public static final int kLeftMotorID = 12;
     public static final int kRightMotorID = 13;
 
@@ -127,6 +131,8 @@ public final class Constants {
 
     public static final double kMaxAngleSpeed = 0.65;
 
+    public static final double kAngleErrorAllowed = 0.1;
+
     public static final int kLeftMotorID = 10;
     public static final int kRightMotorID = 11;
 
@@ -135,9 +141,9 @@ public final class Constants {
     public static double kPivotD = 0.0;
 
     public static double kLevel1Angle = 2.0;
-    public static double kLevel2Angle = 3.0;
-    public static double kLevel3Angle = 6.0;
-    public static double kLevel4Angle = 10.0;
+    public static double kLevel2Angle = 0.0;
+    public static double kLevel3Angle = 15.0;
+    public static double kLevel4Angle = 30.0;
 
   }
 
@@ -158,9 +164,18 @@ public final class Constants {
 
   }
 
-  public static final class TakeOverTelpoConstants {
+  public static final class TakeOverTelopConstants {
 
-    public static final double kMaxSpeed = 1.0; // Meters Per Second
+    public static final double kMaxSpeed = 1.0; // Scale based on kMaxSpeed
+    public static final double kMaxErrorDistance = 0.01; //Meters
+    public static final double kMaxErrorRotation = 5.0; //Degrees
+
+    //Y Distance is the forward distance when the robot is facing the april tag
+    public static final double kReefYDistance = 0.5; //Meters
+    public static final double kCoralStationYDistance = 0.5; //Meters
+
+    // This double is the threshold that stops and xy movement to prevent losing the april tag
+    public static final double kTranslationLockOut = 10; //Degrees
 
   }
 

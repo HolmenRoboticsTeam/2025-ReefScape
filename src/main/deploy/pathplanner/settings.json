@@ -5,18 +5,21 @@
   "pathFolders": [
     "Blue Wall Paths",
     "Center Paths",
+    "Testing Paths",
     "Red Wall Paths"
   ],
-  "autoFolders": [],
-  "defaultMaxVel": 3.0,
-  "defaultMaxAccel": 3.0,
+  "autoFolders": [
+    "Testing Autos"
+  ],
+  "defaultMaxVel": 1.0,
+  "defaultMaxAccel": 1.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
   "robotMass": 56.699,
   "robotMOI": 3.968,
   "robotTrackwidth": 0.546,
-  "driveWheelRadius": 0.0381,
+  "driveWheelRadius": 0.038,
   "driveGearing": 4.71,
   "maxDriveSpeed": 4.08,
   "driveMotorType": "NEO",

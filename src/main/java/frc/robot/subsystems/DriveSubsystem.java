@@ -40,7 +40,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.TakeOverTelpoConstants;
+import frc.robot.Constants.TakeOverTelopConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -98,13 +98,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
-    // RobotConfig config;
-    // try{
-    //   config = RobotConfig.fromGUISettings();
-    // } catch (Exception e) {
-    //   // Handle exception as needed
-    //   e.printStackTrace();
-    // }
     RobotConfig config = null;
     try {
         config = RobotConfig.fromGUISettings();
@@ -121,7 +114,7 @@ public class DriveSubsystem extends SubsystemBase {
             this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
                     new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                    new PIDConstants(DriveConstants.kTurningP, DriveConstants.kTurningI, DriveConstants.kTurningD) // Rotation PID constants
             ),
             config, // new RobotConfig(56.699, 6.883 /* update this */, new ModuleConfig(0.038, 4.0, 1.200, NEO, 5.080, 40.0, 1) /*update this*/, 0.7366), // The robot configuration, should be using constants.
             () -> {
@@ -205,7 +198,7 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees(-m_gyro.getAngle()))
+                Rotation2d.fromDegrees(-this.m_gyro.getAngle()))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -229,34 +222,35 @@ public class DriveSubsystem extends SubsystemBase {
 
     if(Math.abs(xAngle) < OIConstants.kDriveDeadband && Math.abs(yAngle) < OIConstants.kDriveDeadband) {
       drive(xSpeed * throttle, ySpeed * throttle, 0.0, fieldRelative);
-      return;
+    } else {
+
+      double currentAngle = Math.abs(this.m_gyro.getAngle() % 360);
+      if(this.m_gyro.getAngle() < 0) {
+        currentAngle = 360 - currentAngle;
+      }
+
+      double targetAngle = Math.atan2(yAngle, xAngle);
+      targetAngle = (Math.toDegrees(targetAngle) + 810) % 360;
+
+      double theta = Math.abs(targetAngle - currentAngle) % 360;
+      double shorterTheta = theta > 180 ? 360  - theta : theta;
+
+      int sign = -1;
+      double angleDelta = currentAngle - targetAngle;
+
+      if(angleDelta >= 0 && angleDelta <= 180) {
+        sign = 1;
+      } else if(angleDelta <= -180 && angleDelta >= -360) {
+        sign = 1;
+      }
+
+      double correctiveAngle = shorterTheta * sign;
+      double modifiedTurn = -this.m_steeringPIDController.calculate(correctiveAngle);
+
+
+      drive(xSpeed * throttle, ySpeed * throttle, modifiedTurn, fieldRelative);
     }
 
-    double currentAngle = Math.abs(this.m_gyro.getAngle() % 360);
-    if(this.m_gyro.getAngle() < 0) {
-      currentAngle = 360 - currentAngle;
-    }
-
-    double targetAngle = Math.atan2(yAngle, xAngle);
-    targetAngle = (Math.toDegrees(targetAngle) + 810) % 360;
-
-    double theta = Math.abs(targetAngle - currentAngle) % 360;
-    double shorterTheta = theta > 180 ? 360  - theta : theta;
-
-    int sign = -1;
-    double angleDelta = currentAngle - targetAngle;
-
-    if(angleDelta >= 0 && angleDelta <= 180) {
-      sign = 1;
-    } else if(angleDelta <= -180 && angleDelta >= -360) {
-      sign = 1;
-    }
-
-    double correctiveAngle = shorterTheta * sign;
-    double modifiedTurn = -this.m_steeringPIDController.calculate(correctiveAngle);
-
-
-    drive(xSpeed * throttle, ySpeed * throttle, modifiedTurn, fieldRelative);
   }
 
   /**
@@ -328,6 +322,7 @@ public class DriveSubsystem extends SubsystemBase {
     ChassisSpeeds discrateSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
     var m_desiredStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(discrateSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(m_desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+
     m_frontLeft.setDesiredState(m_desiredStates[0]);
     m_frontRight.setDesiredState(m_desiredStates[1]);
     m_rearLeft.setDesiredState(m_desiredStates[2]);
