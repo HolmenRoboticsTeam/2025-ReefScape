@@ -17,12 +17,18 @@ import frc.robot.Commands.ElevatorPivotToLevel1Command;
 import frc.robot.Commands.ElevatorPivotToLevel2Command;
 import frc.robot.Commands.ElevatorPivotToLevel3Command;
 import frc.robot.Commands.ElevatorPivotToLevel4Command;
+import frc.robot.Commands.GripperDropCommand;
+import frc.robot.Commands.ReefLineUpCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorPivotSubsystem;
+import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -36,6 +42,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorPivotSubsystem m_robotElevatorPivot = new ElevatorPivotSubsystem();
+  private final GripperSubsystem m_gripper = new GripperSubsystem();
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-front");
   private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-back");
 
@@ -43,7 +50,9 @@ public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   private final XboxController m_buttonBox = new XboxController(OIConstants.kButtonBoxControllerPort);
 
-  // private final JoystickButton m_AprilTagLevel2Place
+  private final JoystickButton m_AprilTagLevel2Place = new JoystickButton(m_buttonBox, 0);
+  private final JoystickButton m_AprilTagLevel3Place = new JoystickButton(m_buttonBox, 1);
+  private final JoystickButton m_AprilTagLevel4Place = new JoystickButton(m_buttonBox, 2);
 
   private final SendableChooser<Command> autoChooser;
 
@@ -90,20 +99,31 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    //Just for test april tag lineups
+    //need to check if driver 1 using controller: overrides the command, overrides controller, or just wack stuff
+    this.m_AprilTagLevel2Place.onTrue(new ReefLineUpCommand(m_robotDrive, m_limelightBack));
+
+    //Planned for real Matches (need to add levels 3 and 4, also check wait time)
+    // this.m_AprilTagLevel2Place.whileTrue(new SequentialCommandGroup(
+    //   new ReefLineUpCommand(m_robotDrive, m_limelightBack),
+    //   new ElevatorPivotToLevel2Command(m_robotElevatorPivot, true),
+    //   new ParallelRaceGroup(new WaitCommand(0.33), new GripperDropCommand(m_gripper))
+    //   ));
+
     this.m_driverController.x()
       .whileTrue(new RunCommand(
         () -> m_robotDrive.setX(),
         m_robotDrive
         ));
 
-    this.m_driverController.a().onTrue(
-      new ElevatorPivotToLevel2Command(this.m_robotElevatorPivot)
+    this.m_driverController.a().whileTrue(
+      new ElevatorPivotToLevel2Command(this.m_robotElevatorPivot, false)
     );
-    this.m_driverController.b().onTrue(
-      new ElevatorPivotToLevel3Command(this.m_robotElevatorPivot)
+    this.m_driverController.b().whileTrue(
+      new ElevatorPivotToLevel3Command(this.m_robotElevatorPivot, false)
     );
-    this.m_driverController.y().onTrue(
-      new ElevatorPivotToLevel4Command(this.m_robotElevatorPivot)
+    this.m_driverController.y().whileTrue(
+      new ElevatorPivotToLevel4Command(this.m_robotElevatorPivot, false)
     );
   }
 
@@ -113,6 +133,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected(); 
+    return autoChooser.getSelected();
   }
 }

@@ -57,7 +57,7 @@ public final class Constants {
     public static final int kFrontRightTurningCanId = 8;
     public static final int kRearRightTurningCanId = 2;
 
-    public static final boolean kGyroReversed = false;
+    public static final boolean kGyroReversed = true;
 
     //PID Controller
     public static final double kTurningP = 0.005;
@@ -142,8 +142,8 @@ public final class Constants {
 
     public static double kLevel1Angle = 2.0;
     public static double kLevel2Angle = 0.0;
-    public static double kLevel3Angle = 15.0;
-    public static double kLevel4Angle = 30.0;
+    public static double kLevel3Angle = 10.0;
+    public static double kLevel4Angle = 20.0;
 
   }
 
@@ -151,8 +151,10 @@ public final class Constants {
 
     public static final double kMaxSpeed = 0.1;
 
-    public static final int kLeftMotorID = 14;
-    public static final int kRightMotorID = 15;
+    public static final int kMotorID = 14;
+
+    //Need check if voltage is even the right thing to base it off of, and if so, what's the right number
+    public static final double kVoltageThreshHold = 1.0;
 
   }
 

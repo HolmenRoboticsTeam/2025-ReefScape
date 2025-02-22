@@ -59,7 +59,7 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public int getCurrentID() {
-    return (int) this.m_limelightNetworkTable.getEntry("tid").getDouble(0.0);
+    return (int) this.m_limelightNetworkTable.getEntry("tid").getInteger(0);
 
   }
 

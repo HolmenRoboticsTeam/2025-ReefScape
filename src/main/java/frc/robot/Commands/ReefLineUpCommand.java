@@ -12,13 +12,13 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ReefLineUp extends Command {
+public class ReefLineUpCommand extends Command {
 
   private DriveSubsystem m_drive;
   private LimelightSubsystem m_limelight;
 
   /** Creates a new LimelightReefLevel4. */
-  public ReefLineUp(DriveSubsystem drive, LimelightSubsystem limelight) {
+  public ReefLineUpCommand(DriveSubsystem drive, LimelightSubsystem limelight) {
 
     this.m_drive = drive;
     this.m_limelight = limelight;
@@ -46,6 +46,7 @@ public class ReefLineUp extends Command {
     double rot = 0.0;
 
 
+    //Checks if the limelight's found tag is on the robot's team reef
     if((canSeeBlueReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ||
       (canSeeRedReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Red)) {
 
@@ -54,10 +55,10 @@ public class ReefLineUp extends Command {
       rot = -10 * currentTargetPose.getRotation().getZ();
     }
 
-    if(rot > TakeOverTelopConstants.kTranslationLockOut) {
-      xSpeed = 0.0;
-      ySpeed = 0.0;
-    }
+    // if(rot > TakeOverTelopConstants.kTranslationLockOut) {
+    //   xSpeed = 0.0;
+    //   ySpeed = 0.0;
+    // }
 
 
     m_drive.drive(xSpeed, ySpeed, rot, false);

@@ -116,7 +116,7 @@ public class DriveSubsystem extends SubsystemBase {
                     new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
                     new PIDConstants(DriveConstants.kTurningP, DriveConstants.kTurningI, DriveConstants.kTurningD) // Rotation PID constants
             ),
-            config, // new RobotConfig(56.699, 6.883 /* update this */, new ModuleConfig(0.038, 4.0, 1.200, NEO, 5.080, 40.0, 1) /*update this*/, 0.7366), // The robot configuration, should be using constants.
+            config,
             () -> {
               // Boolean supplier that controls when the path will be mirrored for the red alliance
               // This will flip the path being followed to the red side of the field.
@@ -131,15 +131,13 @@ public class DriveSubsystem extends SubsystemBase {
             this // Reference to this subsystem to set requirements
     );
 
-    // PathPlannerLogging.setLogActivePathCallback((poses) -> m_field.getObject("path").setPose(pose););
-    // SmartDashboard.putData(m_field);
   }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(-m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -150,6 +148,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_steeringPIDController.setP(SmartDashboard.getNumber("P", 0.0));
     m_steeringPIDController.setI(SmartDashboard.getNumber("I", 0.0));
     m_steeringPIDController.setD(SmartDashboard.getNumber("D", 0.0));
+
+    SmartDashboard.putNumber("Heading", this.m_gyro.getAngle());
     
   }
 
@@ -220,7 +220,22 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void headingDrive(double throttle, double xSpeed, double ySpeed, double xAngle, double yAngle, boolean fieldRelative) {
 
+    //modifies the inputs for the goal of the following:
+    // (1). if throttle is 0, then the movement joystick has a max of quarter speed
+    // (2). As the throttle is increased, the speed moves from quarter speed (joystick is being full pushed) to kMaxSpeed
+    xSpeed *= 0.25;
+    ySpeed *= 0.25;
+    throttle *= 3.0;
+    throttle += 1.0;
+
     if(Math.abs(xAngle) < OIConstants.kDriveDeadband && Math.abs(yAngle) < OIConstants.kDriveDeadband) {
+
+      if(throttle == 0.0) {
+        //Checks if there are no movement changes, if so, setX to stop extra movement (still debating if this feels better)
+        this.setX();
+        return;
+      }
+
       drive(xSpeed * throttle, ySpeed * throttle, 0.0, fieldRelative);
     } else {
 

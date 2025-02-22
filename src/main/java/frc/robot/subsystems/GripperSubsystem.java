@@ -14,24 +14,23 @@ import frc.robot.Constants.GripperConstants;
 
 public class GripperSubsystem extends SubsystemBase {
 
-  private SparkMax m_leftMotor;
-  private SparkMax m_rightMotor;
+  private SparkMax m_motor;
 
-  private SparkClosedLoopController m_leftMotorPIDController;
-  private SparkClosedLoopController m_rightMotorPIDController;
+  private SparkClosedLoopController m_motorPIDController;
 
   /** Creates a new GripperSubsystem. */
   public GripperSubsystem() {
-    this.m_leftMotor = new SparkMax(GripperConstants.kLeftMotorID, MotorType.kBrushless);
-    this.m_rightMotor = new SparkMax(GripperConstants.kRightMotorID, MotorType.kBrushless);
+    this.m_motor = new SparkMax(GripperConstants.kMotorID, MotorType.kBrushless);
 
-    this.m_leftMotorPIDController = this.m_leftMotor.getClosedLoopController();
-    this.m_rightMotorPIDController = this.m_rightMotor.getClosedLoopController();
+    this.m_motorPIDController = this.m_motor.getClosedLoopController();
   }
 
   public void setSpeed(double speed) {
-    this.m_leftMotorPIDController.setReference(speed, ControlType.kVelocity);
-    this.m_rightMotorPIDController.setReference(speed, ControlType.kVelocity);
+    this.m_motorPIDController.setReference(speed, ControlType.kVelocity);
+  }
+
+  public double getCurrentVoltage() {
+    return this.m_motor.getBusVoltage();
   }
 
   @Override

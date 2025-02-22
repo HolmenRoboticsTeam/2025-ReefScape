@@ -12,12 +12,15 @@ import frc.robot.subsystems.ElevatorPivotSubsystem;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorPivotToLevel1Command extends Command {
 
-  private ElevatorPivotSubsystem elevatorPivot;
+  private ElevatorPivotSubsystem m_elevatorPivot;
+
+  private boolean m_allowEndCondition;
 
   /** Creates a new ElevatorPivotToLevel1Command. */
-  public ElevatorPivotToLevel1Command(ElevatorPivotSubsystem elevatorPivot) {
+  public ElevatorPivotToLevel1Command(ElevatorPivotSubsystem elevatorPivot, boolean allowEndCondition) {
 
-    this.elevatorPivot = elevatorPivot;
+    this.m_elevatorPivot = elevatorPivot;
+    this.m_allowEndCondition = allowEndCondition;
 
     addRequirements(elevatorPivot);
   }
@@ -30,8 +33,8 @@ public class ElevatorPivotToLevel1Command extends Command {
   @Override
   public void execute() {
 
-    elevatorPivot.setTargetAngle(ElevatorPivotConstants.kLevel1Angle);
-    elevatorPivot.setTargetExtension(ElevatorExtensionConstants.kLevel1Extend);
+    m_elevatorPivot.setTargetAngle(ElevatorPivotConstants.kLevel1Angle);
+    m_elevatorPivot.setTargetExtension(ElevatorExtensionConstants.kLevel1Extend);
 
   }
 
@@ -39,18 +42,19 @@ public class ElevatorPivotToLevel1Command extends Command {
   @Override
   public void end(boolean interrupted) {
 
-    elevatorPivot.setTargetAngle(0.0);
-    elevatorPivot.setTargetExtension(0.0);
+    m_elevatorPivot.setTargetAngle(0.0);
+    m_elevatorPivot.setTargetExtension(0.0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double angleError = Math.abs(elevatorPivot.getCurrentAngle() - ElevatorPivotConstants.kLevel1Angle);
-    double extensionError = Math.abs(elevatorPivot.getCurrentExtension() - ElevatorExtensionConstants.kLevel1Extend);
+    double angleError = Math.abs(m_elevatorPivot.getCurrentAngle() - ElevatorPivotConstants.kLevel1Angle);
+    double extensionError = Math.abs(m_elevatorPivot.getCurrentExtension() - ElevatorExtensionConstants.kLevel1Extend);
 
     return
-    angleError < ElevatorPivotConstants.kAngleErrorAllowed &&
-    extensionError < ElevatorExtensionConstants.kExtensionErrorAllowed;
+      angleError < ElevatorPivotConstants.kAngleErrorAllowed &&
+      extensionError < ElevatorExtensionConstants.kExtensionErrorAllowed &&
+      this.m_allowEndCondition;
   }
 }
