@@ -17,11 +17,15 @@ public class ReefLineUpCommand extends Command {
   private DriveSubsystem m_drive;
   private LimelightSubsystem m_limelight;
 
+  private Pose3d m_lastKnownPose;
+
   /** Creates a new LimelightReefLevel4. */
   public ReefLineUpCommand(DriveSubsystem drive, LimelightSubsystem limelight) {
 
     this.m_drive = drive;
     this.m_limelight = limelight;
+
+    this.m_limelight = null;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive, limelight);
@@ -34,7 +38,18 @@ public class ReefLineUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Pose3d currentTargetPose = this.m_limelight.getVisionMeasurement();
+
+    if(!this.m_limelight.hasValidTarget() && this.m_lastKnownPose != null) {
+      //if no limelight target is found but was found in a past frame then
+      //the attempt to point at the last known Pose
+
+      double rot = -10 * this.m_lastKnownPose.getX();
+
+      this.m_drive.drive(0.0, 0.0, rot, false);
+      return;
+    }
+
+    this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
 
     int currentTagID = this.m_limelight.getCurrentID();
 
@@ -50,18 +65,20 @@ public class ReefLineUpCommand extends Command {
     if((canSeeBlueReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ||
       (canSeeRedReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Red)) {
 
-      xSpeed = 10 * currentTargetPose.getX();
-      ySpeed = 10 * (TakeOverTelopConstants.kReefYDistance - currentTargetPose.getZ());
-      rot = -10 * currentTargetPose.getRotation().getZ();
+      xSpeed = -10 * this.m_lastKnownPose.getRotation().getZ();
+      ySpeed = 10 * (TakeOverTelopConstants.kReefYDistance - this.m_lastKnownPose.getZ());
+      rot = -10 * this.m_lastKnownPose.getX();
     }
 
-    // if(rot > TakeOverTelopConstants.kTranslationLockOut) {
-    //   xSpeed = 0.0;
-    //   ySpeed = 0.0;
-    // }
+    //If the limelight is near the edge of the frame then
+    //stop translation and rotation until the tag is more centered
+    if(rot > TakeOverTelopConstants.kTranslationLockOut) {
+      xSpeed = 0.0;
+      ySpeed = 0.0;
+    }
 
 
-    m_drive.drive(xSpeed, ySpeed, rot, false);
+    this.m_drive.drive(xSpeed, ySpeed, rot, false);
   }
 
   // Called once the command ends or is interrupted.
@@ -71,11 +88,11 @@ public class ReefLineUpCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    Pose3d currentTargetPose = this.m_limelight.getVisionMeasurement();
+    this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
 
     return
-    Math.abs(currentTargetPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error
-    Math.abs(TakeOverTelopConstants.kReefYDistance - currentTargetPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance && // Forward-Backward offset in with error
-    Math.abs(currentTargetPose.getRotation().getZ()) < TakeOverTelopConstants.kMaxErrorRotation;// Yaw rotation offset in with error
+    Math.abs(this.m_lastKnownPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error
+    Math.abs(TakeOverTelopConstants.kReefYDistance - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance && // Forward-Backward offset in with error
+    Math.abs(this.m_lastKnownPose.getRotation().getZ()) < TakeOverTelopConstants.kMaxErrorRotation;// Yaw rotation offset in with error
   }
 }

@@ -2,24 +2,23 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Commands;
+package frc.robot.Commands.ElevatorPivotCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.GripperIntakeConstants;
-import frc.robot.subsystems.GripperPivotSubsystem;
+import frc.robot.subsystems.ElevatorPivotSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class GripperDropCommand extends Command {
+public class ElevatorPivotToHomeCommand extends Command {
 
-  private GripperPivotSubsystem m_gripperPivot;
+  private ElevatorPivotSubsystem m_elevatorPivot;
 
-  /** Creates a new GripperDropCommand. */
-  public GripperDropCommand(GripperPivotSubsystem gripperPivot) {
+  /** Creates a new ElevatorPivotToHomeCommand. */
+  public ElevatorPivotToHomeCommand(ElevatorPivotSubsystem elevatorPivot) {
 
-    this.m_gripperPivot = gripperPivot;
+    this.m_elevatorPivot = elevatorPivot;
+
     // Use addRequirements() here to declare subsystem dependencies.
-
-    addRequirements(gripperPivot);
+    addRequirements(elevatorPivot);
   }
 
   // Called when the command is initially scheduled.
@@ -30,15 +29,13 @@ public class GripperDropCommand extends Command {
   @Override
   public void execute() {
 
-    this.m_gripperPivot.setIntakeSpeed(GripperIntakeConstants.kMaxSpeed);
+    this.m_elevatorPivot.setTargetAngle(0.0);
+    this.m_elevatorPivot.setTargetExtension(0.0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-
-    this.m_gripperPivot.setIntakeSpeed(0.0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

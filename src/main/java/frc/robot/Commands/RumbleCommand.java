@@ -4,22 +4,26 @@
 
 package frc.robot.Commands;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.GripperIntakeConstants;
-import frc.robot.subsystems.GripperPivotSubsystem;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class GripperDropCommand extends Command {
+public class RumbleCommand extends Command {
 
-  private GripperPivotSubsystem m_gripperPivot;
+  private CommandXboxController m_xBoxController;
 
-  /** Creates a new GripperDropCommand. */
-  public GripperDropCommand(GripperPivotSubsystem gripperPivot) {
+  private double m_leftRumble;
+  private double m_rightRumble;
 
-    this.m_gripperPivot = gripperPivot;
-    // Use addRequirements() here to declare subsystem dependencies.
+  /** Creates a new RumbleCommand. */
+  public RumbleCommand(CommandXboxController xBoxController, double leftRumble, double rightRumble) {
 
-    addRequirements(gripperPivot);
+    this.m_xBoxController = xBoxController;
+
+    this.m_leftRumble = leftRumble;
+    this.m_rightRumble = rightRumble;
+
   }
 
   // Called when the command is initially scheduled.
@@ -30,14 +34,15 @@ public class GripperDropCommand extends Command {
   @Override
   public void execute() {
 
-    this.m_gripperPivot.setIntakeSpeed(GripperIntakeConstants.kMaxSpeed);
+    this.m_xBoxController.setRumble(RumbleType.kLeftRumble, m_leftRumble);
+    this.m_xBoxController.setRumble(RumbleType.kRightRumble, m_rightRumble);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
-    this.m_gripperPivot.setIntakeSpeed(0.0);
+    this.m_xBoxController.setRumble(RumbleType.kBothRumble, 0.0);
   }
 
   // Returns true when the command should end.

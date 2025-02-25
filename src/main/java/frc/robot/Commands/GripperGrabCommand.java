@@ -5,16 +5,16 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.GripperConstants;
-import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.Constants.GripperIntakeConstants;
+import frc.robot.subsystems.GripperPivotSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class GripperGrabCommand extends Command {
 
-  private GripperSubsystem m_gripper;
+  private GripperPivotSubsystem m_gripper;
 
   /** Creates a new GripperDropCommand. */
-  public GripperGrabCommand(GripperSubsystem gripper) {
+  public GripperGrabCommand(GripperPivotSubsystem gripper) {
 
     this.m_gripper = gripper;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,19 +30,19 @@ public class GripperGrabCommand extends Command {
   @Override
   public void execute() {
 
-    this.m_gripper.setSpeed(-GripperConstants.kMaxSpeed);
+    this.m_gripper.setIntakeSpeed(-GripperIntakeConstants.kMaxSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
 
-    this.m_gripper.setSpeed(0.0);
+    this.m_gripper.setIntakeSpeed(0.0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.m_gripper.getCurrentVoltage() > GripperConstants.kVoltageThreshHold;
+    return this.m_gripper.getIntakeMotorVoltage() > GripperIntakeConstants.kVoltageThreshHold;
   }
 }

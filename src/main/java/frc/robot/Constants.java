@@ -124,6 +124,7 @@ public final class Constants {
     public static double kLevel2Extend = 0.0;
     public static double kLevel3Extend = 0.0;
     public static double kLevel4Extend = 0.0;
+    public static double kCoralStationExtend = 0.0;
 
   }
 
@@ -136,7 +137,7 @@ public final class Constants {
     public static final int kLeftMotorID = 10;
     public static final int kRightMotorID = 11;
 
-    public static double kPivotP = 0.01;
+    public static double kPivotP = 0.001;
     public static double kPivotI = 0.0;
     public static double kPivotD = 0.0;
 
@@ -144,18 +145,40 @@ public final class Constants {
     public static double kLevel2Angle = 0.0;
     public static double kLevel3Angle = 10.0;
     public static double kLevel4Angle = 20.0;
+    public static double kCoralStationAngle = 0.0;
 
   }
 
-  public static final class GripperConstants {
+  public static final class GripperIntakeConstants {
 
     public static final double kMaxSpeed = 0.1;
 
-    public static final int kMotorID = 14;
+    public static final int kMotorID = 15;
+
+    public static double kIntakeP = 0.001;
+    public static double kIntakeI = 0.0;
+    public static double kIntakeD = 0.0;
 
     //Need check if voltage is even the right thing to base it off of, and if so, what's the right number
     public static final double kVoltageThreshHold = 1.0;
 
+  }
+
+  public static final class GripperPivotConstants {
+  
+    public static final double kMaxSpeed = 0.1;
+
+    public static final int kMotorID = 14;
+
+    public static double kPivotP = 0.001;
+    public static double kPivotI = 0.0;
+    public static double kPivotD = 0.0;
+
+    public static double kLevel1Angle = 0.0;
+    public static double kLevel2Angle = 0.0;
+    public static double kLevel3Angle = 0.0;
+    public static double kLevel4Angle = 0.0;
+    public static double kCoralStationAngle = 0.0;
   }
 
   public static final class ClimberConstants {
