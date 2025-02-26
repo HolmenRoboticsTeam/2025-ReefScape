@@ -118,25 +118,25 @@ public class RobotContainer {
 
     //Planned for real Matches (need to add levels 3, 4, and station. Also check wait time.) (AND TEST BEFORE COMP!)
     //This got a lot bigger than planned, think about making this shorter/braking up (especially for testing!).
-    this.m_aprilTagLevel2Place.whileTrue(new SequentialCommandGroup(
-      new ReefLineUpCommand(this.m_drive, this.m_limelightFront),
-      new ElevatorPivotToLevel2Command(this.m_elevatorPivot, true),
-      new ParallelRaceGroup(
-        new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up
-        new GripperPivotToLevel2Command(m_gripperPivot, true) //This is what the raceCommand is waiting on
-      ),
-      new ParallelRaceGroup(
-        new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up
-        new GripperPivotToLevel2Command(m_gripperPivot, false),//Keeps the pivot up
-        new GripperDropCommand(m_gripperPivot),
-        new RumbleCommand(m_driverController, 0.25, 0.25),
-        new WaitCommand(0.33) //This is what the raceCommand is waiting on
-      ),
-      new ParallelRaceGroup(//Need to run one last to keep the pivot up, and let the driver have time to move
-        new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up
-        new GipperPivotToHomeCommand(this.m_gripperPivot, true)
-      )
-    ));
+    // this.m_aprilTagLevel2Place.whileTrue(new SequentialCommandGroup(
+    //   new ReefLineUpCommand(this.m_drive, this.m_limelightFront),
+    //   new ElevatorPivotToLevel2Command(this.m_elevatorPivot, true),
+    //   new ParallelRaceGroup(
+    //     new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up
+    //     new GripperPivotToLevel2Command(this.m_gripperPivot, true) //This is what the raceCommand is waiting on
+    //   ),
+    //   new ParallelRaceGroup(
+    //     new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up
+    //     new GripperPivotToLevel2Command(this.m_gripperPivot, false),//Keeps the pivot up
+    //     new GripperDropCommand(this.m_gripperPivot),
+    //     new RumbleCommand(this.m_driverController, 0.25, 0.25),
+    //     new WaitCommand(0.33) //This is what the raceCommand is waiting on
+    //   ),
+    //   new ParallelRaceGroup(//Need to run one last to keep the pivot up, and let the driver have time to move
+    //     new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up
+    //     new GipperPivotToHomeCommand(this.m_gripperPivot, true)
+    //   )
+    // ));
 
 
     this.m_driverController.x()
