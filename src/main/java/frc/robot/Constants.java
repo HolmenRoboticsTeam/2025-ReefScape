@@ -168,6 +168,8 @@ public final class Constants {
   
     public static final double kMaxSpeed = 0.1;
 
+    public static final double kAngleErrorAllowed = 0.1;
+
     public static final int kMotorID = 14;
 
     public static double kPivotP = 0.001;

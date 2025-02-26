@@ -12,11 +12,13 @@ import frc.robot.subsystems.GripperPivotSubsystem;
 public class GripperPivotToLevel3Command extends Command {
 
   private GripperPivotSubsystem m_gripperPivot;
+  private boolean m_allowEndCondition;
 
   /** Creates a new GripperPivotToLevel1Command. */
-  public GripperPivotToLevel3Command(GripperPivotSubsystem gripperPivot) {
+  public GripperPivotToLevel3Command(GripperPivotSubsystem gripperPivot, boolean allowEndCondition) {
 
     this.m_gripperPivot = gripperPivot;
+    this.m_allowEndCondition = allowEndCondition;
 
     addRequirements(gripperPivot);
   }
@@ -35,14 +37,14 @@ public class GripperPivotToLevel3Command extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-
-    this.m_gripperPivot.setTargetAngle(0.0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle() - GripperPivotConstants.kLevel3Angle);
+
+    return angleError < GripperPivotConstants.kAngleErrorAllowed &&
+    this.m_allowEndCondition;
   }
 }

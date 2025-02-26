@@ -56,6 +56,10 @@ public class GripperPivotSubsystem extends SubsystemBase {
     this.m_intakeMotorPIDController.setReference(speed, ControlType.kVelocity);
   }
 
+  public double getCurrentAngle() {
+    return this.m_pivotMotor.getEncoder().getPosition();
+  }
+
   public double getIntakeMotorVoltage() {
     return this.m_intakeMotor.getBusVoltage();
   }

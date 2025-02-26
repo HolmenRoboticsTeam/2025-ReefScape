@@ -5,17 +5,21 @@
 package frc.robot.Commands.ElevatorPivotCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ElevatorExtensionConstants;
+import frc.robot.Constants.ElevatorPivotConstants;
 import frc.robot.subsystems.ElevatorPivotSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorPivotToHomeCommand extends Command {
 
   private ElevatorPivotSubsystem m_elevatorPivot;
+  private boolean m_allowEndCondition;
 
   /** Creates a new ElevatorPivotToHomeCommand. */
-  public ElevatorPivotToHomeCommand(ElevatorPivotSubsystem elevatorPivot) {
+  public ElevatorPivotToHomeCommand(ElevatorPivotSubsystem elevatorPivot, boolean allowEndCondition) {
 
     this.m_elevatorPivot = elevatorPivot;
+    this.m_allowEndCondition = allowEndCondition;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevatorPivot);
@@ -40,6 +44,12 @@ public class ElevatorPivotToHomeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    double angleError = Math.abs(m_elevatorPivot.getCurrentAngle());
+    double extensionError = Math.abs(m_elevatorPivot.getCurrentExtension());
+
+    return
+      angleError < ElevatorPivotConstants.kAngleErrorAllowed &&
+      extensionError < ElevatorExtensionConstants.kExtensionErrorAllowed &&
+      this.m_allowEndCondition;
   }
 }

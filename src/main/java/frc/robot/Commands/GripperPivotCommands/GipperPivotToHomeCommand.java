@@ -9,13 +9,13 @@ import frc.robot.Constants.GripperPivotConstants;
 import frc.robot.subsystems.GripperPivotSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class GripperPivotToLevel2Command extends Command {
+public class GipperPivotToHomeCommand extends Command {
 
   private GripperPivotSubsystem m_gripperPivot;
   private boolean m_allowEndCondition;
 
-  /** Creates a new GripperPivotToLevel1Command. */
-  public GripperPivotToLevel2Command(GripperPivotSubsystem gripperPivot, boolean allowEndCondition) {
+  /** Creates a new GipperPivotToHomeCommand. */
+  public GipperPivotToHomeCommand(GripperPivotSubsystem gripperPivot, boolean allowEndCondition) {
 
     this.m_gripperPivot = gripperPivot;
     this.m_allowEndCondition = allowEndCondition;
@@ -31,8 +31,7 @@ public class GripperPivotToLevel2Command extends Command {
   @Override
   public void execute() {
 
-    this.m_gripperPivot.setTargetAngle(GripperPivotConstants.kLevel2Angle);
-
+    this.m_gripperPivot.setTargetAngle(0.0);
   }
 
   // Called once the command ends or is interrupted.
@@ -42,7 +41,7 @@ public class GripperPivotToLevel2Command extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle() - GripperPivotConstants.kLevel2Angle);
+    double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle() - GripperPivotConstants.kCoralStationAngle);
 
     return angleError < GripperPivotConstants.kAngleErrorAllowed &&
     this.m_allowEndCondition;
