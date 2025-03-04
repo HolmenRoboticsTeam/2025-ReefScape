@@ -202,7 +202,7 @@ public final class Constants {
     public static final double kCoralStationYDistance = 0.5; //Meters
 
     // This double is the threshold that stops and xy movement to prevent losing the april tag
-    public static final double kTranslationLockOut = 10; //Degrees
+    public static final double kTranslationLockOut = 0.5; //Meters (when camera is 0 meters away)
 
   }
 

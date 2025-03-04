@@ -10,8 +10,9 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Commands.BackReefLineUpCommand;
+import frc.robot.Commands.FrontReefLineUpCommand;
 import frc.robot.Commands.GripperDropCommand;
-import frc.robot.Commands.ReefLineUpCommand;
 import frc.robot.Commands.RumbleCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToHomeCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel2Command;
@@ -42,7 +43,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final ElevatorPivotSubsystem m_elevatorPivot = new ElevatorPivotSubsystem();
-  private final GripperPivotSubsystem m_gripperPivot = new GripperPivotSubsystem();
+  // private final GripperPivotSubsystem m_gripperPivot = new GripperPivotSubsystem();
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-front");
   private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-back");
 
@@ -56,14 +57,12 @@ public class RobotContainer {
   private final JoystickButton m_aprilTagCoralStationGrab = new JoystickButton(m_buttonBox, 3);
   private final JoystickButton m_gripperGrab = new JoystickButton(m_buttonBox, 4);
   private final JoystickButton m_gripperDrop = new JoystickButton(m_buttonBox, 6);
-  private final JoystickButton m_stopAprilTag = new JoystickButton(m_buttonBox, 7);
 
   private final SendableChooser<Command> autoChooser;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  
   public RobotContainer() {
 
     // Configure default commands
@@ -71,7 +70,7 @@ public class RobotContainer {
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
-            () -> m_drive.headingDrive(
+            () -> this.m_drive.headingDrive(
                 MathUtil.applyDeadband(this.m_driverController.getRightTriggerAxis(), 0.05),
                 MathUtil.applyDeadband(-this.m_driverController.getLeftY(), 0.1),
                 MathUtil.applyDeadband(-this.m_driverController.getLeftX(), 0.1),
@@ -85,9 +84,9 @@ public class RobotContainer {
       new ElevatorPivotToHomeCommand(this.m_elevatorPivot, false)
     );
 
-    this.m_gripperPivot.setDefaultCommand(
-      new GipperPivotToHomeCommand(this.m_gripperPivot, false)
-    );
+    // this.m_gripperPivot.setDefaultCommand(
+    //   new GipperPivotToHomeCommand(this.m_gripperPivot, false)
+    // );
 
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -113,13 +112,13 @@ public class RobotContainer {
 
     //Just for test april tag lineups
     //need to check if driver 1 using controller: overrides the command, overrides controller, or just wack stuff
-    this.m_aprilTagLevel2Place.onTrue(new ReefLineUpCommand(this.m_drive, this.m_limelightFront));
-    this.m_aprilTagLevel2Place.onTrue(new ReefLineUpCommand(this.m_drive, this.m_limelightBack));
+    this.m_driverController.a().whileTrue(new BackReefLineUpCommand(this.m_drive, this.m_limelightBack));
+    this.m_driverController.b().whileTrue(new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront))  ;
 
     //Planned for real Matches (need to add levels 3, 4, and station. Also check wait time.) (AND TEST BEFORE COMP!)
     //This got a lot bigger than planned, think about making this shorter/braking up (especially for testing!).
     // this.m_aprilTagLevel2Place.whileTrue(new SequentialCommandGroup(
-    //   new ReefLineUpCommand(this.m_drive, this.m_limelightFront),
+    //   new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront),
     //   new ElevatorPivotToLevel2Command(this.m_elevatorPivot, true),
     //   new ParallelRaceGroup(
     //     new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up

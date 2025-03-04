@@ -69,8 +69,6 @@ public class DriveSubsystem extends SubsystemBase {
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
 
-  private Field2d m_field = new Field2d();
-
   // PID
   private final ProfiledPIDController m_steeringPIDController = new ProfiledPIDController(
     DriveConstants.kTurningP, DriveConstants.kTurningI, DriveConstants.kTurningD, DriveConstants.kTurningControllerConstraints
@@ -230,11 +228,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     if(Math.abs(xAngle) < OIConstants.kDriveDeadband && Math.abs(yAngle) < OIConstants.kDriveDeadband) {
 
-      if(throttle == 0.0) {
-        //Checks if there are no movement changes, if so, setX to stop extra movement (still debating if this feels better)
-        this.setX();
-        return;
-      }
+      // if(throttle == 0.0) {
+      //   //Checks if there are no movement changes, if so, setX to stop extra movement (still debating if this feels better)
+      //   this.setX();
+      //   return;
+      // }
 
       drive(xSpeed * throttle, ySpeed * throttle, 0.0, fieldRelative);
     } else {

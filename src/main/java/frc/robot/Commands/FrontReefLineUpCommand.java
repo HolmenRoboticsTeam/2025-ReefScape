@@ -4,6 +4,7 @@
 
 package frc.robot.Commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,7 +13,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ReefLineUpCommand extends Command {
+public class FrontReefLineUpCommand extends Command {
 
   private DriveSubsystem m_drive;
   private LimelightSubsystem m_limelight;
@@ -20,13 +21,12 @@ public class ReefLineUpCommand extends Command {
   private Pose3d m_lastKnownPose;
 
   /** Creates a new LimelightReefLevel4. */
-  public ReefLineUpCommand(DriveSubsystem drive, LimelightSubsystem limelight) {
+  public FrontReefLineUpCommand(DriveSubsystem drive, LimelightSubsystem limelight) {
 
     this.m_drive = drive;
     this.m_limelight = limelight;
 
-    this.m_limelight = null;
-
+    this.m_lastKnownPose = null;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive, limelight);
   }
@@ -43,7 +43,7 @@ public class ReefLineUpCommand extends Command {
       //if no limelight target is found but was found in a past frame then
       //the attempt to point at the last known Pose
 
-      double rot = -10 * this.m_lastKnownPose.getX();
+      double rot = this.m_lastKnownPose.getX();
 
       this.m_drive.drive(0.0, 0.0, rot, false);
       return;
@@ -62,21 +62,30 @@ public class ReefLineUpCommand extends Command {
 
 
     //Checks if the limelight's found tag is on the robot's team reef
-    if((canSeeBlueReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ||
-      (canSeeRedReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Red)) {
+    if(true) {//(canSeeBlueReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ||
+      //(canSeeRedReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Red)) {
 
-      xSpeed = -10 * this.m_lastKnownPose.getRotation().getZ();
-      ySpeed = 10 * (TakeOverTelopConstants.kReefYDistance - this.m_lastKnownPose.getZ());
-      rot = -10 * this.m_lastKnownPose.getX();
+      xSpeed = -1 * (TakeOverTelopConstants.kReefYDistance - this.m_lastKnownPose.getZ());
+      // ySpeed = -1 * this.m_lastKnownPose.getRotation().getZ();
+      rot = this.m_lastKnownPose.getX();
+
     }
 
-    //If the limelight is near the edge of the frame then
-    //stop translation and rotation until the tag is more centered
-    if(rot > TakeOverTelopConstants.kTranslationLockOut) {
+    //If the limelight is near the edge of the frame then stop translation and rotation until the tag is more centered
+    double angleOff = Math.atan2(TakeOverTelopConstants.kTranslationLockOut, this.m_lastKnownPose.getZ());
+    //This atan2 is used because kTranslationLockOut is in meters but due to perspective camera meters left and right are
+    //different depending on Z translation
+    if(Math.abs(rot) > angleOff) {
+      System.out.println("LOCKOUT");
       xSpeed = 0.0;
       ySpeed = 0.0;
+    } else {
+      rot /= 4;
     }
 
+    xSpeed = MathUtil.clamp(xSpeed, -0.2, 0.2);
+    ySpeed = MathUtil.clamp(ySpeed, -0.2, 0.2);
+    rot = MathUtil.clamp(rot, -Math.PI/8, Math.PI/8);
 
     this.m_drive.drive(xSpeed, ySpeed, rot, false);
   }
@@ -88,11 +97,12 @@ public class ReefLineUpCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
+    return false;
+    // this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
 
-    return
-    Math.abs(this.m_lastKnownPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error
-    Math.abs(TakeOverTelopConstants.kReefYDistance - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance && // Forward-Backward offset in with error
-    Math.abs(this.m_lastKnownPose.getRotation().getZ()) < TakeOverTelopConstants.kMaxErrorRotation;// Yaw rotation offset in with error
+    // return
+    // Math.abs(this.m_lastKnownPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error
+    // Math.abs(TakeOverTelopConstants.kReefYDistance - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance && // Forward-Backward offset in with error
+    // Math.abs(this.m_lastKnownPose.getRotation().getZ()) < TakeOverTelopConstants.kMaxErrorRotation;// Yaw rotation offset in with error
   }
 }

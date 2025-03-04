@@ -5,14 +5,14 @@
   "pathFolders": [
     "Blue Wall Paths",
     "Center Paths",
-    "Testing Paths",
-    "Red Wall Paths"
+    "Red Wall Paths",
+    "Testing Paths"
   ],
   "autoFolders": [
     "Testing Autos"
   ],
-  "defaultMaxVel": 1.0,
-  "defaultMaxAccel": 1.0,
+  "defaultMaxVel": 3.0,
+  "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 190.0,
   "defaultMaxAngAccel": 190.0,
   "defaultNominalVoltage": 12.0,
