@@ -194,19 +194,23 @@ public final class Constants {
   public static final class TakeOverTelopConstants {
 
     public static final double kMaxSpeed = 1.0; // Scale based on kMaxSpeed
-    public static final double kMaxErrorDistance = 0.01; //Meters
-    public static final double kMaxErrorRotation = 5.0; //Degrees
+    public static final double kMaxErrorDistance = 0.005; //Meters
+    public static final double kMaxErrorRotation = 1.0; //Degrees
+
+    public static final double kFrontLimeLightToFrame = 0.36; //Meters
+    public static final double kBackLimeLightToFrame = 0.05; //Meters
 
     //Y Distance is the forward distance when the robot is facing the april tag
-    public static final double kReefYDistance = 0.5; //Meters
-    public static final double kCoralStationYDistance = 0.5; //Meters
+    public static final double kReefYDistance = 0.089; //Meters (from frame to reef wall)
+    public static final double kCoralStationYDistance = 0.089; //Meters
 
     // This double is the threshold that stops and xy movement to prevent losing the april tag
-    public static final double kTranslationLockOut = 0.5; //Meters (when camera is 0 meters away)
-
+    public static final double kTranslationLockOut = 15.0; //Degrees
   }
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
 }
+
+

@@ -7,6 +7,7 @@ package frc.robot.Commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.TakeOverTelopConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -39,7 +40,10 @@ public class BackReefLineUpCommand extends Command {
   @Override
   public void execute() {
 
-    System.out.println("execute");
+    if(!this.m_limelight.hasValidTarget() && this.m_lastKnownPose == null) {
+      //No target found and no past frame either then stop
+      return;
+    }
 
     if(!this.m_limelight.hasValidTarget() && this.m_lastKnownPose != null) {
       //if no limelight target is found but was found in a past frame then
@@ -62,35 +66,32 @@ public class BackReefLineUpCommand extends Command {
     double ySpeed = 0.0;
     double rot = 0.0;
 
-    System.out.println(this.m_lastKnownPose);
+    double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kBackLimeLightToFrame;
+
+    Alliance robotAlliance = DriverStation.getAlliance().get();
 
     //Checks if the limelight's found tag is on the robot's team reef
-    if(true) {//(canSeeBlueReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ||
-      //(canSeeRedReef && DriverStation.getAlliance().get() == DriverStation.Alliance.Red)) {
+    if(canSeeBlueReef && robotAlliance.equals(DriverStation.Alliance.Blue) ||
+      (canSeeRedReef && robotAlliance.equals(DriverStation.Alliance.Red))) {
 
-      xSpeed = -1 * (TakeOverTelopConstants.kReefYDistance - this.m_lastKnownPose.getZ());
-      // ySpeed = -1 * this.m_lastKnownPose.getRotation().getZ();
-      rot = this.m_lastKnownPose.getX();
+      xSpeed = -1 * (limelightToApriltagZ - this.m_lastKnownPose.getZ());
+      ySpeed = -1 * this.m_lastKnownPose.getRotation().getZ();
+      rot = Math.atan2(this.m_lastKnownPose.getX(), this.m_lastKnownPose.getZ());
 
     }
 
     //If the limelight is near the edge of the frame then stop translation and rotation until the tag is more centered
-    double angleOff = Math.atan2(TakeOverTelopConstants.kTranslationLockOut, this.m_lastKnownPose.getZ());
-    //This atan2 is used because kTranslationLockOut is in meters but due to perspective camera meters left and right are
-    //different depending on Z translation
-    if(Math.abs(rot) > angleOff) {
-      System.out.println("LOCKOUT");
+    if(Math.abs(rot) > Math.toRadians(TakeOverTelopConstants.kTranslationLockOut)) {
       xSpeed = 0.0;
       ySpeed = 0.0;
-    } else {
-      rot /= 4;
     }
 
-    xSpeed = MathUtil.clamp(xSpeed, -0.2, 0.2);
-    ySpeed = MathUtil.clamp(ySpeed, -0.2, 0.2);
-    rot = MathUtil.clamp(rot, -Math.PI/8, Math.PI/8);
+    xSpeed = MathUtil.clamp(xSpeed, -0.25, 0.25);
+    ySpeed = MathUtil.clamp(ySpeed, -0.25, 0.25);
+    rot = MathUtil.clamp(rot, -0.25, 0.25);
 
-    this.m_drive.drive(xSpeed, ySpeed, rot, false);
+    // this.m_drive.drive(xSpeed, ySpeed, rot, false);
+    this.m_drive.headingDrive(0.25, xSpeed, ySpeed, Math.cos(rot), Math.sin(rot), false);
   }
 
   // Called once the command ends or is interrupted.
@@ -101,10 +102,16 @@ public class BackReefLineUpCommand extends Command {
   @Override
   public boolean isFinished() {
     this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
+    double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kBackLimeLightToFrame;
+
+
+    double errorX = Math.abs(this.m_lastKnownPose.getX());
+    double errorY = Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ());
+    double errorRot = Math.abs(this.m_lastKnownPose.getRotation().getZ());
 
     return
-    Math.abs(this.m_lastKnownPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error
-    Math.abs(TakeOverTelopConstants.kReefYDistance - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance && // Forward-Backward offset in with error
-    Math.abs(this.m_lastKnownPose.getRotation().getZ()) < TakeOverTelopConstants.kMaxErrorRotation;// Yaw rotation offset in with error
+    errorX < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error
+    errorY < TakeOverTelopConstants.kMaxErrorDistance && // Forward-Backward offset in with error
+    errorRot < TakeOverTelopConstants.kMaxErrorRotation; // Yaw rotation offset in with error
   }
 }

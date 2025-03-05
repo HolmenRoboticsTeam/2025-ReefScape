@@ -112,8 +112,8 @@ public class RobotContainer {
 
     //Just for test april tag lineups
     //need to check if driver 1 using controller: overrides the command, overrides controller, or just wack stuff
-    this.m_driverController.a().whileTrue(new BackReefLineUpCommand(this.m_drive, this.m_limelightBack));
-    this.m_driverController.b().whileTrue(new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront))  ;
+    this.m_driverController.b().whileTrue(new BackReefLineUpCommand(this.m_drive, this.m_limelightBack));
+    this.m_driverController.a().whileTrue(new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront))  ;
 
     //Planned for real Matches (need to add levels 3, 4, and station. Also check wait time.) (AND TEST BEFORE COMP!)
     //This got a lot bigger than planned, think about making this shorter/braking up (especially for testing!).
