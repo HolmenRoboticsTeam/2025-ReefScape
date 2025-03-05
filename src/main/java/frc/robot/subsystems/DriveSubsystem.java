@@ -209,12 +209,12 @@ public class DriveSubsystem extends SubsystemBase {
 
   /**
    *
-   * @param throttle - Overall speed scaler
+   * @param throttle - Speed control for over quarter speed
    * @param xSpeed - speed in the x (side to side) direction
    * @param ySpeed - speed in the y (forward and backward) direction
    * @param xTheta - speed in the x direction for angle
    * @param yTheta - speed in the y direction for angle
-   * @param fieldRelative - picks whether the robot should be relative to the field or the robot
+   * @param fieldRelative - picks whether the robot should be relative to the field pose or the robot pose
    */
   public void headingDrive(double throttle, double xSpeed, double ySpeed, double xAngle, double yAngle, boolean fieldRelative) {
 
@@ -235,34 +235,32 @@ public class DriveSubsystem extends SubsystemBase {
       // }
 
       drive(xSpeed * throttle, ySpeed * throttle, 0.0, fieldRelative);
-    } else {
-
-      double currentAngle = Math.abs(this.m_gyro.getAngle() % 360);
-      if(this.m_gyro.getAngle() < 0) {
-        currentAngle = 360 - currentAngle;
-      }
-
-      double targetAngle = Math.atan2(yAngle, xAngle);
-      targetAngle = (Math.toDegrees(targetAngle) + 810) % 360;
-
-      double theta = Math.abs(targetAngle - currentAngle) % 360;
-      double shorterTheta = theta > 180 ? 360  - theta : theta;
-
-      int sign = -1;
-      double angleDelta = currentAngle - targetAngle;
-
-      if(angleDelta >= 0 && angleDelta <= 180) {
-        sign = 1;
-      } else if(angleDelta <= -180 && angleDelta >= -360) {
-        sign = 1;
-      }
-
-      double correctiveAngle = shorterTheta * sign;
-      double modifiedTurn = -this.m_steeringPIDController.calculate(correctiveAngle);
-
-
-      drive(xSpeed * throttle, ySpeed * throttle, modifiedTurn, fieldRelative);
     }
+    double currentAngle = Math.abs(this.m_gyro.getAngle() % 360);
+    if(this.m_gyro.getAngle() < 0) {
+      currentAngle = 360 - currentAngle;
+    }
+
+    double targetAngle = Math.atan2(yAngle, xAngle);
+    targetAngle = (Math.toDegrees(targetAngle) + 810) % 360;
+
+    double theta = Math.abs(targetAngle - currentAngle) % 360;
+    double shorterTheta = theta > 180 ? 360  - theta : theta;
+
+    int sign = -1;
+    double angleDelta = currentAngle - targetAngle;
+
+    if(angleDelta >= 0 && angleDelta <= 180) {
+      sign = 1;
+    } else if(angleDelta <= -180 && angleDelta >= -360) {
+      sign = 1;
+    }
+
+    double correctiveAngle = shorterTheta * sign;
+    double modifiedTurn = -this.m_steeringPIDController.calculate(correctiveAngle);
+
+
+    drive(xSpeed * throttle, ySpeed * throttle, modifiedTurn, fieldRelative);
 
   }
 
