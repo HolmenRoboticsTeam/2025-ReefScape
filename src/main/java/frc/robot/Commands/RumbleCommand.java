@@ -13,16 +13,22 @@ public class RumbleCommand extends Command {
 
   private CommandXboxController m_xBoxController;
 
-  private double m_leftRumble;
-  private double m_rightRumble;
+  private double m_rumble;
+  private double m_maxRumble;
 
+
+  private boolean m_isPulsing;
+  private boolean m_isIncreasing;
   /** Creates a new RumbleCommand. */
-  public RumbleCommand(CommandXboxController xBoxController, double leftRumble, double rightRumble) {
+  public RumbleCommand(CommandXboxController xBoxController, double rumble, boolean isPulsing) {
 
     this.m_xBoxController = xBoxController;
 
-    this.m_leftRumble = leftRumble;
-    this.m_rightRumble = rightRumble;
+    this.m_rumble = rumble;
+    this.m_maxRumble = rumble;
+
+    //Pulsing rumble might just be pointless or could be useful, needs testing
+    this.m_isPulsing = isPulsing;
 
   }
 
@@ -34,8 +40,14 @@ public class RumbleCommand extends Command {
   @Override
   public void execute() {
 
-    this.m_xBoxController.setRumble(RumbleType.kLeftRumble, m_leftRumble);
-    this.m_xBoxController.setRumble(RumbleType.kRightRumble, m_rightRumble);
+    if(this.m_isPulsing) {
+      this.m_rumble += this.m_isIncreasing ? 0.01 : -0.01;
+    }
+    if(this.m_rumble < 0.0 || this.m_rumble > this.m_maxRumble) {
+      this.m_isIncreasing = !this.m_isIncreasing;
+    }
+
+    this.m_xBoxController.setRumble(RumbleType.kBothRumble, this.m_rumble);
 
   }
 

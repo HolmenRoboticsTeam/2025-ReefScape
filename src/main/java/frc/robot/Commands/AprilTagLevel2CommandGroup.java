@@ -60,7 +60,7 @@ public class AprilTagLevel2CommandGroup extends SequentialCommandGroup {
       //Drops gripper pivot and rumbles, and keeps pivot and extension up
       new ParallelDeadlineGroup(
           new WaitCommand(0.33), //Group waits on this command
-        new RumbleCommand(controller, 0.1, 0.1),
+        new RumbleCommand(controller, 0.25, true),
         new ElevatorExtensionToLevel2Command(elevatorExtension, false),
         new ElevatorPivotToLevel2Command(elevatorPivot, false)
       ),
@@ -68,7 +68,7 @@ public class AprilTagLevel2CommandGroup extends SequentialCommandGroup {
       //Tells driver all subsystem are going to home
       new ParallelDeadlineGroup(
           new WaitCommand(0.1), //Group waits on this command
-        new RumbleCommand(controller, 1.0, 1.0)
+        new RumbleCommand(controller, 1.0, false)
       )
 
     );
