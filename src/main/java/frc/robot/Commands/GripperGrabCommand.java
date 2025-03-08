@@ -7,14 +7,15 @@ package frc.robot.Commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.GripperIntakeConstants;
 import frc.robot.subsystems.GripperPivotSubsystem;
+import frc.robot.subsystems.GripperIntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class GripperGrabCommand extends Command {
 
-  private GripperPivotSubsystem m_gripper;
+  private GripperIntakeSubsystem m_gripper;
 
   /** Creates a new GripperDropCommand. */
-  public GripperGrabCommand(GripperPivotSubsystem gripper) {
+  public GripperGrabCommand(GripperIntakeSubsystem gripper) {
 
     this.m_gripper = gripper;
     // Use addRequirements() here to declare subsystem dependencies.
