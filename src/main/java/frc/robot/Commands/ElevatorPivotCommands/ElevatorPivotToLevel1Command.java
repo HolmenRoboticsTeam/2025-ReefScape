@@ -5,7 +5,6 @@
 package frc.robot.Commands.ElevatorPivotCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ElevatorExtensionConstants;
 import frc.robot.Constants.ElevatorPivotConstants;
 import frc.robot.subsystems.ElevatorPivotSubsystem;
 
@@ -20,6 +19,7 @@ public class ElevatorPivotToLevel1Command extends Command {
   public ElevatorPivotToLevel1Command(ElevatorPivotSubsystem elevatorPivot, boolean allowEndCondition) {
 
     this.m_elevatorPivot = elevatorPivot;
+
     this.m_allowEndCondition = allowEndCondition;
 
     addRequirements(elevatorPivot);
@@ -33,24 +33,22 @@ public class ElevatorPivotToLevel1Command extends Command {
   @Override
   public void execute() {
 
-    m_elevatorPivot.setTargetAngle(ElevatorPivotConstants.kLevel1Angle);
-    m_elevatorPivot.setTargetExtension(ElevatorExtensionConstants.kLevel1Extend);
-
+    this.m_elevatorPivot.setTargetAngle(ElevatorPivotConstants.kLevel1Angle);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+    this.m_elevatorPivot.setTargetAngle(0.0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double angleError = Math.abs(m_elevatorPivot.getCurrentAngle() - ElevatorPivotConstants.kLevel1Angle);
-    double extensionError = Math.abs(m_elevatorPivot.getCurrentExtension() - ElevatorExtensionConstants.kLevel1Extend);
+    double positionError = Math.abs(this.m_elevatorPivot.getCurrentAngle() - ElevatorPivotConstants.kLevel1Angle);
 
-    return
-      angleError < ElevatorPivotConstants.kAngleErrorAllowed &&
-      extensionError < ElevatorExtensionConstants.kExtensionErrorAllowed &&
-      this.m_allowEndCondition;
+    return positionError < ElevatorPivotConstants.kAngleErrorAllowed &&
+    this.m_allowEndCondition;
   }
 }

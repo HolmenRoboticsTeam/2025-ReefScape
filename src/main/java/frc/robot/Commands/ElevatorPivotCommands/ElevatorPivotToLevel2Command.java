@@ -5,14 +5,13 @@
 package frc.robot.Commands.ElevatorPivotCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ElevatorExtensionConstants;
 import frc.robot.Constants.ElevatorPivotConstants;
 import frc.robot.subsystems.ElevatorPivotSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorPivotToLevel2Command extends Command {
 
-  ElevatorPivotSubsystem m_elevatorPivot;
+  private ElevatorPivotSubsystem m_elevatorPivot;
 
   private boolean m_allowEndCondition;
 
@@ -20,6 +19,7 @@ public class ElevatorPivotToLevel2Command extends Command {
   public ElevatorPivotToLevel2Command(ElevatorPivotSubsystem elevatorPivot, boolean allowEndCondition) {
 
     this.m_elevatorPivot = elevatorPivot;
+
     this.m_allowEndCondition = allowEndCondition;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -34,23 +34,22 @@ public class ElevatorPivotToLevel2Command extends Command {
   @Override
   public void execute() {
 
-    m_elevatorPivot.setTargetAngle(ElevatorPivotConstants.kLevel2Angle);
-    m_elevatorPivot.setTargetExtension(ElevatorExtensionConstants.kLevel2Extend);
+    this.m_elevatorPivot.setTargetAngle(ElevatorPivotConstants.kLevel2Angle);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+    this.m_elevatorPivot.setTargetAngle(0.0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double angleError = Math.abs(m_elevatorPivot.getCurrentAngle() - ElevatorPivotConstants.kLevel2Angle);
-    double extensionError = Math.abs(m_elevatorPivot.getCurrentExtension() - ElevatorExtensionConstants.kLevel2Extend);
+    double positionError = Math.abs(this.m_elevatorPivot.getCurrentAngle() - ElevatorPivotConstants.kLevel2Angle);
 
-    return
-      angleError < ElevatorPivotConstants.kAngleErrorAllowed &&
-      extensionError < ElevatorExtensionConstants.kExtensionErrorAllowed &&
-      this.m_allowEndCondition;
+    return positionError < ElevatorPivotConstants.kAngleErrorAllowed &&
+    this.m_allowEndCondition;
   }
 }
