@@ -10,10 +10,12 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Commands.AprilTagLevel2CommandGroup;
 import frc.robot.Commands.BackReefLineUpCommand;
 import frc.robot.Commands.FrontReefLineUpCommand;
 import frc.robot.Commands.GripperDropCommand;
 import frc.robot.Commands.RumbleCommand;
+import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel2Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToHomeCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel2Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel3Command;
@@ -22,8 +24,10 @@ import frc.robot.Commands.GripperPivotCommands.GipperPivotToHomeCommand;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel2Command;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorExtensionSubsystem;
 import frc.robot.subsystems.ElevatorPivotSubsystem;
 import frc.robot.subsystems.GripperPivotSubsystem;
+import frc.robot.subsystems.GripperIntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -43,7 +47,10 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final ElevatorPivotSubsystem m_elevatorPivot = new ElevatorPivotSubsystem();
-  // private final GripperPivotSubsystem m_gripperPivot = new GripperPivotSubsystem();
+  private final ElevatorExtensionSubsystem m_elevatorExtension = new ElevatorExtensionSubsystem();
+  private final GripperPivotSubsystem m_gripperPivot = new GripperPivotSubsystem();
+  private final GripperIntakeSubsystem m_gripperIntake = new GripperIntakeSubsystem();
+
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-front");
   private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-back");
 
@@ -81,7 +88,7 @@ public class RobotContainer {
             m_drive));
 
     this.m_elevatorPivot.setDefaultCommand(
-      new ElevatorPivotToHomeCommand(this.m_elevatorPivot, false)
+      new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
     );
 
     // this.m_gripperPivot.setDefaultCommand(
@@ -113,29 +120,15 @@ public class RobotContainer {
     //Just for test april tag lineups
     //need to check if driver 1 using controller: overrides the command, overrides controller, or just wack stuff
     this.m_driverController.b().whileTrue(new BackReefLineUpCommand(this.m_drive, this.m_limelightBack));
-    this.m_driverController.a().whileTrue(new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront))  ;
+    this.m_driverController.a().whileTrue(new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront));
 
-    //Planned for real Matches (need to add levels 3, 4, and station. Also check wait time.) (AND TEST BEFORE COMP!)
-    //This got a lot bigger than planned, think about making this shorter/braking up (especially for testing!).
-    // this.m_aprilTagLevel2Place.whileTrue(new SequentialCommandGroup(
-    //   new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront),
-    //   new ElevatorPivotToLevel2Command(this.m_elevatorPivot, true),
-    //   new ParallelRaceGroup(
-    //     new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up
-    //     new GripperPivotToLevel2Command(this.m_gripperPivot, true) //This is what the raceCommand is waiting on
-    //   ),
-    //   new ParallelRaceGroup(
-    //     new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up
-    //     new GripperPivotToLevel2Command(this.m_gripperPivot, false),//Keeps the pivot up
-    //     new GripperDropCommand(this.m_gripperPivot),
-    //     new RumbleCommand(this.m_driverController, 0.25, 0.25),
-    //     new WaitCommand(0.33) //This is what the raceCommand is waiting on
-    //   ),
-    //   new ParallelRaceGroup(//Need to run one last to keep the pivot up, and let the driver have time to move
-    //     new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false), //Keeps the pivot and extension up
-    //     new GipperPivotToHomeCommand(this.m_gripperPivot, true)
-    //   )
-    // ));
+    //Planned for real Matches (need to add levels 3, 4, and station. Also check wait time.) (AND TEST BEFORE COMP! please...)
+    this.m_aprilTagLevel2Place.whileTrue(
+      new AprilTagLevel2CommandGroup(
+        this.m_driverController, this.m_drive, this.m_limelightBack, this.m_elevatorPivot,
+        this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+      )
+    );
 
 
     this.m_driverController.x()

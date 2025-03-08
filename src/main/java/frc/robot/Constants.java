@@ -155,9 +155,11 @@ public final class Constants {
 
     public static final int kMotorID = 15;
 
+    //Belts are so tight, F is needed.
     public static double kIntakeP = 0.001;
     public static double kIntakeI = 0.0;
     public static double kIntakeD = 0.0;
+    public static double kIntakeF = 0.001;
 
     //Need check if voltage is even the right thing to base it off of, and if so, what's the right number
     public static final double kVoltageThreshHold = 1.0;
