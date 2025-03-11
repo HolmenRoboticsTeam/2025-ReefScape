@@ -228,12 +228,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     if(Math.abs(xAngle) < OIConstants.kDriveDeadband && Math.abs(yAngle) < OIConstants.kDriveDeadband) {
 
-      // if(throttle == 0.0) {
-      //   //Checks if there are no movement changes, if so, setX to stop extra movement (still debating if this feels better)
-      //   this.setX();
-      //   return;
-      // }
-
       drive(xSpeed * throttle, ySpeed * throttle, 0.0, fieldRelative);
     }
     double currentAngle = Math.abs(this.m_gyro.getAngle() % 360);

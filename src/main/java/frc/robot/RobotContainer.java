@@ -5,16 +5,24 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Commands.AprilTagLevel2CommandGroup;
 import frc.robot.Commands.BackReefLineUpCommand;
 import frc.robot.Commands.FrontReefLineUpCommand;
 import frc.robot.Commands.GripperDropCommand;
 import frc.robot.Commands.RumbleCommand;
+import frc.robot.Commands.CommandGroups.AprilTagLevel2CommandGroup;
+import frc.robot.Commands.CommandGroups.AprilTagLevel3CommandGroup;
+import frc.robot.Commands.CommandGroups.AprilTagLevel4CommandGroup;
+import frc.robot.Commands.CommandGroups.Level2CommandGroup;
+import frc.robot.Commands.CommandGroups.Level3CommandGroup;
+import frc.robot.Commands.CommandGroups.Level4CommandGroup;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel2Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToHomeCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel2Command;
@@ -72,10 +80,30 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
+    NamedCommands.registerCommand("Place Level 2", new Level2CommandGroup(
+      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    ));
+    NamedCommands.registerCommand("Place Level 3", new Level3CommandGroup(
+      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    ));
+    NamedCommands.registerCommand("Place Level 4", new Level4CommandGroup(
+      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    ));
+
+    NamedCommands.registerCommand("Place Level 2 (April Tag)", new AprilTagLevel2CommandGroup(
+      this.m_driverController, this.m_drive, this.m_limelightBack, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    ));
+    NamedCommands.registerCommand("Place Level 3 (April Tag)", new AprilTagLevel3CommandGroup(
+      this.m_driverController, this.m_drive, this.m_limelightFront, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    ));
+    NamedCommands.registerCommand("Place Level 4 (April Tag)", new AprilTagLevel4CommandGroup(
+      this.m_driverController, this.m_drive, this.m_limelightFront, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    ));
+
     // Configure default commands
     m_drive.setDefaultCommand(
         // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
+        // Turning is controlled by the right stick.
         new RunCommand(
             () -> this.m_drive.headingDrive(
                 MathUtil.applyDeadband(this.m_driverController.getRightTriggerAxis(), 0.05),
@@ -91,9 +119,9 @@ public class RobotContainer {
       new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
     );
 
-    // this.m_gripperPivot.setDefaultCommand(
-    //   new GipperPivotToHomeCommand(this.m_gripperPivot, false)
-    // );
+    this.m_gripperPivot.setDefaultCommand(
+      new GipperPivotToHomeCommand(this.m_gripperPivot, false)
+    );
 
     autoChooser = AutoBuilder.buildAutoChooser();
 
