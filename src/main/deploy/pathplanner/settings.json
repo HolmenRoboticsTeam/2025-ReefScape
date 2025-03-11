@@ -3,18 +3,18 @@
   "robotLength": 0.899,
   "holonomicMode": true,
   "pathFolders": [
-    "Blue Wall Paths",
-    "Center Paths",
-    "Red Wall Paths",
+    "Blue Wall +2 Piece Paths",
+    "Center 2 Piece Paths",
+    "Red Wall +2 Piece Paths",
     "Testing Paths"
   ],
   "autoFolders": [
     "Testing Autos"
   ],
-  "defaultMaxVel": 3.0,
-  "defaultMaxAccel": 3.0,
-  "defaultMaxAngVel": 190.0,
-  "defaultMaxAngAccel": 190.0,
+  "defaultMaxVel": 2.0,
+  "defaultMaxAccel": 2.0,
+  "defaultMaxAngVel": 180.0,
+  "defaultMaxAngAccel": 180.0,
   "defaultNominalVoltage": 12.0,
   "robotMass": 56.699,
   "robotMOI": 3.968,

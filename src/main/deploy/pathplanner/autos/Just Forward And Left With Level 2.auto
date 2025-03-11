@@ -13,7 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Place Level 2 (April Tag)"
+            "name": "Place Level 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Just Left"
           }
         }
       ]

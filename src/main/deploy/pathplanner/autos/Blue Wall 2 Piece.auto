@@ -7,43 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Red Wall Drive & Score"
+            "pathName": "Pr 1 (2&3 Piece) B"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Red Wall Player Station"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
+            "name": "Place Level 4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Player Station to Score"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Red Wall Player Station"
+            "pathName": "Pr 2 (2&3 Piece) B"
           }
         },
         {
@@ -55,7 +31,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Player Station to Score"
+            "pathName": "Pr 3 (2&3 Piece) B"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Place Level 4"
           }
         }
       ]

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.166700819672132,
-        "y": 5.156
+        "x": 7.1,
+        "y": 6.16025
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.5746357803096025,
-        "y": 5.544573906329923
+        "x": 6.051148268589712,
+        "y": 6.060939172475802
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.6822352025829466,
-        "y": 7.3830856564122165
+        "x": 5.15775,
+        "y": 5.195
       },
       "prevControl": {
-        "x": 2.5294057377067767,
-        "y": 6.854098360660356
+        "x": 5.260091184236612,
+        "y": 5.423092704857144
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue Wall (Parts 1 to 2)"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 190.0,
-    "maxAngularAcceleration": 190.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 180.0,
+    "maxAngularAcceleration": 180.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -54.0
+    "rotation": -119.99999999999999
   },
   "reversed": false,
-  "folder": "Blue Wall Paths",
+  "folder": "Blue Wall +2 Piece Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

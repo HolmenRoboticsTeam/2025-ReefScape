@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.808,
-        "y": 4.0
+        "x": 1.654474940334129,
+        "y": 0.7055787589498812
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.32950819672131,
-        "y": 6.182786885245902
+        "x": 2.4752625097061722,
+        "y": 1.5229398381351402
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red Wall (Part 4 to 5)"
     },
     {
       "anchor": {
-        "x": 1.634,
-        "y": 7.342
+        "x": 3.790632458233891,
+        "y": 2.7789081145584724
       },
       "prevControl": {
-        "x": 3.308606557377049,
-        "y": 6.95
+        "x": 2.9415719839370724,
+        "y": 1.8408249901859406
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -54.0
+    "rotation": 59.99999999999999
   },
   "reversed": false,
-  "folder": "Center 2 Piece Paths",
+  "folder": "Red Wall +2 Piece Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 54.0
   },
   "useDefaultConstraints": true
 }

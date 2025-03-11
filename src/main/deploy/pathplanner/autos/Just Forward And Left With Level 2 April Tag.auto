@@ -15,6 +15,12 @@
           "data": {
             "name": "Place Level 2 (April Tag)"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Just Left"
+          }
         }
       ]
     }
