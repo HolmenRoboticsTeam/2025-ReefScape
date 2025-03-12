@@ -30,7 +30,7 @@ public class ElevatorExtensionToHomeCommand extends Command {
   @Override
   public void execute() {
 
-    this.m_elevatorExtension.setTargetExtension(0.0);
+    this.m_elevatorExtension.setTargetExtension(3.0);
   }
 
   // Called once the command ends or is interrupted.

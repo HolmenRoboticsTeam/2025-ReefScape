@@ -34,6 +34,8 @@ public class ElevatorPivotToLevel2Command extends Command {
   @Override
   public void execute() {
 
+    System.out.println("executing");
+
     this.m_elevatorPivot.setTargetAngle(ElevatorPivotConstants.kLevel2Angle);
   }
 

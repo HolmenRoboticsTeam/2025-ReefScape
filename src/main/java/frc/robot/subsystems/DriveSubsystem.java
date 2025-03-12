@@ -236,7 +236,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     double targetAngle = Math.atan2(yAngle, xAngle);
-    targetAngle = (Math.toDegrees(targetAngle) + 810) % 360;
+    targetAngle = (Math.toDegrees(targetAngle) + 720) % 360;
 
     double theta = Math.abs(targetAngle - currentAngle) % 360;
     double shorterTheta = theta > 180 ? 360  - theta : theta;

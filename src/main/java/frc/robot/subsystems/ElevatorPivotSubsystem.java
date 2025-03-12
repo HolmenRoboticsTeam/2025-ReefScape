@@ -39,8 +39,11 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
     SparkMaxConfig configLeftPivot = new SparkMaxConfig();
     SparkMaxConfig configRightPivot = new SparkMaxConfig();
 
-    configLeftPivot.inverted(true);
-    configRightPivot.inverted(false);
+    configLeftPivot.inverted(false);
+    configRightPivot.inverted(true);
+
+    configLeftPivot.absoluteEncoder.positionConversionFactor(1);
+    configRightPivot.absoluteEncoder.positionConversionFactor(1);
 
     configLeftPivot.closedLoop.pid(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD);
     configRightPivot.closedLoop.pid(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD);
@@ -60,8 +63,10 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
    */
   public void setTargetAngle(double targetAngle) {
 
-    this.m_rightPivotPIDController.setReference(-targetAngle, ControlType.kPosition);
-    this.m_leftPivotPIDController.setReference(-targetAngle, ControlType.kPosition);
+    System.out.println(targetAngle);
+
+    this.m_rightPivotPIDController.setReference(targetAngle, ControlType.kPosition);
+    this.m_leftPivotPIDController.setReference(targetAngle, ControlType.kPosition);
   }
 
   /**
@@ -77,8 +82,5 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("CurrentAngle", getCurrentAngle());
 
-    ElevatorPivotConstants.kPivotP = SmartDashboard.getNumber("PivotP", ElevatorPivotConstants.kPivotP);
-    ElevatorPivotConstants.kPivotI = SmartDashboard.getNumber("PivotI", ElevatorPivotConstants.kPivotI);
-    ElevatorPivotConstants.kPivotD = SmartDashboard.getNumber("PivotD", ElevatorPivotConstants.kPivotD);
   }
 }

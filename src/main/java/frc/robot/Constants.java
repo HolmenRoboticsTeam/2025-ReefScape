@@ -107,45 +107,45 @@ public final class Constants {
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
-  public static final class ElevatorExtensionConstants {
-
-    public static final double kMaxExtensionSpeed = 0.1;
-
-    public static final double kExtensionErrorAllowed = 0.1;
-
-    public static final int kLeftMotorID = 12;
-    public static final int kRightMotorID = 13;
-
-    public static double kExtensionP = 0.01;
-    public static double kExtensionI = 0.0;
-    public static double kExtensionD = 0.0;
-
-    public static double kLevel1Extend = 0.0;
-    public static double kLevel2Extend = 0.0;
-    public static double kLevel3Extend = 0.0;
-    public static double kLevel4Extend = 0.0;
-    public static double kCoralStationExtend = 0.0;
-
-  }
-
   public static final class ElevatorPivotConstants {
 
     public static final double kMaxAngleSpeed = 0.65;
 
     public static final double kAngleErrorAllowed = 0.1;
 
-    public static final int kLeftMotorID = 10;
-    public static final int kRightMotorID = 11;
+    public static final int kRightMotorID = 10;
+    public static final int kLeftMotorID = 11;
 
-    public static double kPivotP = 0.001;
-    public static double kPivotI = 0.0;
-    public static double kPivotD = 0.0;
+    public static final double kPivotP = 0.001;
+    public static final double kPivotI = 0.0;
+    public static final double kPivotD = 0.0;
 
-    public static double kLevel1Angle = 2.0;
-    public static double kLevel2Angle = 0.0;
-    public static double kLevel3Angle = 10.0;
-    public static double kLevel4Angle = 20.0;
-    public static double kCoralStationAngle = 0.0;
+    public static final double kLevel1Angle = 0.0;
+    public static final double kLevel2Angle = 0.1;
+    public static final double kLevel3Angle = 0.0;
+    public static final double kLevel4Angle = 0.0;
+    public static final double kCoralStationAngle = 0.0;
+
+  }
+
+  public static final class ElevatorExtensionConstants {
+
+    public static final double kMaxExtensionOutput = 0.001;
+
+    public static final double kExtensionErrorAllowed = 0.1;
+
+    public static final int kLeftMotorID = 12;
+    public static final int kRightMotorID = 13;
+
+    public static final double kExtensionP = 0.13;
+    public static final double kExtensionI = 0.0;
+    public static final double kExtensionD = 0.0;
+
+    public static final double kLevel1Extend = 0.0;
+    public static final double kLevel2Extend = 20.0;
+    public static final double kLevel3Extend = 0.0;
+    public static final double kLevel4Extend = 0.0;
+    public static final double kCoralStationExtend = 0.0;
 
   }
 

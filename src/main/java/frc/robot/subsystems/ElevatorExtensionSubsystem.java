@@ -41,11 +41,14 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
     SparkMaxConfig configLeftExtension = new SparkMaxConfig();
     SparkMaxConfig configRightExtension = new SparkMaxConfig();
 
-    configLeftExtension.inverted(true);
-    configRightExtension.inverted(false);
+    configLeftExtension.inverted(false);
+    configRightExtension.inverted(true);
 
-    configLeftExtension.closedLoop.pid(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD);
-    configRightExtension.closedLoop.pid(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD);
+    configLeftExtension.closedLoop.maxOutput(ElevatorExtensionConstants.kMaxExtensionOutput);
+    configLeftExtension.closedLoop.minOutput(-ElevatorExtensionConstants.kMaxExtensionOutput);
+
+    configLeftExtension.closedLoop.pid(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD);
+    configRightExtension.closedLoop.pid(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD);
 
     this.m_rightExtensionMotor.configure(configRightExtension, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     this.m_leftExtensionMotor.configure(configLeftExtension, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -60,9 +63,6 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("CurrentExtension", getCurrentExtension());
 
-    ElevatorExtensionConstants.kExtensionP = SmartDashboard.getNumber("ExtensionP", ElevatorExtensionConstants.kExtensionP);
-    ElevatorExtensionConstants.kExtensionI = SmartDashboard.getNumber("ExtensionI", ElevatorExtensionConstants.kExtensionI);
-    ElevatorExtensionConstants.kExtensionD = SmartDashboard.getNumber("ExtensionD", ElevatorExtensionConstants.kExtensionD);
   }
 
   /**
@@ -71,8 +71,8 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
    */
   public void setTargetExtension(double targetLength) {
 
-    this.m_rightExtensionPIDController.setReference(targetLength, ControlType.kMAXMotionPositionControl);
-    this.m_leftExtensionPIDController.setReference(targetLength, ControlType.kMAXMotionPositionControl);
+    this.m_rightExtensionPIDController.setReference(targetLength, ControlType.kPosition);
+    this.m_leftExtensionPIDController.setReference(targetLength, ControlType.kPosition);
   }
 
   /**
