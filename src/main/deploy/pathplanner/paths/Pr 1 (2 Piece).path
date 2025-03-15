@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.808,
+        "x": 7.0,
         "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.32950819672131,
-        "y": 6.182786885245902
+        "x": 6.327692807269057,
+        "y": 4.002879207308807
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.634,
-        "y": 7.342
+        "x": 5.9,
+        "y": 4.0
       },
       "prevControl": {
-        "x": 3.308606557377049,
-        "y": 6.95
+        "x": 6.638618190757584,
+        "y": 4.0
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Center (Part 1 to 2)"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -54.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Center 2 Piece Paths",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 135.0
   },
   "useDefaultConstraints": true
 }

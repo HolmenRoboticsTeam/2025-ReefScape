@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.1,
+        "x": 7.0,
         "y": 1.9
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.059041882401012,
-        "y": 2.0960692654076682
+        "x": 5.947980167166161,
+        "y": 2.5281313572452944
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 2.8614611235322447
       },
       "prevControl": {
-        "x": 6.199129799822796,
-        "y": 2.138670194012813
+        "x": 6.240319307591235,
+        "y": 2.237961909149538
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "Red Wall +2 Piece Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 135.0
   },
   "useDefaultConstraints": true
 }

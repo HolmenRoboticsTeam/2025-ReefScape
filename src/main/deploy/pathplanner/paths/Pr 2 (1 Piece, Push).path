@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.634,
-        "y": 7.342
+        "x": 7.7,
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.394799400548948,
-        "y": 6.597358012829799
+        "x": 8.499282786885244,
+        "y": 7.069877049180329
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Push (Parts 1 to 2)"
     },
     {
       "anchor": {
-        "x": 3.8369662071427872,
-        "y": 5.171616189576164
+        "x": 5.25061475409836,
+        "y": 5.247745901639345
       },
       "prevControl": {
-        "x": 3.0740752716611413,
-        "y": 5.90830429296962
+        "x": 5.369139709857115,
+        "y": 5.4678636766198885
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": -120.74996730219642
   },
   "reversed": false,
   "folder": "Center 2 Piece Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -54.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
