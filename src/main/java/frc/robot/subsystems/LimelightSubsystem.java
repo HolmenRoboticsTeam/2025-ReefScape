@@ -22,6 +22,7 @@ public class LimelightSubsystem extends SubsystemBase {
   public LimelightSubsystem(String key) {
 
     this.m_limelightNetworkTable = NetworkTableInstance.getDefault().getTable(key);
+
   }
 
   @Override
@@ -42,9 +43,9 @@ public class LimelightSubsystem extends SubsystemBase {
       targetPose[1],
       targetPose[2],
       new Rotation3d(
-        targetPose[5],
-        targetPose[3],
-        targetPose[4]
+        targetPose[5], // Roll
+        targetPose[3], // Pitch
+        targetPose[4]  // Yaw
     ));
 
   }

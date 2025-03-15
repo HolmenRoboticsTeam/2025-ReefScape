@@ -16,7 +16,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorExtensionConstants;
-import frc.robot.Constants.ElevatorPivotConstants;
 
 public class ElevatorExtensionSubsystem extends SubsystemBase {
 
@@ -44,8 +43,9 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
     configLeftExtension.inverted(false);
     configRightExtension.inverted(true);
 
-    configLeftExtension.closedLoop.maxOutput(ElevatorExtensionConstants.kMaxExtensionOutput);
-    configLeftExtension.closedLoop.minOutput(-ElevatorExtensionConstants.kMaxExtensionOutput);
+
+    configLeftExtension.closedLoop.outputRange(-ElevatorExtensionConstants.kMaxExtensionOutput, ElevatorExtensionConstants.kMaxExtensionOutput);
+    configRightExtension.closedLoop.outputRange(-ElevatorExtensionConstants.kMaxExtensionOutput, ElevatorExtensionConstants.kMaxExtensionOutput);
 
     configLeftExtension.closedLoop.pid(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD);
     configRightExtension.closedLoop.pid(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD);

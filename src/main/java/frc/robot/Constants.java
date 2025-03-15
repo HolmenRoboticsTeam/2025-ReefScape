@@ -109,9 +109,9 @@ public final class Constants {
 
   public static final class ElevatorPivotConstants {
 
-    public static final double kMaxAngleSpeed = 0.65;
+    public static final double kMaxAngleOutput = 0.65;
 
-    public static final double kAngleErrorAllowed = 0.1;
+    public static final double kAngleErrorAllowed = 0.01;
 
     public static final int kRightMotorID = 10;
     public static final int kLeftMotorID = 11;
@@ -137,7 +137,7 @@ public final class Constants {
     public static final int kLeftMotorID = 12;
     public static final int kRightMotorID = 13;
 
-    public static final double kExtensionP = 0.13;
+    public static final double kExtensionP = 0.05;
     public static final double kExtensionI = 0.0;
     public static final double kExtensionD = 0.0;
 
@@ -183,14 +183,6 @@ public final class Constants {
     public static double kLevel3Angle = 0.0;
     public static double kLevel4Angle = 0.0;
     public static double kCoralStationAngle = 0.0;
-  }
-
-  public static final class ClimberConstants {
-
-    public static final double kMaxSpeed = 0.1;
-
-    public static final int kLeftMotorID = 16;
-
   }
 
   public static final class TakeOverTelopConstants {
