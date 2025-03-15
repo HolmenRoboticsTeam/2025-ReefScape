@@ -13,9 +13,12 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorExtensionConstants;
+import frc.robot.Constants.ElevatorPivotConstants;
 
 public class ElevatorExtensionSubsystem extends SubsystemBase {
 
@@ -23,8 +26,8 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
   private SparkMax m_rightExtensionMotor;
   private RelativeEncoder m_extensionRelativeEncoder;
 
-  private SparkClosedLoopController m_rightExtensionPIDController;
-  private SparkClosedLoopController m_leftExtensionPIDController;
+  private ProfiledPIDController m_rightExtensionPIDController;
+  private ProfiledPIDController m_leftExtensionPIDController;
 
 
   /** Creates a new ElevatorExtensionSubsystem. */
@@ -34,28 +37,28 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
     this.m_rightExtensionMotor = new SparkMax(ElevatorExtensionConstants.kRightMotorID, MotorType.kBrushless);
     this.m_extensionRelativeEncoder = this.m_rightExtensionMotor.getEncoder();
 
-    this.m_rightExtensionPIDController = m_rightExtensionMotor.getClosedLoopController();
-    this.m_leftExtensionPIDController = m_leftExtensionMotor.getClosedLoopController();
+    this.m_rightExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
+      new TrapezoidProfile.Constraints(0.1, 0.1)
+    );
 
+    this.m_leftExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
+      new TrapezoidProfile.Constraints(0.1, 0.1)
+    );
     SparkMaxConfig configLeftExtension = new SparkMaxConfig();
     SparkMaxConfig configRightExtension = new SparkMaxConfig();
 
     configLeftExtension.inverted(false);
     configRightExtension.inverted(true);
 
+    //0.02425 is r (2.0 * Math.PI * 0.02425)
+    double positionConversionFactor = (0.16269) / (7.2);
 
-    configLeftExtension.closedLoop.outputRange(-ElevatorExtensionConstants.kMaxExtensionOutput, ElevatorExtensionConstants.kMaxExtensionOutput);
-    configRightExtension.closedLoop.outputRange(-ElevatorExtensionConstants.kMaxExtensionOutput, ElevatorExtensionConstants.kMaxExtensionOutput);
-
-    configLeftExtension.closedLoop.pid(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD);
-    configRightExtension.closedLoop.pid(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD);
+    configLeftExtension.encoder.positionConversionFactor(positionConversionFactor);
+    configRightExtension.encoder.positionConversionFactor(positionConversionFactor);
 
     this.m_rightExtensionMotor.configure(configRightExtension, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     this.m_leftExtensionMotor.configure(configLeftExtension, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    SmartDashboard.putNumber("ExtensionP", ElevatorExtensionConstants.kExtensionP);
-    SmartDashboard.putNumber("ExtensionI", ElevatorExtensionConstants.kExtensionI);
-    SmartDashboard.putNumber("ExtensionD", ElevatorExtensionConstants.kExtensionD);
   }
 
   @Override
@@ -71,8 +74,11 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
    */
   public void setTargetExtension(double targetLength) {
 
-    this.m_rightExtensionPIDController.setReference(targetLength, ControlType.kPosition);
-    this.m_leftExtensionPIDController.setReference(targetLength, ControlType.kPosition);
+    double leftOutput = this.m_leftExtensionPIDController.calculate(targetLength - this.getCurrentExtension());
+    double rightOutput = this.m_rightExtensionPIDController.calculate(targetLength - this.getCurrentExtension());
+
+    this.m_leftExtensionMotor.set(leftOutput);
+    this.m_rightExtensionMotor.set(rightOutput);
   }
 
   /**

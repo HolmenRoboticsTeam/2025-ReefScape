@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Rotations;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -113,18 +116,20 @@ public final class Constants {
 
     public static final double kAngleErrorAllowed = 0.01;
 
-    public static final int kRightMotorID = 10;
-    public static final int kLeftMotorID = 11;
+    public static final int kLeftMotorID = 10;
+    public static final int kRightMotorID = 11;
 
-    public static final double kPivotP = 0.001;
+    public static final double kPivotP = 0.3;
     public static final double kPivotI = 0.0;
     public static final double kPivotD = 0.0;
 
-    public static final double kLevel1Angle = 0.0;
-    public static final double kLevel2Angle = 0.1;
-    public static final double kLevel3Angle = 0.0;
-    public static final double kLevel4Angle = 0.0;
-    public static final double kCoralStationAngle = 0.0;
+    public static final double kHomeAngle = Rotation2d.fromDegrees(5).getRadians();
+
+    public static final double kLevel1Angle = Rotation2d.fromDegrees(15).getRadians();
+    public static final double kLevel2Angle = Rotation2d.fromDegrees(20).getRadians();
+    public static final double kLevel3Angle = Rotation2d.fromDegrees(25).getRadians();
+    public static final double kLevel4Angle = Rotation2d.fromDegrees(70).getRadians();
+    public static final double kCoralStationAngle = Rotation2d.fromDegrees(50).getRadians();
 
   }
 
@@ -142,7 +147,7 @@ public final class Constants {
     public static final double kExtensionD = 0.0;
 
     public static final double kLevel1Extend = 0.0;
-    public static final double kLevel2Extend = 20.0;
+    public static final double kLevel2Extend = 0.0;
     public static final double kLevel3Extend = 0.0;
     public static final double kLevel4Extend = 0.0;
     public static final double kCoralStationExtend = 0.0;
@@ -151,15 +156,9 @@ public final class Constants {
 
   public static final class GripperIntakeConstants {
 
-    public static final double kMaxSpeed = 0.1;
+    public static final double kMaxSpeed = 1.0;
 
     public static final int kMotorID = 15;
-
-    //Belts are so tight, F is needed.
-    public static double kIntakeP = 0.001;
-    public static double kIntakeI = 0.0;
-    public static double kIntakeD = 0.0;
-    public static double kIntakeF = 0.001;
 
     //Need check if voltage is even the right thing to base it off of, and if so, what's the right number
     public static final double kVoltageThreshHold = 1.0;

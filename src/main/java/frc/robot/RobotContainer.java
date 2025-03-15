@@ -34,6 +34,7 @@ import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel3Com
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel4Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToCoralStationCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToHomeCommand;
+import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel1Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel2Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel3Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel4Command;
@@ -66,7 +67,7 @@ public class RobotContainer {
   private final ElevatorPivotSubsystem m_elevatorPivot = new ElevatorPivotSubsystem();
   private final ElevatorExtensionSubsystem m_elevatorExtension = new ElevatorExtensionSubsystem();
   // private final GripperPivotSubsystem m_gripperPivot = new GripperPivotSubsystem();
-  // private final GripperIntakeSubsystem m_gripperIntake = new GripperIntakeSubsystem();
+  private final GripperIntakeSubsystem m_gripperIntake = new GripperIntakeSubsystem();
 
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-front");
   private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-back");
@@ -127,12 +128,12 @@ public class RobotContainer {
             this.m_drive));
 
     // this.m_elevatorPivot.setDefaultCommand(
-    //   new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
+    //   new ElevatorPivotToLevel1Command(this.m_elevatorPivot, false)
     // );
 
-    this.m_elevatorExtension.setDefaultCommand(
-      new ElevatorExtensionToHomeCommand(this.m_elevatorExtension)
-    );
+    // this.m_elevatorExtension.setDefaultCommand(
+    //   new ElevatorExtensionToHomeCommand(this.m_elevatorExtension)
+    // );
 
     // this.m_gripperPivot.setDefaultCommand(
     //   new GipperPivotToHomeCommand(this.m_gripperPivot, false)
@@ -165,6 +166,9 @@ public class RobotContainer {
     this.m_driverController.b().whileTrue(new BackReefLineUpCommand(this.m_drive, this.m_limelightBack));
     this.m_driverController.a().whileTrue(new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront));
 
+    this.m_driverController.y().whileTrue(new GripperDropCommand(this.m_gripperIntake));
+    this.m_driverController.x().whileTrue(new GripperGrabCommand(this.m_gripperIntake));
+
     //Planned for real Matches (need to add levels 3, 4, and station. Also check wait time.) (AND TEST BEFORE COMP! please...)
     // this.m_aprilTagLevel2Place.whileTrue(
     //   new AprilTagLevel2CommandGroup(
@@ -174,25 +178,25 @@ public class RobotContainer {
     // );
 
 
-    this.m_driverController.x()
-      .whileTrue(new RunCommand(
-        () -> m_drive.setX(),
-        m_drive
-        ));
+    // this.m_driverController.x()
+    //   .whileTrue(new RunCommand(
+    //     () -> m_drive.setX(),
+    //     m_drive
+    //     ));
 
 
-    this.m_driverController.povDown().whileTrue(
-      new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
-    );
-    this.m_driverController.povRight().whileTrue(
-      new ElevatorPivotToLevel3Command(this.m_elevatorPivot, false)
-    );
-    this.m_driverController.povUp().whileTrue(
-      new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false)
-    );
-    this.m_driverController.povLeft().whileTrue(
-      new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, false)
-    );
+    // this.m_driverController.povDown().whileTrue(
+    //   new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
+    // );
+    // this.m_driverController.povRight().whileTrue(
+    //   new ElevatorPivotToLevel3Command(this.m_elevatorPivot, false)
+    // );
+    // this.m_driverController.povUp().whileTrue(
+    //   new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false)
+    // );
+    // this.m_driverController.povLeft().whileTrue(
+    //   new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, false)
+    // );
 
     // this.m_driverController.povDown().whileTrue(
     //   new ElevatorExtensionToLevel2Command(this.m_elevatorExtension, false)
@@ -206,6 +210,9 @@ public class RobotContainer {
     // this.m_driverController.povLeft().whileTrue(
     //   new ElevatorExtensionToCoralStationCommand(this.m_elevatorExtension, false)
     // );
+
+    this.m_driverController.leftBumper().whileTrue(new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false));
+    this.m_driverController.rightBumper().whileTrue(new ElevatorExtensionToLevel4Command(this.m_elevatorExtension, false));
   }
 
   /**

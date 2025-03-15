@@ -44,6 +44,7 @@ public class GripperGrabCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.m_gripper.getIntakeMotorVoltage() > GripperIntakeConstants.kVoltageThreshHold;
+    return false;
+    // return this.m_gripper.getIntakeMotorVoltage() > GripperIntakeConstants.kVoltageThreshHold;
   }
 }

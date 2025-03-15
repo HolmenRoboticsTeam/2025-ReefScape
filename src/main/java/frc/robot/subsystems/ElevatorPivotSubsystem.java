@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -12,7 +13,12 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorPivotConstants;
@@ -22,9 +28,12 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
   private SparkMax m_leftPivotMotor;
   private SparkMax m_rightPivotMotor;
   private AbsoluteEncoder m_pivotAbsoluteEncoder;
+  private RelativeEncoder m_leftPivotEncoder;
+  private RelativeEncoder m_rightPivotEncoder;
 
-  private SparkClosedLoopController m_rightPivotPIDController;
-  private SparkClosedLoopController m_leftPivotPIDController;
+  private ProfiledPIDController m_leftPIDController;
+  private ProfiledPIDController m_rightPIDController;
+
 
   /** Creates a new PivotSubsystem. */
   public ElevatorPivotSubsystem() {
@@ -33,8 +42,16 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
     this.m_rightPivotMotor = new SparkMax(ElevatorPivotConstants.kRightMotorID, MotorType.kBrushless);
     this.m_pivotAbsoluteEncoder = this.m_rightPivotMotor.getAbsoluteEncoder();
 
-    this.m_rightPivotPIDController = m_rightPivotMotor.getClosedLoopController();
-    this.m_leftPivotPIDController = m_leftPivotMotor.getClosedLoopController();
+    this.m_leftPivotEncoder = this.m_leftPivotMotor.getEncoder();
+    this.m_rightPivotEncoder = this.m_rightPivotMotor.getEncoder();
+
+    this.m_leftPIDController = new ProfiledPIDController(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD,
+      new TrapezoidProfile.Constraints(0.1, 0.1)
+    );
+
+    this.m_rightPIDController = new ProfiledPIDController(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD,
+      new TrapezoidProfile.Constraints(0.1, 0.1)
+    );
 
     SparkMaxConfig configLeftPivot = new SparkMaxConfig();
     SparkMaxConfig configRightPivot = new SparkMaxConfig();
@@ -42,18 +59,21 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
     configLeftPivot.inverted(false);
     configRightPivot.inverted(true);
 
-    configLeftPivot.absoluteEncoder.positionConversionFactor(1);
-    configRightPivot.absoluteEncoder.positionConversionFactor(1);
+    double positionConversionFactorRelative = (2.0 * Math.PI) / (213.33);  // 213.33 is gear ratio
 
-    configLeftPivot.closedLoop.pid(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD);
-    configRightPivot.closedLoop.pid(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD);
+    configLeftPivot.encoder.positionConversionFactor(positionConversionFactorRelative);
+    configRightPivot.encoder.positionConversionFactor(positionConversionFactorRelative);
+
+    configRightPivot.absoluteEncoder.inverted(true);
+
+    configLeftPivot.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
+    configRightPivot.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
 
     this.m_rightPivotMotor.configure(configRightPivot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     this.m_leftPivotMotor.configure(configLeftPivot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    SmartDashboard.putNumber("PivotP", ElevatorPivotConstants.kPivotP);
-    SmartDashboard.putNumber("PivotI", ElevatorPivotConstants.kPivotI);
-    SmartDashboard.putNumber("PivotD", ElevatorPivotConstants.kPivotD);
+    this.m_leftPivotEncoder.setPosition(this.m_pivotAbsoluteEncoder.getPosition() * (Math.PI / 2.0));
+    this.m_rightPivotEncoder.setPosition(this.m_pivotAbsoluteEncoder.getPosition() * (Math.PI / 2.0));
 
   }
 
@@ -63,10 +83,11 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
    */
   public void setTargetAngle(double targetAngle) {
 
-    System.out.println(targetAngle);
+    double leftOutput = -1.0 * this.m_leftPIDController.calculate(targetAngle - this.getCurrentAngle());
+    double rightOutput = -1.0 * this.m_rightPIDController.calculate(targetAngle - this.getCurrentAngle());
 
-    this.m_rightPivotPIDController.setReference(targetAngle, ControlType.kPosition);
-    this.m_leftPivotPIDController.setReference(targetAngle, ControlType.kPosition);
+    this.m_leftPivotMotor.set(leftOutput);
+    this.m_rightPivotMotor.set(rightOutput);
   }
 
   /**
@@ -74,7 +95,7 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
    * @return returns the current angle value of the motor
    */
   public double getCurrentAngle() {
-    return this.m_pivotAbsoluteEncoder.getPosition();
+    return this.m_rightPivotEncoder.getPosition();
   }
 
   @Override

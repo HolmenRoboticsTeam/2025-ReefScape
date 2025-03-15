@@ -12,33 +12,40 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ElevatorPivotConstants;
 import frc.robot.Constants.GripperPivotConstants;
 
 public class GripperPivotSubsystem extends SubsystemBase {
 
   private SparkMax m_pivotMotor;
 
-  private SparkClosedLoopController m_pivotMotorPIDController;
+  private ProfiledPIDController  m_pivotMotorPIDController;
 
   /** Creates a new GripperSubsystem. */
   public GripperPivotSubsystem() {
 
     this.m_pivotMotor = new SparkMax(GripperPivotConstants.kMotorID, MotorType.kBrushless);
 
-    this.m_pivotMotorPIDController = this.m_pivotMotor.getClosedLoopController();
+    this.m_pivotMotorPIDController = new ProfiledPIDController(GripperPivotConstants.kPivotP, GripperPivotConstants.kPivotI, GripperPivotConstants.kPivotD,
+      new TrapezoidProfile.Constraints(0.01, 0.01)
+    );
 
     SparkMaxConfig configPivot = new SparkMaxConfig();
 
     configPivot.inverted(false);
-    configPivot.closedLoop.pid(GripperPivotConstants.kPivotP, GripperPivotConstants.kPivotI, GripperPivotConstants.kPivotD);
 
     this.m_pivotMotor.configure(configPivot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  public void setTargetAngle(double angle) {
-    this.m_pivotMotorPIDController.setReference(angle, ControlType.kPosition);
+  public void setTargetAngle(double targetAngle) {
+
+    double output = this.m_pivotMotorPIDController.calculate(targetAngle - this.getCurrentAngle());
+
+    this.m_pivotMotor.set(output);
   }
 
   public double getCurrentAngle() {
