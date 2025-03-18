@@ -33,7 +33,6 @@ public class ElevatorExtensionToLevel2Command extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Executing");
 
     this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kLevel2Extend);
   }

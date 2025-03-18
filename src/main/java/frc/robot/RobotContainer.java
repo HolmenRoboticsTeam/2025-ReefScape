@@ -48,6 +48,7 @@ import frc.robot.subsystems.GripperPivotSubsystem;
 import frc.robot.subsystems.GripperIntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -76,12 +77,12 @@ public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   private final XboxController m_buttonBox = new XboxController(OIConstants.kButtonBoxControllerPort);
 
-  private final JoystickButton m_aprilTagLevel2Place = new JoystickButton(m_buttonBox, 0);
-  private final JoystickButton m_aprilTagLevel3Place = new JoystickButton(m_buttonBox, 1);
-  private final JoystickButton m_aprilTagLevel4Place = new JoystickButton(m_buttonBox, 2);
+  private final JoystickButton m_aprilTagLevel2Place = new JoystickButton(m_buttonBox, 4);
+  private final JoystickButton m_aprilTagLevel3Place = new JoystickButton(m_buttonBox, 5);
+  private final JoystickButton m_aprilTagLevel4Place = new JoystickButton(m_buttonBox,6);
   private final JoystickButton m_aprilTagCoralStationGrab = new JoystickButton(m_buttonBox, 3);
-  private final JoystickButton m_gripperGrab = new JoystickButton(m_buttonBox, 4);
-  private final JoystickButton m_gripperDrop = new JoystickButton(m_buttonBox, 6);
+  private final JoystickButton m_gripperGrab = new JoystickButton(m_buttonBox, 7);
+  private final JoystickButton m_gripperDrop = new JoystickButton(m_buttonBox, 2);
 
   private final SendableChooser<Command> autoChooser;
 
@@ -127,13 +128,13 @@ public class RobotContainer {
                 ),
             this.m_drive));
 
-    // this.m_elevatorPivot.setDefaultCommand(
-    //   new ElevatorPivotToLevel1Command(this.m_elevatorPivot, false)
-    // );
+    this.m_elevatorPivot.setDefaultCommand(
+      new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
+    );
 
-    // this.m_elevatorExtension.setDefaultCommand(
-    //   new ElevatorExtensionToHomeCommand(this.m_elevatorExtension)
-    // );
+    this.m_elevatorExtension.setDefaultCommand(
+      new ElevatorExtensionToHomeCommand(this.m_elevatorExtension)
+    );
 
     // this.m_gripperPivot.setDefaultCommand(
     //   new GipperPivotToHomeCommand(this.m_gripperPivot, false)
@@ -166,9 +167,6 @@ public class RobotContainer {
     this.m_driverController.b().whileTrue(new BackReefLineUpCommand(this.m_drive, this.m_limelightBack));
     this.m_driverController.a().whileTrue(new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront));
 
-    this.m_driverController.y().whileTrue(new GripperDropCommand(this.m_gripperIntake));
-    this.m_driverController.x().whileTrue(new GripperGrabCommand(this.m_gripperIntake));
-
     //Planned for real Matches (need to add levels 3, 4, and station. Also check wait time.) (AND TEST BEFORE COMP! please...)
     // this.m_aprilTagLevel2Place.whileTrue(
     //   new AprilTagLevel2CommandGroup(
@@ -176,6 +174,31 @@ public class RobotContainer {
     //     this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     //   )
     // );
+
+    this.m_aprilTagLevel2Place.whileTrue(new SequentialCommandGroup(
+
+      new ElevatorPivotToLevel2Command(this.m_elevatorPivot, true),
+      new ParallelCommandGroup(
+        new ElevatorExtensionToLevel2Command(this.m_elevatorExtension, false),
+        new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
+      )
+    ));
+
+    this.m_aprilTagLevel3Place.whileTrue(new SequentialCommandGroup(
+      new ElevatorPivotToLevel3Command(this.m_elevatorPivot, true),
+      new ParallelCommandGroup(
+        new ElevatorExtensionToLevel3Command(this.m_elevatorExtension, false),
+        new ElevatorPivotToLevel3Command(this.m_elevatorPivot, false)
+      )
+    ));
+
+    this.m_aprilTagLevel4Place.whileTrue(new SequentialCommandGroup(
+      new ElevatorPivotToLevel4Command(this.m_elevatorPivot, true),
+      new ParallelCommandGroup(
+        new ElevatorExtensionToLevel4Command(this.m_elevatorExtension, false),
+        new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false)
+      )
+    ));
 
 
     // this.m_driverController.x()
@@ -211,8 +234,8 @@ public class RobotContainer {
     //   new ElevatorExtensionToCoralStationCommand(this.m_elevatorExtension, false)
     // );
 
-    this.m_driverController.leftBumper().whileTrue(new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false));
-    this.m_driverController.rightBumper().whileTrue(new ElevatorExtensionToLevel4Command(this.m_elevatorExtension, false));
+    this.m_driverController.leftBumper().whileTrue(new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false));
+    this.m_driverController.rightBumper().whileTrue(new ElevatorExtensionToLevel2Command(this.m_elevatorExtension, false));
   }
 
   /**

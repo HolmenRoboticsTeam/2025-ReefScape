@@ -32,16 +32,16 @@ public class LimelightSubsystem extends SubsystemBase {
     double[] targetPose = m_limelightNetworkTable.getEntry("targetpose_cameraspace").getDoubleArray(new double[7]);
     SmartDashboard.putBoolean("tv", this.m_limelightNetworkTable.getEntry("tv").getDouble(0.0) == 1.0);
     SmartDashboard.putNumber("translationX", targetPose[0]);
-    SmartDashboard.putNumber("translationY", targetPose[1]);
+    // SmartDashboard.putNumber("translationY", targetPose[1]);
     SmartDashboard.putNumber("translationZ", targetPose[2]);
-    SmartDashboard.putNumber("pitch", targetPose[3]);
+    // SmartDashboard.putNumber("pitch", targetPose[3]);
     SmartDashboard.putNumber("yaw", targetPose[4]);
-    SmartDashboard.putNumber("roll", targetPose[5]);
+    // SmartDashboard.putNumber("roll", targetPose[5]);
 
     this.m_visionMeasurement = new Pose3d(
-      targetPose[0],
-      targetPose[1],
-      targetPose[2],
+      targetPose[0], // X
+      targetPose[1], // Y
+      targetPose[2], // Z
       new Rotation3d(
         targetPose[5], // Roll
         targetPose[3], // Pitch

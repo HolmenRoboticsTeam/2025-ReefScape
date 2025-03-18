@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -36,7 +37,9 @@ public class GripperPivotSubsystem extends SubsystemBase {
 
     SparkMaxConfig configPivot = new SparkMaxConfig();
 
-    configPivot.inverted(false);
+    configPivot.inverted(true);
+
+    configPivot.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
 
     this.m_pivotMotor.configure(configPivot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }

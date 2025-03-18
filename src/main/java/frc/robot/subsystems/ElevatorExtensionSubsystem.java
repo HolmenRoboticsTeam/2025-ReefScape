@@ -5,12 +5,11 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -18,7 +17,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorExtensionConstants;
-import frc.robot.Constants.ElevatorPivotConstants;
 
 public class ElevatorExtensionSubsystem extends SubsystemBase {
 
@@ -38,11 +36,11 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
     this.m_extensionRelativeEncoder = this.m_rightExtensionMotor.getEncoder();
 
     this.m_rightExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
-      new TrapezoidProfile.Constraints(0.1, 0.1)
+      new TrapezoidProfile.Constraints(0.1, 0.05)
     );
 
     this.m_leftExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
-      new TrapezoidProfile.Constraints(0.1, 0.1)
+      new TrapezoidProfile.Constraints(0.1, 0.05)
     );
     SparkMaxConfig configLeftExtension = new SparkMaxConfig();
     SparkMaxConfig configRightExtension = new SparkMaxConfig();
@@ -55,6 +53,9 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
 
     configLeftExtension.encoder.positionConversionFactor(positionConversionFactor);
     configRightExtension.encoder.positionConversionFactor(positionConversionFactor);
+
+    configLeftExtension.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
+    configRightExtension.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
 
     this.m_rightExtensionMotor.configure(configRightExtension, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     this.m_leftExtensionMotor.configure(configLeftExtension, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -74,8 +75,8 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
    */
   public void setTargetExtension(double targetLength) {
 
-    double leftOutput = this.m_leftExtensionPIDController.calculate(targetLength - this.getCurrentExtension());
-    double rightOutput = this.m_rightExtensionPIDController.calculate(targetLength - this.getCurrentExtension());
+    double leftOutput = -this.m_leftExtensionPIDController.calculate(targetLength - this.getCurrentExtension());
+    double rightOutput = -this.m_rightExtensionPIDController.calculate(targetLength - this.getCurrentExtension());
 
     this.m_leftExtensionMotor.set(leftOutput);
     this.m_rightExtensionMotor.set(rightOutput);

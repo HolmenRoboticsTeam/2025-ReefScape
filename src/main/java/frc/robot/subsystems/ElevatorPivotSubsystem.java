@@ -46,11 +46,11 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
     this.m_rightPivotEncoder = this.m_rightPivotMotor.getEncoder();
 
     this.m_leftPIDController = new ProfiledPIDController(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD,
-      new TrapezoidProfile.Constraints(0.1, 0.1)
+      new TrapezoidProfile.Constraints(0.05, 0.01)
     );
 
     this.m_rightPIDController = new ProfiledPIDController(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD,
-      new TrapezoidProfile.Constraints(0.1, 0.1)
+      new TrapezoidProfile.Constraints(0.05, 0.01)
     );
 
     SparkMaxConfig configLeftPivot = new SparkMaxConfig();
