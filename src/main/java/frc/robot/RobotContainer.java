@@ -213,12 +213,32 @@ public class RobotContainer {
         )
     ));
 
+    this.m_aprilTagCoralStationGrab.whileTrue(new SequentialCommandGroup(
+      new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, true),
+      new ParallelCommandGroup(
+        new ElevatorExtensionToCoralStationCommand(this.m_elevatorExtension, false),
+        new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, false)
+      ),
+      new ParallelDeadlineGroup(
+        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension),
+        new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, false)
+        )
+    ));
 
-    // this.m_driverController.x()
-    //   .whileTrue(new RunCommand(
-    //     () -> m_drive.setX(),
-    //     m_drive
-    //     ));
+    this.m_gripperGrab.whileTrue(
+      new GripperGrabCommand(this.m_gripperIntake)
+    );
+
+    this.m_gripperDrop.whileTrue(
+      new GripperDropCommand(this.m_gripperIntake)
+    );
+
+
+    this.m_driverController.x()
+      .whileTrue(new RunCommand(
+        () -> m_drive.setX(),
+        m_drive
+      ));
 
 
     // this.m_driverController.povDown().whileTrue(
