@@ -146,11 +146,11 @@ public final class Constants {
 
     public static final double kHomeExtension = 0.0;
 
-    public static final double kLevel1Extend = 0.2;
-    public static final double kLevel2Extend = 0.4;
-    public static final double kLevel3Extend = 0.8;
-    public static final double kLevel4Extend = 1.3;
-    public static final double kCoralStationExtend = 2.0;
+    public static final double kLevel1Extend = 0.0;
+    public static final double kLevel2Extend = 0.255;
+    public static final double kLevel3Extend = 0.486;
+    public static final double kLevel4Extend = 1.17;
+    public static final double kCoralStationExtend = 0.03;
 
   }
 
@@ -166,13 +166,13 @@ public final class Constants {
     public static final double kPivotI = 0.0;
     public static final double kPivotD = 0.0;
 
-    public static final double kHomeAngle = Rotation2d.fromDegrees(0.0).getRadians();
+    public static final double kHomeAngle = Rotation2d.fromDegrees(0.0 + 150.0).getRadians();
 
     public static final double kLevel1Angle = Rotation2d.fromDegrees(0.0).getRadians();
-    public static final double kLevel2Angle = Rotation2d.fromDegrees(0.0).getRadians();
-    public static final double kLevel3Angle = Rotation2d.fromDegrees(0.0).getRadians();
-    public static final double kLevel4Angle = Rotation2d.fromDegrees(0.0).getRadians();
-    public static final double kCoralStationAngle = Rotation2d.fromDegrees(0.0).getRadians();
+    public static final double kLevel2Angle = Rotation2d.fromDegrees(0.0 - 2.357).getRadians();
+    public static final double kLevel3Angle = Rotation2d.fromDegrees(0.0 + 0.0).getRadians();
+    public static final double kLevel4Angle = Rotation2d.fromDegrees(0.0 + 15).getRadians();
+    public static final double kCoralStationAngle = Rotation2d.fromDegrees(0.0 - 170.0).getRadians();
   }
 
   public static final class GripperIntakeConstants {

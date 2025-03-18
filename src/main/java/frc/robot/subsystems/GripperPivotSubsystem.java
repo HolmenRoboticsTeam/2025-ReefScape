@@ -39,6 +39,10 @@ public class GripperPivotSubsystem extends SubsystemBase {
 
     configPivot.inverted(true);
 
+    double positionConversionFactor = 2.0 * Math.PI;
+
+    configPivot.encoder.positionConversionFactor(positionConversionFactor);
+
     configPivot.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
 
     this.m_pivotMotor.configure(configPivot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

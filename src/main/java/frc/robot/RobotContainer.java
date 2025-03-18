@@ -49,6 +49,7 @@ import frc.robot.subsystems.GripperIntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -181,7 +182,11 @@ public class RobotContainer {
       new ParallelCommandGroup(
         new ElevatorExtensionToLevel2Command(this.m_elevatorExtension, false),
         new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
-      )
+      ),
+      new ParallelDeadlineGroup(
+        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension),
+        new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
+        )
     ));
 
     this.m_aprilTagLevel3Place.whileTrue(new SequentialCommandGroup(
@@ -189,7 +194,11 @@ public class RobotContainer {
       new ParallelCommandGroup(
         new ElevatorExtensionToLevel3Command(this.m_elevatorExtension, false),
         new ElevatorPivotToLevel3Command(this.m_elevatorPivot, false)
-      )
+      ),
+      new ParallelDeadlineGroup(
+        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension),
+        new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
+        )
     ));
 
     this.m_aprilTagLevel4Place.whileTrue(new SequentialCommandGroup(
@@ -197,7 +206,11 @@ public class RobotContainer {
       new ParallelCommandGroup(
         new ElevatorExtensionToLevel4Command(this.m_elevatorExtension, false),
         new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false)
-      )
+      ),
+      new ParallelDeadlineGroup(
+        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension),
+        new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
+        )
     ));
 
 
