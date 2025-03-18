@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorPivotConstants;
 import frc.robot.Constants.GripperPivotConstants;
+import frc.robot.MotorConfigs.GripperPivotConfig;
 
 public class GripperPivotSubsystem extends SubsystemBase {
 
@@ -32,25 +33,24 @@ public class GripperPivotSubsystem extends SubsystemBase {
     this.m_pivotMotor = new SparkMax(GripperPivotConstants.kMotorID, MotorType.kBrushless);
 
     this.m_pivotMotorPIDController = new ProfiledPIDController(GripperPivotConstants.kPivotP, GripperPivotConstants.kPivotI, GripperPivotConstants.kPivotD,
-      new TrapezoidProfile.Constraints(0.01, 0.01)
+      new TrapezoidProfile.Constraints(GripperPivotConstants.kMaxVelocity, GripperPivotConstants.kMaxAcceleration)
     );
 
-    SparkMaxConfig configPivot = new SparkMaxConfig();
+    this.m_pivotMotor.configure(GripperPivotConfig.pivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
 
-    configPivot.inverted(true);
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
 
-    double positionConversionFactor = 2.0 * Math.PI;
-
-    configPivot.encoder.positionConversionFactor(positionConversionFactor);
-
-    configPivot.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
-
-    this.m_pivotMotor.configure(configPivot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    SmartDashboard.putNumber("CurrentGripperAngle", getCurrentAngle());
   }
 
   public void setTargetAngle(double targetAngle) {
 
-    double output = this.m_pivotMotorPIDController.calculate(targetAngle - this.getCurrentAngle());
+    double deltaAngle = targetAngle - this.getCurrentAngle();
+
+    double output = this.m_pivotMotorPIDController.calculate(deltaAngle);
 
     this.m_pivotMotor.set(output);
   }
@@ -59,10 +59,4 @@ public class GripperPivotSubsystem extends SubsystemBase {
     return this.m_pivotMotor.getEncoder().getPosition();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-
-    SmartDashboard.putNumber("Gripper Angle", getCurrentAngle());
-  }
 }

@@ -110,12 +110,16 @@ public final class Constants {
 
   public static final class ElevatorPivotConstants {
 
-    public static final double kMaxAngleOutput = 0.65;
-
-    public static final double kAngleErrorAllowed = 0.1;
-
     public static final int kLeftMotorID = 10;
     public static final int kRightMotorID = 11;
+
+    public static final double kMotorToPivotGearRatio = 213.33;
+
+    public static final int kMaxCurrentLimit = 20;
+    public static final double kMaxVoltage = 12;
+
+    public static final double kMaxVelocity = 0.05;
+    public static final double kMaxAcceleration = 0.01;
 
     public static final double kPivotP = 0.7;
     public static final double kPivotI = 0.0;
@@ -129,21 +133,28 @@ public final class Constants {
     public static final double kLevel4Angle = Rotation2d.fromDegrees(76.0).getRadians();
     public static final double kCoralStationAngle = Rotation2d.fromDegrees(85.0).getRadians();
 
+    public static final double kAngleErrorAllowed = 0.1;
+
   }
 
   public static final class ElevatorExtensionConstants {
 
-    public static final double kMaxExtensionOutput = 0.001;
-
-    public static final double kExtensionErrorAllowed = 0.1;
-
     public static final int kLeftMotorID = 12;
     public static final int kRightMotorID = 13;
 
-    public static final double kExtensionP = 0.8;
+    public static final double kMotorToDrumGearRatio = 7.2;
+
+    public static final int kMaxCurrentLimit = 40;
+    public static final double kMaxVoltage = 12;
+
+    public static final double kMaxVelocity = 0.05;
+    public static final double kMaxAcceleration = 0.01;
+
+    public static final double kExtensionP = 0.5;
     public static final double kExtensionI = 0.0;
     public static final double kExtensionD = 0.0;
 
+    //All the following are in meters
     public static final double kHomeExtension = 0.0;
 
     public static final double kLevel1Extend = 0.0;
@@ -152,15 +163,19 @@ public final class Constants {
     public static final double kLevel4Extend = 1.17;
     public static final double kCoralStationExtend = 0.03;
 
+    public static final double kExtensionErrorAllowed = 0.1;
+
   }
 
   public static final class GripperPivotConstants {
-  
-    public static final double kMaxSpeed = 0.1;
-
-    public static final double kAngleErrorAllowed = 0.1;
 
     public static final int kMotorID = 14;
+
+    public static final int kMaxCurrentLimit = 20;
+    public static final double kMaxVoltage = 12;
+
+    public static final double kMaxVelocity = 0.01;
+    public static final double kMaxAcceleration = 0.01;
 
     public static final double kPivotP = 0.001;
     public static final double kPivotI = 0.0;
@@ -173,6 +188,8 @@ public final class Constants {
     public static final double kLevel3Angle = Rotation2d.fromDegrees(0.0 + 0.0).getRadians();
     public static final double kLevel4Angle = Rotation2d.fromDegrees(0.0 + 15).getRadians();
     public static final double kCoralStationAngle = Rotation2d.fromDegrees(0.0 - 170.0).getRadians();
+
+    public static final double kAngleErrorAllowed = 0.1;
   }
 
   public static final class GripperIntakeConstants {
@@ -181,9 +198,8 @@ public final class Constants {
 
     public static final int kMotorID = 15;
 
-    //Need check if voltage is even the right thing to base it off of, and if so, what's the right number
-    public static final double kVoltageThreshHold = 1.0;
-
+    public static final int kMaxCurrentLimit = 20;
+    public static final double kMaxVoltage = 12;
   }
 
   public static final class TakeOverTelopConstants {

@@ -10,12 +10,15 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GripperIntakeConstants;
+import frc.robot.Constants.GripperPivotConstants;
+import frc.robot.MotorConfigs.GripperIntakeConfig;
 
 public class GripperIntakeSubsystem extends SubsystemBase {
 
@@ -26,11 +29,7 @@ public class GripperIntakeSubsystem extends SubsystemBase {
 
     this.m_intakeMotor = new SparkMax(GripperIntakeConstants.kMotorID, MotorType.kBrushless);
 
-    SparkMaxConfig configIntake = new SparkMaxConfig();
-
-    configIntake.inverted(false);
-
-    this.m_intakeMotor.configure(configIntake, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.m_intakeMotor.configure(GripperIntakeConfig.intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void setIntakeSpeed(double speed) {

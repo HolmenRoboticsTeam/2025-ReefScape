@@ -18,10 +18,12 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorPivotConstants;
+import frc.robot.MotorConfigs.ElevatorPivotConfig;
 
 public class ElevatorPivotSubsystem extends SubsystemBase {
 
@@ -46,34 +48,26 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
     this.m_rightPivotEncoder = this.m_rightPivotMotor.getEncoder();
 
     this.m_leftPIDController = new ProfiledPIDController(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD,
-      new TrapezoidProfile.Constraints(0.05, 0.01)
+      new TrapezoidProfile.Constraints(ElevatorPivotConstants.kMaxVelocity, ElevatorPivotConstants.kMaxAcceleration)
     );
 
     this.m_rightPIDController = new ProfiledPIDController(ElevatorPivotConstants.kPivotP, ElevatorPivotConstants.kPivotI, ElevatorPivotConstants.kPivotD,
-      new TrapezoidProfile.Constraints(0.05, 0.01)
+      new TrapezoidProfile.Constraints(ElevatorPivotConstants.kMaxVelocity, ElevatorPivotConstants.kMaxAcceleration)
     );
 
-    SparkMaxConfig configLeftPivot = new SparkMaxConfig();
-    SparkMaxConfig configRightPivot = new SparkMaxConfig();
+    this.m_leftPivotMotor.configure(ElevatorPivotConfig.leftPivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.m_rightPivotMotor.configure(ElevatorPivotConfig.rightPivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    configLeftPivot.inverted(false);
-    configRightPivot.inverted(true);
-
-    double positionConversionFactorRelative = (2.0 * Math.PI) / (213.33);  // 213.33 is gear ratio
-
-    configLeftPivot.encoder.positionConversionFactor(positionConversionFactorRelative);
-    configRightPivot.encoder.positionConversionFactor(positionConversionFactorRelative);
-
-    configRightPivot.absoluteEncoder.inverted(true);
-
-    configLeftPivot.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
-    configRightPivot.idleMode(IdleMode.kBrake).smartCurrentLimit(20).voltageCompensation(12);
-
-    this.m_rightPivotMotor.configure(configRightPivot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    this.m_leftPivotMotor.configure(configLeftPivot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+    //Gives the motor controllers the current angle
     this.m_leftPivotEncoder.setPosition(this.m_pivotAbsoluteEncoder.getPosition() * (Math.PI / 2.0));
     this.m_rightPivotEncoder.setPosition(this.m_pivotAbsoluteEncoder.getPosition() * (Math.PI / 2.0));
+
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("CurrentPivotAngle", this.getCurrentAngle());
 
   }
 
@@ -83,25 +77,22 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
    */
   public void setTargetAngle(double targetAngle) {
 
-    double leftOutput = -1.0 * this.m_leftPIDController.calculate(targetAngle - this.getCurrentAngle());
-    double rightOutput = -1.0 * this.m_rightPIDController.calculate(targetAngle - this.getCurrentAngle());
+    double deltaAngle = targetAngle - this.getCurrentAngle();
+
+    double leftOutput = -this.m_leftPIDController.calculate(deltaAngle);
+    double rightOutput = -this.m_rightPIDController.calculate(deltaAngle);
 
     this.m_leftPivotMotor.set(leftOutput);
     this.m_rightPivotMotor.set(rightOutput);
+
   }
 
   /**
-   * 
+   *
    * @return returns the current angle value of the motor
    */
   public double getCurrentAngle() {
     return this.m_rightPivotEncoder.getPosition();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("CurrentAngle", getCurrentAngle());
-
-  }
 }

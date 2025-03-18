@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorExtensionConstants;
+import frc.robot.MotorConfigs.ElevatorExtensionConfig;
 
 public class ElevatorExtensionSubsystem extends SubsystemBase {
 
@@ -36,36 +37,22 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
     this.m_extensionRelativeEncoder = this.m_rightExtensionMotor.getEncoder();
 
     this.m_rightExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
-      new TrapezoidProfile.Constraints(0.1, 0.05)
+      new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
     );
 
     this.m_leftExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
-      new TrapezoidProfile.Constraints(0.1, 0.05)
+      new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
     );
-    SparkMaxConfig configLeftExtension = new SparkMaxConfig();
-    SparkMaxConfig configRightExtension = new SparkMaxConfig();
 
-    configLeftExtension.inverted(false);
-    configRightExtension.inverted(true);
-
-    //0.02425 is r (2.0 * Math.PI * 0.02425)
-    double positionConversionFactor = (0.16269) / (7.2);
-
-    configLeftExtension.encoder.positionConversionFactor(positionConversionFactor);
-    configRightExtension.encoder.positionConversionFactor(positionConversionFactor);
-
-    configLeftExtension.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
-    configRightExtension.idleMode(IdleMode.kBrake).smartCurrentLimit(40).voltageCompensation(12);
-
-    this.m_rightExtensionMotor.configure(configRightExtension, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    this.m_leftExtensionMotor.configure(configLeftExtension, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.m_leftExtensionMotor.configure(ElevatorExtensionConfig.leftExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.m_rightExtensionMotor.configure(ElevatorExtensionConfig.rightExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("CurrentExtension", getCurrentExtension());
+    SmartDashboard.putNumber("CurrentElevatorExtension", getCurrentExtension());
 
   }
 
@@ -75,8 +62,10 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
    */
   public void setTargetExtension(double targetLength) {
 
-    double leftOutput = -this.m_leftExtensionPIDController.calculate(targetLength - this.getCurrentExtension());
-    double rightOutput = -this.m_rightExtensionPIDController.calculate(targetLength - this.getCurrentExtension());
+    double deltaLength = targetLength - this.getCurrentExtension();
+
+    double leftOutput = -this.m_leftExtensionPIDController.calculate(deltaLength);
+    double rightOutput = -this.m_rightExtensionPIDController.calculate(deltaLength);
 
     this.m_leftExtensionMotor.set(leftOutput);
     this.m_rightExtensionMotor.set(rightOutput);
