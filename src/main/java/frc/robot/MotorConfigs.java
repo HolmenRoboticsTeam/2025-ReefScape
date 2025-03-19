@@ -110,6 +110,11 @@ public final class MotorConfigs {
     static {
       pivotConfig.inverted(true);
 
+      // Changes all inputs and outputs from motor rotations to pivot angle in radians
+      double positionConversionFactorRelative = (2 * Math.PI) / 48.0;
+      pivotConfig.encoder.positionConversionFactor(positionConversionFactorRelative);
+      pivotConfig.encoder.positionConversionFactor(positionConversionFactorRelative);
+
       pivotConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(GripperPivotConstants.kMaxCurrentLimit)
           .voltageCompensation(GripperPivotConstants.kMaxVoltage);
     }

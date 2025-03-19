@@ -39,7 +39,10 @@ import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel2Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel3Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel4Command;
 import frc.robot.Commands.GripperPivotCommands.GipperPivotToHomeCommand;
+import frc.robot.Commands.GripperPivotCommands.GripperPivotToCoralStationCommand;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel2Command;
+import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel3Command;
+import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel4Command;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorExtensionSubsystem;
@@ -68,7 +71,7 @@ public class RobotContainer {
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final ElevatorPivotSubsystem m_elevatorPivot = new ElevatorPivotSubsystem();
   private final ElevatorExtensionSubsystem m_elevatorExtension = new ElevatorExtensionSubsystem();
-  // private final GripperPivotSubsystem m_gripperPivot = new GripperPivotSubsystem();
+  private final GripperPivotSubsystem m_gripperPivot = new GripperPivotSubsystem();
   private final GripperIntakeSubsystem m_gripperIntake = new GripperIntakeSubsystem();
 
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-front");
@@ -123,8 +126,8 @@ public class RobotContainer {
                 MathUtil.applyDeadband(this.m_driverController.getRightTriggerAxis(), 0.05),
                 MathUtil.applyDeadband(-this.m_driverController.getLeftY(), 0.1),
                 MathUtil.applyDeadband(-this.m_driverController.getLeftX(), 0.1),
+                MathUtil.applyDeadband(-this.m_driverController.getRightY(), 0.1),
                 MathUtil.applyDeadband(this.m_driverController.getRightX(), 0.1),
-                MathUtil.applyDeadband(this.m_driverController.getRightY(), 0.1),
                 true
                 ),
             this.m_drive));
@@ -134,12 +137,12 @@ public class RobotContainer {
     );
 
     this.m_elevatorExtension.setDefaultCommand(
-      new ElevatorExtensionToHomeCommand(this.m_elevatorExtension)
+      new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, false)
     );
 
-    // this.m_gripperPivot.setDefaultCommand(
-    //   new GipperPivotToHomeCommand(this.m_gripperPivot, false)
-    // );
+    this.m_gripperPivot.setDefaultCommand(
+      new GipperPivotToHomeCommand(this.m_gripperPivot, false)
+    );
 
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -179,48 +182,51 @@ public class RobotContainer {
     this.m_aprilTagLevel2Place.whileTrue(new SequentialCommandGroup(
 
       new ElevatorPivotToLevel2Command(this.m_elevatorPivot, true),
-      new ParallelCommandGroup(
-        new ElevatorExtensionToLevel2Command(this.m_elevatorExtension, false),
+      new ParallelRaceGroup(
+        new ElevatorExtensionToLevel2Command(this.m_elevatorExtension, true),
         new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
       ),
-      new ParallelDeadlineGroup(
-        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension),
+      new ParallelRaceGroup(
+        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
         new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
-        )
+      ),
+      new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
     ));
 
     this.m_aprilTagLevel3Place.whileTrue(new SequentialCommandGroup(
       new ElevatorPivotToLevel3Command(this.m_elevatorPivot, true),
-      new ParallelCommandGroup(
-        new ElevatorExtensionToLevel3Command(this.m_elevatorExtension, false),
+      new ParallelRaceGroup(
+        new ElevatorExtensionToLevel3Command(this.m_elevatorExtension, true),
         new ElevatorPivotToLevel3Command(this.m_elevatorPivot, false)
       ),
-      new ParallelDeadlineGroup(
-        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension),
+      new ParallelRaceGroup(
+        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
         new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
-        )
+      ),
+      new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
     ));
 
     this.m_aprilTagLevel4Place.whileTrue(new SequentialCommandGroup(
       new ElevatorPivotToLevel4Command(this.m_elevatorPivot, true),
-      new ParallelCommandGroup(
-        new ElevatorExtensionToLevel4Command(this.m_elevatorExtension, false),
+      new ParallelRaceGroup(
+        new ElevatorExtensionToLevel4Command(this.m_elevatorExtension, true),
         new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false)
       ),
-      new ParallelDeadlineGroup(
-        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension),
+      new ParallelRaceGroup(
+        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
         new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
-        )
+       ),
+      new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
     ));
 
     this.m_aprilTagCoralStationGrab.whileTrue(new SequentialCommandGroup(
       new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, true),
       new ParallelCommandGroup(
-        new ElevatorExtensionToCoralStationCommand(this.m_elevatorExtension, false),
+        new ElevatorExtensionToCoralStationCommand(this.m_elevatorExtension, true),
         new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, false)
       ),
       new ParallelDeadlineGroup(
-        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension),
+        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
         new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, false)
         )
     ));
@@ -267,8 +273,18 @@ public class RobotContainer {
     //   new ElevatorExtensionToCoralStationCommand(this.m_elevatorExtension, false)
     // );
 
-    this.m_driverController.leftBumper().whileTrue(new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false));
-    this.m_driverController.rightBumper().whileTrue(new ElevatorExtensionToLevel2Command(this.m_elevatorExtension, false));
+    this.m_driverController.povDown().whileTrue(
+      new GripperPivotToLevel2Command(this.m_gripperPivot, false)
+    );
+    this.m_driverController.povRight().whileTrue(
+      new GripperPivotToLevel3Command(this.m_gripperPivot, false)
+    );
+    this.m_driverController.povUp().whileTrue(
+      new GripperPivotToLevel4Command(this.m_gripperPivot, false)
+    );
+    this.m_driverController.povLeft().whileTrue(
+      new GripperPivotToCoralStationCommand(this.m_gripperPivot, false)
+    );
   }
 
   /**

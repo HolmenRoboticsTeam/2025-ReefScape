@@ -13,10 +13,14 @@ public class ElevatorExtensionToHomeCommand extends Command {
 
   private ElevatorExtensionSubsystem m_elevatorExtension;
 
+  private boolean m_allowEndCondition;
+
   /** Creates a new ElevatorExtensionToHomeCommand. */
-  public ElevatorExtensionToHomeCommand(ElevatorExtensionSubsystem elevatorExtension) {
+  public ElevatorExtensionToHomeCommand(ElevatorExtensionSubsystem elevatorExtension, boolean allowEndCondition) {
 
     this.m_elevatorExtension = elevatorExtension;
+
+    this.m_allowEndCondition = allowEndCondition;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevatorExtension);
@@ -24,7 +28,9 @@ public class ElevatorExtensionToHomeCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -35,13 +41,18 @@ public class ElevatorExtensionToHomeCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     double positionError = Math.abs(this.m_elevatorExtension.getCurrentExtension() - ElevatorExtensionConstants.kLevel1Extend);
 
-    return positionError < ElevatorExtensionConstants.kExtensionErrorAllowed;
+    System.out.println(positionError + ", " + ElevatorExtensionConstants.kExtensionErrorAllowed + ", " + this.m_allowEndCondition);
+
+    return positionError < ElevatorExtensionConstants.kExtensionErrorAllowed &&
+    this.m_allowEndCondition;
   }
 }

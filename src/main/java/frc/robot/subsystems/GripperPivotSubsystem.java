@@ -50,7 +50,7 @@ public class GripperPivotSubsystem extends SubsystemBase {
 
     double deltaAngle = targetAngle - this.getCurrentAngle();
 
-    double output = this.m_pivotMotorPIDController.calculate(deltaAngle);
+    double output = -this.m_pivotMotorPIDController.calculate(deltaAngle);
 
     this.m_pivotMotor.set(output);
   }

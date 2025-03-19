@@ -55,8 +55,24 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
       new TrapezoidProfile.Constraints(ElevatorPivotConstants.kMaxVelocity, ElevatorPivotConstants.kMaxAcceleration)
     );
 
-    this.m_leftPivotMotor.configure(ElevatorPivotConfig.leftPivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    this.m_rightPivotMotor.configure(ElevatorPivotConfig.rightPivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    SparkMaxConfig leftPivotConfig = new SparkMaxConfig();
+    SparkMaxConfig rightPivotConfig = new SparkMaxConfig();
+
+    leftPivotConfig.inverted(false);
+    rightPivotConfig.inverted(true);
+
+    // Changes all inputs and outputs from motor rotations to pivot angle in radians
+    double positionConversionFactorRelative = (2.0 * Math.PI) / ElevatorPivotConstants.kMotorToPivotGearRatio;
+    leftPivotConfig.encoder.positionConversionFactor(positionConversionFactorRelative);
+    rightPivotConfig.encoder.positionConversionFactor(positionConversionFactorRelative);
+
+    rightPivotConfig.absoluteEncoder.inverted(true);
+
+    leftPivotConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ElevatorPivotConstants.kMaxCurrentLimit).voltageCompensation(ElevatorPivotConstants.kMaxVoltage);
+    rightPivotConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ElevatorPivotConstants.kMaxCurrentLimit).voltageCompensation(ElevatorPivotConstants.kMaxVoltage);
+
+    this.m_leftPivotMotor.configure(leftPivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.m_rightPivotMotor.configure(rightPivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     //Gives the motor controllers the current angle
     this.m_leftPivotEncoder.setPosition(this.m_pivotAbsoluteEncoder.getPosition() * (Math.PI / 2.0));

@@ -88,7 +88,6 @@ public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
     this.m_gyro.reset();
-    // this.m_gyro.setAngleAdjustment(-90.0);
 
     SmartDashboard.putNumber("P", m_steeringPIDController.getP());
     SmartDashboard.putNumber("I", m_steeringPIDController.getI());
@@ -142,10 +141,6 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-
-    m_steeringPIDController.setP(SmartDashboard.getNumber("P", 0.0));
-    m_steeringPIDController.setI(SmartDashboard.getNumber("I", 0.0));
-    m_steeringPIDController.setD(SmartDashboard.getNumber("D", 0.0));
 
     SmartDashboard.putNumber("Heading", this.m_gyro.getAngle());
     
@@ -229,6 +224,7 @@ public class DriveSubsystem extends SubsystemBase {
     if(Math.abs(xAngle) < OIConstants.kDriveDeadband && Math.abs(yAngle) < OIConstants.kDriveDeadband) {
 
       drive(xSpeed * throttle, ySpeed * throttle, 0.0, fieldRelative);
+      return;
     }
     double currentAngle = Math.abs(this.m_gyro.getAngle() % 360);
     if(this.m_gyro.getAngle() < 0) {
@@ -236,7 +232,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     double targetAngle = Math.atan2(yAngle, xAngle);
-    targetAngle = (Math.toDegrees(targetAngle) + 990) % 360;
+    targetAngle = (Math.toDegrees(targetAngle) + 720) % 360;
 
     double theta = Math.abs(targetAngle - currentAngle) % 360;
     double shorterTheta = theta > 180 ? 360  - theta : theta;

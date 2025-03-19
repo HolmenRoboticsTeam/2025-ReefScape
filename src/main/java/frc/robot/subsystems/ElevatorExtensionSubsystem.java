@@ -44,8 +44,27 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
       new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
     );
 
-    this.m_leftExtensionMotor.configure(ElevatorExtensionConfig.leftExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    this.m_rightExtensionMotor.configure(ElevatorExtensionConfig.rightExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    SparkMaxConfig leftExtensionConfig = new SparkMaxConfig();
+    SparkMaxConfig rightExtensionConfig = new SparkMaxConfig();
+
+      leftExtensionConfig.inverted(false);
+      rightExtensionConfig.inverted(true);
+
+      // Turns inputs and outputs from motor rotation into the extension
+      // 0.02425 is r (2.0 * Math.PI * 0.02425) = 0.15236724 meters, 0.16269 seems to
+      // be a better conversion?
+      double positionConversionFactor = (0.16269) / ElevatorExtensionConstants.kMotorToDrumGearRatio;
+
+      leftExtensionConfig.encoder.positionConversionFactor(positionConversionFactor);
+      rightExtensionConfig.encoder.positionConversionFactor(positionConversionFactor);
+
+      leftExtensionConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ElevatorExtensionConstants.kMaxCurrentLimit)
+          .voltageCompensation(ElevatorExtensionConstants.kMaxVoltage);
+      rightExtensionConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ElevatorExtensionConstants.kMaxCurrentLimit)
+          .voltageCompensation(ElevatorExtensionConstants.kMaxVoltage);
+
+    this.m_leftExtensionMotor.configure(leftExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.m_rightExtensionMotor.configure(rightExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
   }
 
@@ -56,16 +75,47 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
 
   }
 
+  public void changePIDConrolles(String type) {
+    
+    if(type.equals("Extension")) {System.out.println("Switching To Extension");
+
+      this.m_rightExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
+        new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
+      );
+
+      this.m_leftExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
+        new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
+      );
+    } else if(type.equals("Retraction")) {System.out.println("Switching To Retraction");
+
+      this.m_rightExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kRetractionP, ElevatorExtensionConstants.kRetractionI, ElevatorExtensionConstants.kRetractionD,
+        new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
+      );
+
+      this.m_leftExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kRetractionP, ElevatorExtensionConstants.kRetractionI, ElevatorExtensionConstants.kRetractionD,
+        new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
+      );
+    }
+  }
+
   /**
    * 
    * @param targetLength - the length the motors are set to extend to.
    */
   public void setTargetExtension(double targetLength) {
 
+    
+
+    System.out.println(targetLength);
+
     double deltaLength = targetLength - this.getCurrentExtension();
+
+    // System.out.println(deltaLength);
 
     double leftOutput = -this.m_leftExtensionPIDController.calculate(deltaLength);
     double rightOutput = -this.m_rightExtensionPIDController.calculate(deltaLength);
+
+    // System.out.println(leftOutput + ", " + rightOutput);
 
     this.m_leftExtensionMotor.set(leftOutput);
     this.m_rightExtensionMotor.set(rightOutput);

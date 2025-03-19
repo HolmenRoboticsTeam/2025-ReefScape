@@ -15,12 +15,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightSubsystem extends SubsystemBase {
 
+  private String m_limelightName;
+
   private NetworkTable m_limelightNetworkTable;
   private Pose3d m_visionMeasurement;
 
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem(String key) {
 
+    this.m_limelightName = key;
     this.m_limelightNetworkTable = NetworkTableInstance.getDefault().getTable(key);
 
   }
@@ -30,13 +33,13 @@ public class LimelightSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
 
     double[] targetPose = m_limelightNetworkTable.getEntry("targetpose_cameraspace").getDoubleArray(new double[7]);
-    SmartDashboard.putBoolean("tv", this.m_limelightNetworkTable.getEntry("tv").getDouble(0.0) == 1.0);
-    SmartDashboard.putNumber("translationX", targetPose[0]);
-    // SmartDashboard.putNumber("translationY", targetPose[1]);
-    SmartDashboard.putNumber("translationZ", targetPose[2]);
-    // SmartDashboard.putNumber("pitch", targetPose[3]);
-    SmartDashboard.putNumber("yaw", targetPose[4]);
-    // SmartDashboard.putNumber("roll", targetPose[5]);
+    SmartDashboard.putBoolean(this.m_limelightName + " tv", this.m_limelightNetworkTable.getEntry("tv").getDouble(0.0) == 1.0);
+    SmartDashboard.putNumber(this.m_limelightName + " translationX", targetPose[0]);
+    // SmartDashboard.putNumber(this.m_limelightName + " translationY", targetPose[1]);
+    SmartDashboard.putNumber(this.m_limelightName + " translationZ", targetPose[2]);
+    // SmartDashboard.putNumber(this.m_limelightName + " pitch", targetPose[3]);
+    SmartDashboard.putNumber(this.m_limelightName + " yaw", targetPose[4]);
+    // SmartDashboard.putNumber(this.m_limelightName + " roll", targetPose[5]);
 
     this.m_visionMeasurement = new Pose3d(
       targetPose[0], // X

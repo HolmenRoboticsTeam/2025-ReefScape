@@ -41,7 +41,7 @@ public class ElevatorExtensionToCoralStationCommand extends Command {
   @Override
   public void end(boolean interrupted) {
 
-    this.m_elevatorExtension.setTargetExtension(0.0);
+    this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kHomeExtension);
   }
 
   // Returns true when the command should end.
