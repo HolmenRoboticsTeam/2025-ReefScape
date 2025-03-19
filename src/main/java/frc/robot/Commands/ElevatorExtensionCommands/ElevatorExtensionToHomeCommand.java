@@ -36,7 +36,14 @@ public class ElevatorExtensionToHomeCommand extends Command {
   @Override
   public void execute() {
 
-    this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kHomeExtension);
+    if(this.m_elevatorExtension.getCurrentExtension() > 0.8) {
+      this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kFarHomeExtension);
+    } else if(this.m_elevatorExtension.getCurrentExtension() > 0.4) {
+      this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kPreHomeExtension);
+    } else {
+      this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kHomeExtension);
+    }
+
   }
 
   // Called once the command ends or is interrupted.
@@ -49,8 +56,6 @@ public class ElevatorExtensionToHomeCommand extends Command {
   @Override
   public boolean isFinished() {
     double positionError = Math.abs(this.m_elevatorExtension.getCurrentExtension() - ElevatorExtensionConstants.kLevel1Extend);
-
-    System.out.println(positionError + ", " + ElevatorExtensionConstants.kExtensionErrorAllowed + ", " + this.m_allowEndCondition);
 
     return positionError < ElevatorExtensionConstants.kExtensionErrorAllowed &&
     this.m_allowEndCondition;

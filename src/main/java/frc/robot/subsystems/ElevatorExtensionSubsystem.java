@@ -75,47 +75,16 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
 
   }
 
-  public void changePIDConrolles(String type) {
-    
-    if(type.equals("Extension")) {System.out.println("Switching To Extension");
-
-      this.m_rightExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
-        new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
-      );
-
-      this.m_leftExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kExtensionP, ElevatorExtensionConstants.kExtensionI, ElevatorExtensionConstants.kExtensionD,
-        new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
-      );
-    } else if(type.equals("Retraction")) {System.out.println("Switching To Retraction");
-
-      this.m_rightExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kRetractionP, ElevatorExtensionConstants.kRetractionI, ElevatorExtensionConstants.kRetractionD,
-        new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
-      );
-
-      this.m_leftExtensionPIDController = new ProfiledPIDController(ElevatorExtensionConstants.kRetractionP, ElevatorExtensionConstants.kRetractionI, ElevatorExtensionConstants.kRetractionD,
-        new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
-      );
-    }
-  }
-
   /**
    * 
    * @param targetLength - the length the motors are set to extend to.
    */
   public void setTargetExtension(double targetLength) {
 
-    
-
-    System.out.println(targetLength);
-
     double deltaLength = targetLength - this.getCurrentExtension();
-
-    // System.out.println(deltaLength);
 
     double leftOutput = -this.m_leftExtensionPIDController.calculate(deltaLength);
     double rightOutput = -this.m_rightExtensionPIDController.calculate(deltaLength);
-
-    // System.out.println(leftOutput + ", " + rightOutput);
 
     this.m_leftExtensionMotor.set(leftOutput);
     this.m_rightExtensionMotor.set(rightOutput);

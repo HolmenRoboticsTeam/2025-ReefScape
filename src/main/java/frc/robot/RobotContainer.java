@@ -132,8 +132,12 @@ public class RobotContainer {
                 ),
             this.m_drive));
 
+    // this.m_elevatorPivot.setDefaultCommand(
+    //   new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
+    // );
+
     this.m_elevatorPivot.setDefaultCommand(
-      new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
+      new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false)
     );
 
     this.m_elevatorExtension.setDefaultCommand(
@@ -194,29 +198,31 @@ public class RobotContainer {
     ));
 
     this.m_aprilTagLevel3Place.whileTrue(new SequentialCommandGroup(
-      new ElevatorPivotToLevel3Command(this.m_elevatorPivot, true),
-      new ParallelRaceGroup(
-        new ElevatorExtensionToLevel3Command(this.m_elevatorExtension, true),
-        new ElevatorPivotToLevel3Command(this.m_elevatorPivot, false)
-      ),
-      new ParallelRaceGroup(
-        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
-        new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
-      ),
-      new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
+      // new ElevatorPivotToLevel3Command(this.m_elevatorPivot, true),
+      // new ParallelRaceGroup(
+      //   new ElevatorExtensionToLevel3Command(this.m_elevatorExtension, true),
+      //   new ElevatorPivotToLevel3Command(this.m_elevatorPivot, false)
+      // ),
+      // new ParallelRaceGroup(
+      //   new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
+      //   new ElevatorPivotToLevel3Command(this.m_elevatorPivot, false)
+      // ),
+      // new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
+      new GripperPivotToLevel4Command(this.m_gripperPivot, false)
     ));
 
-    this.m_aprilTagLevel4Place.whileTrue(new SequentialCommandGroup(
-      new ElevatorPivotToLevel4Command(this.m_elevatorPivot, true),
-      new ParallelRaceGroup(
-        new ElevatorExtensionToLevel4Command(this.m_elevatorExtension, true),
-        new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false)
-      ),
-      new ParallelRaceGroup(
-        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
-        new ElevatorPivotToLevel2Command(this.m_elevatorPivot, false)
-       ),
-      new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
+    this.m_aprilTagLevel4Place.onTrue(new SequentialCommandGroup(
+      // new ElevatorPivotToLevel4Command(this.m_elevatorPivot, true),
+      // new ParallelRaceGroup(
+      //   new ElevatorExtensionToLevel4Command(this.m_elevatorExtension, true),
+      //   new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false)
+      // ),
+      // new ParallelRaceGroup(
+      //   new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
+      //   new ElevatorPivotToLevel4Command(this.m_elevatorPivot, false)
+      //  ),
+      // new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
+      new ElevatorExtensionToLevel4Command(this.m_elevatorExtension, false)
     ));
 
     this.m_aprilTagCoralStationGrab.whileTrue(new SequentialCommandGroup(
@@ -224,11 +230,11 @@ public class RobotContainer {
       new ParallelCommandGroup(
         new ElevatorExtensionToCoralStationCommand(this.m_elevatorExtension, true),
         new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, false)
-      ),
-      new ParallelDeadlineGroup(
-        new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
-        new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, false)
-        )
+      )
+      // new ParallelDeadlineGroup(
+      //   new ElevatorExtensionToHomeCommand(this.m_elevatorExtension, true),
+      //   new ElevatorPivotToCoralStationCommand(this.m_elevatorPivot, false)
+      //   )
     ));
 
     this.m_gripperGrab.whileTrue(
