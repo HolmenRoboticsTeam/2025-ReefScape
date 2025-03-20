@@ -150,7 +150,7 @@ public final class Constants {
     public static final double kMaxVelocity = 0.0005;
     public static final double kMaxAcceleration = 0.0001;
 
-    public static final double kExtensionP = 1.4;
+    public static final double kExtensionP = 2.4;
     public static final double kExtensionI = 0.0;
     public static final double kExtensionD = 0.0;
 
@@ -163,9 +163,11 @@ public final class Constants {
 
     public static final double kLevel1Extend = 0.0;
     public static final double kLevel2Extend = 0.255;
-    public static final double kLevel3Extend = 0.486;
+    public static final double kLevel3Extend = 0.65;
     public static final double kLevel4Extend = 1.25;
     public static final double kCoralStationExtend = 0.03;
+
+    public static final double kSecondStageTrip = 0.75;
 
     public static final double kExtensionErrorAllowed = 0.05;
   }
@@ -174,13 +176,13 @@ public final class Constants {
 
     public static final int kMotorID = 14;
 
-    public static final int kMaxCurrentLimit = 30;
+    public static final int kMaxCurrentLimit = 20;
     public static final double kMaxVoltage = 12;
 
-    public static final double kMaxVelocity = 0.003;
-    public static final double kMaxAcceleration = 0.001;
+    public static final double kMaxVelocity = 0.0001;
+    public static final double kMaxAcceleration = 0.00005;
 
-    public static final double kPivotP = 0.27;
+    public static final double kPivotP = 0.15;
     public static final double kPivotI = 0.0;
     public static final double kPivotD = 0.0;
 
@@ -189,8 +191,8 @@ public final class Constants {
     public static final double kHomeAngle = Rotation2d.fromDegrees(0.0).getRadians();
 
     public static final double kLevel1Angle = Rotation2d.fromDegrees(0.0).getRadians();
-    public static final double kLevel2Angle = Rotation2d.fromDegrees(177.643 + kSlackError).getRadians();
-    public static final double kLevel3Angle = Rotation2d.fromDegrees(180.0 + kSlackError).getRadians();
+    public static final double kLevel2Angle = Rotation2d.fromDegrees(175 + kSlackError).getRadians();
+    public static final double kLevel3Angle = Rotation2d.fromDegrees(185.0 + kSlackError).getRadians();
     public static final double kLevel4Angle = Rotation2d.fromDegrees(185.0 + kSlackError).getRadians();
     public static final double kCoralStationAngle = Rotation2d.fromDegrees(10.0).getRadians();
 

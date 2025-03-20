@@ -102,6 +102,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("Place Level 3", new Level3CommandGroup(
       this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     ));
+    NamedCommands.registerCommand("Grab Coral Station", new CoralStationCommandGroup(
+      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    ));
     NamedCommands.registerCommand("Place Level 4", new Level4CommandGroup(
       this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     ));
@@ -182,19 +185,19 @@ public class RobotContainer {
     ));
 
     // Planned for real Matches (Check wait time.) (AND TEST BEFORE COMP! please...)
-    this.m_level2Place.whileTrue(new Level2CommandGroup(
+    this.m_level2Place.onTrue(new Level2CommandGroup(
       this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     ));
 
-    this.m_level3Place.whileTrue(new Level3CommandGroup(
+    this.m_level3Place.onTrue(new Level3CommandGroup(
       this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     ));
 
-    this.m_coralStationGrab.whileTrue(new CoralStationCommandGroup(
+    this.m_coralStationGrab.onTrue(new CoralStationCommandGroup(
       this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     ));
 
-    this.m_level4Place.whileTrue(new Level4CommandGroup(
+    this.m_level4Place.onTrue(new Level4CommandGroup(
       this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     ));
 
@@ -259,6 +262,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_autoChooser.getSelected();
+    return this.m_autoChooser.getSelected();
   }
 }

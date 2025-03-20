@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.GripperDropCommand;
 import frc.robot.Commands.RumbleCommand;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel2Command;
+import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel3Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel2Command;
+import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel3Command;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel2Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorExtensionSubsystem;
@@ -34,8 +36,13 @@ public class Level2CommandGroup extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
 
-      new ElevatorPivotToLevel2Command(elevatorPivot, true),
+      new ElevatorPivotToLevel3Command(elevatorPivot, true),
 
+      //Moves extension, but keeps pivot up
+      new ParallelDeadlineGroup(
+          new ElevatorExtensionToLevel3Command(elevatorExtension, true),
+        new ElevatorPivotToLevel3Command(elevatorPivot, false)
+      ),
 
       //Moves gripper pivot and extension, but keeps pivot up
       new ParallelDeadlineGroup(
@@ -48,7 +55,7 @@ public class Level2CommandGroup extends SequentialCommandGroup {
       new ParallelDeadlineGroup(
           new WaitCommand(0.33), //Group waits on this command
         new GripperDropCommand(gripperIntake),
-        new GripperPivotToLevel2Command(gripperPivot, true),
+        new GripperPivotToLevel2Command(gripperPivot, false),
         new ElevatorExtensionToLevel2Command(elevatorExtension, false),
         new ElevatorPivotToLevel2Command(elevatorPivot, false)
       ),

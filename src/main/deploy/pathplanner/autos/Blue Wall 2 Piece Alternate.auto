@@ -11,9 +11,9 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 1.5
+            "name": "Place Level 4"
           }
         },
         {
@@ -23,15 +23,21 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 2.0
+            "name": "Grab Coral Station"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Pr 3 Alternate (2 Piece) B"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Place Level 4"
           }
         }
       ]

@@ -4,6 +4,7 @@
 
 package frc.robot.Commands.CommandGroups;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -39,34 +40,54 @@ public class Level3CommandGroup extends SequentialCommandGroup {
 
       new ElevatorPivotToLevel3Command(elevatorPivot, true),
 
-      //Moves gripper pivot and extension, but keeps pivot up
+      //Moves extension, but keeps pivot up
       new ParallelDeadlineGroup(
-          new GripperPivotToLevel3Command(gripperPivot, true), //Group waits on this command
-        new ElevatorExtensionToLevel3Command(elevatorExtension, false),
+          new ElevatorExtensionToLevel3Command(elevatorExtension, true),
         new ElevatorPivotToLevel3Command(elevatorPivot, false)
       ),
 
-      //Scores coral, and keeps pivot, extension, and gripper pivot up
+      
       new ParallelDeadlineGroup(
-          new WaitCommand(0.33), //Group waits on this command
-        new GripperDropCommand(gripperIntake),
         new GripperPivotToLevel3Command(gripperPivot, true),
         new ElevatorExtensionToLevel3Command(elevatorExtension, false),
         new ElevatorPivotToLevel3Command(elevatorPivot, false)
       ),
 
-      //Drops gripper pivot, extension, and rumbles, but keeps pivot up
+      //Testing
       new ParallelDeadlineGroup(
-          new WaitCommand(0.33), //Group waits on this command
-        new RumbleCommand(controller, 0.25, true),
+        new GripperPivotToLevel3Command(gripperPivot, false),
+        new ElevatorExtensionToLevel3Command(elevatorExtension, false),
         new ElevatorPivotToLevel3Command(elevatorPivot, false)
-      ),
+      )
+
+      //Moves gripper pivot and extension, but keeps pivot up
+      // new ParallelDeadlineGroup(
+      //     new GripperPivotToLevel3Command(gripperPivot, true), //Group waits on this command
+      //   new ElevatorExtensionToLevel3Command(elevatorExtension, false),
+      //   new ElevatorPivotToLevel3Command(elevatorPivot, false)
+      // ),
+
+      //Scores coral, and keeps pivot, extension, and gripper pivot up
+      // new ParallelDeadlineGroup(
+      //     new WaitCommand(0.33), //Group waits on this command
+      //   new GripperDropCommand(gripperIntake),
+      //   new GripperPivotToLevel3Command(gripperPivot, true),
+      //   new ElevatorExtensionToLevel3Command(elevatorExtension, false),
+      //   new ElevatorPivotToLevel3Command(elevatorPivot, false)
+      // ),
+
+      //Drops gripper pivot, extension, and rumbles, but keeps pivot up
+      // new ParallelDeadlineGroup(
+      //     new WaitCommand(0.33), //Group waits on this command
+      //   new RumbleCommand(controller, 0.25, true),
+      //   new ElevatorPivotToLevel3Command(elevatorPivot, false)
+      // ),
 
       //Tells driver all subsystem are going to home
-      new ParallelDeadlineGroup(
-          new WaitCommand(0.1), //Group waits on this command
-        new RumbleCommand(controller, 1.0, false)
-      )
+      // new ParallelDeadlineGroup(
+      //     new WaitCommand(0.1), //Group waits on this command
+      //   new RumbleCommand(controller, 1.0, false)
+      // )
 
     );
   }

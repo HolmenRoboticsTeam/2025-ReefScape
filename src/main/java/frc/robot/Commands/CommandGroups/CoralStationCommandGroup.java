@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.GripperDropCommand;
+import frc.robot.Commands.GripperGrabCommand;
 import frc.robot.Commands.RumbleCommand;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToCoralStationCommand;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel4Command;
@@ -47,7 +48,7 @@ public class CoralStationCommandGroup extends SequentialCommandGroup {
       //Scores coral, and keeps pivot, extension, and gripper pivot up
       new ParallelDeadlineGroup(
           new WaitCommand(0.33), //Group waits on this command
-        new GripperDropCommand(gripperIntake),
+        new GripperGrabCommand(gripperIntake),
         new GripperPivotToCoralStationCommand(gripperPivot, true),
         new ElevatorExtensionToCoralStationCommand(elevatorExtension, false),
         new ElevatorPivotToCoralStationCommand(elevatorPivot, false)

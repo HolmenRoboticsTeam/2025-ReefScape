@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Pr 1 (2&3 Piece) B"
+            "pathName": "Pr 1 (2&3 Piece) R"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Pr 2 (2&3 Piece) B"
+            "pathName": "Pr 2 (2&3 Piece) R"
           }
         },
         {
@@ -31,31 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Pr 3 (2&3 Piece) B"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Place Level 4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Pr 4 (3 Piece) B"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Grab Coral Station"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Pr 3 (2&3 Piece) B"
+            "pathName": "Pr 3 (2&3 Piece) R"
           }
         },
         {
