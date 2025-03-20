@@ -49,7 +49,7 @@ public class FrontReefLineUpCommand extends Command {
       //if no limelight target is found but was found in a past frame then
       //the attempt to point at the last known Pose
 
-      double rot = this.m_lastKnownPose.getX();
+      double rot = -this.m_lastKnownPose.getX();
 
       this.m_drive.drive(0.0, 0.0, rot, false);
       return;
@@ -74,24 +74,37 @@ public class FrontReefLineUpCommand extends Command {
     if(canSeeBlueReef && robotAlliance.equals(DriverStation.Alliance.Blue) ||
       (canSeeRedReef && robotAlliance.equals(DriverStation.Alliance.Red))) {
 
-      xSpeed = 1 * (limelightToApriltagZ - this.m_lastKnownPose.getZ());
-      ySpeed = 1 * this.m_lastKnownPose.getRotation().getZ();
-      rot = -Math.atan2(this.m_lastKnownPose.getX(), this.m_lastKnownPose.getZ());
+      ySpeed = 0.75 * Math.round(this.m_lastKnownPose.getRotation().getZ() * 0.25);
+      xSpeed = -2.0 * (limelightToApriltagZ - this.m_lastKnownPose.getZ());
+      rot = 1.8 * this.m_lastKnownPose.getX();
 
     }
 
     //If the limelight is near the edge of the frame then stop translation and rotation until the tag is more centered
-    if(Math.abs(rot) > Math.toRadians(TakeOverTelopConstants.kTranslationLockOut)) {
+    if(Math.abs(rot) > TakeOverTelopConstants.kTranslationLockOut) {
       xSpeed = 0.0;
       ySpeed = 0.0;
+      rot *= 3;
     }
 
-    xSpeed = MathUtil.clamp(xSpeed, -0.25, 0.25);
-    ySpeed = MathUtil.clamp(ySpeed, -0.25, 0.25);
-    rot = MathUtil.clamp(rot, -0.25, 0.25);
+    //Stops movement when in proper range
+    if(Math.abs(this.m_lastKnownPose.getRotation().getZ()) * 2.0 < TakeOverTelopConstants.kMaxErrorRotation) {
+      ySpeed = 0.0;
+    }
+    if(Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance) {
+      xSpeed = 0.0;
+    }
 
-    // this.m_drive.drive(xSpeed, ySpeed, rot, false);
-    this.m_drive.headingDrive(0.0, xSpeed, ySpeed, Math.cos(rot), Math.sin(rot), false);
+    //Stops movement when in proper range
+    xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0);
+    ySpeed = MathUtil.clamp(ySpeed, -1.0, 1.0);
+    rot = MathUtil.clamp(rot, -0.5, 0.5);
+
+    xSpeed = MathUtil.applyDeadband(xSpeed, 0.1);
+    ySpeed = MathUtil.applyDeadband(ySpeed, 0.1);
+    rot = MathUtil.applyDeadband(rot, 0.05);
+
+    this.m_drive.headingDrive(TakeOverTelopConstants.kMaxSpeed, xSpeed, ySpeed, Math.cos(rot), Math.sin(rot), false);
   }
 
   // Called once the command ends or is interrupted.
@@ -104,10 +117,9 @@ public class FrontReefLineUpCommand extends Command {
     this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
     double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kFrontLimeLightToFrame;
 
-
-    double errorX = Math.abs(this.m_lastKnownPose.getX());
+    double errorX = Math.abs(this.m_lastKnownPose.getRotation().getZ());
     double errorY = Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ());
-    double errorRot = Math.abs(this.m_lastKnownPose.getRotation().getZ());
+    double errorRot = Math.abs(this.m_lastKnownPose.getX());
 
     return
     errorX < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error

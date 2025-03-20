@@ -36,13 +36,8 @@ public class Level2CommandGroup extends SequentialCommandGroup {
 
       new ElevatorPivotToLevel2Command(elevatorPivot, true),
 
-      //Moves extension, and keeps pivot up
-      new ParallelDeadlineGroup(
-          new ElevatorExtensionToLevel2Command(elevatorExtension, true), //Group waits on this command
-        new ElevatorPivotToLevel2Command(elevatorPivot, false)
-      ),
 
-      //Moves gripper pivot, and keeps pivot and extension up
+      //Moves gripper pivot and extension, but keeps pivot up
       new ParallelDeadlineGroup(
           new GripperPivotToLevel2Command(gripperPivot, true), //Group waits on this command
         new ElevatorExtensionToLevel2Command(elevatorExtension, false),
@@ -58,11 +53,10 @@ public class Level2CommandGroup extends SequentialCommandGroup {
         new ElevatorPivotToLevel2Command(elevatorPivot, false)
       ),
 
-      //Drops gripper pivot and rumbles, and keeps pivot and extension up
+      //Drops gripper pivot, extension, and rumbles, but keeps pivot up
       new ParallelDeadlineGroup(
           new WaitCommand(0.33), //Group waits on this command
         new RumbleCommand(controller, 0.25, true),
-        new ElevatorExtensionToLevel2Command(elevatorExtension, false),
         new ElevatorPivotToLevel2Command(elevatorPivot, false)
       ),
 

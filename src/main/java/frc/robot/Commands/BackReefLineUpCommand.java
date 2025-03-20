@@ -51,8 +51,6 @@ public class BackReefLineUpCommand extends Command {
 
       double rot = this.m_lastKnownPose.getX();
 
-      System.out.println("pointing to last seen!");
-
       this.m_drive.drive(0.0, 0.0, rot, false);
       return;
     }
@@ -72,11 +70,9 @@ public class BackReefLineUpCommand extends Command {
 
     Alliance robotAlliance = DriverStation.getAlliance().get();
 
-    System.out.println(this.m_lastKnownPose);
-
     //Checks if the limelight's found tag is on the robot's team reef
     if(canSeeBlueReef && robotAlliance.equals(DriverStation.Alliance.Blue) ||
-      (canSeeRedReef && robotAlliance.equals(DriverStation.Alliance.Red)) || true) {
+      (canSeeRedReef && robotAlliance.equals(DriverStation.Alliance.Red))) {
 
       ySpeed = -0.75 * Math.round(this.m_lastKnownPose.getRotation().getZ() * 0.25);
       xSpeed = 2.0 * (limelightToApriltagZ - this.m_lastKnownPose.getZ());
@@ -84,25 +80,22 @@ public class BackReefLineUpCommand extends Command {
 
     }
 
-    System.out.println("Out Limelight: " + xSpeed + ", " + ySpeed + ", " + rot);
-
     //If the limelight is near the edge of the frame then stop translation and rotation until the tag is more centered
     if(Math.abs(rot) > TakeOverTelopConstants.kTranslationLockOut) {
-      System.out.println("Too Far!");
-      // xSpeed = 0.0;
+      xSpeed = 0.0;
       ySpeed = 0.0;
       rot *= 3;
     }
 
+    //Stops movement when in proper range
     if(Math.abs(this.m_lastKnownPose.getRotation().getZ()) * 2.0 < TakeOverTelopConstants.kMaxErrorRotation) {
-      System.out.println("stop Y");
       ySpeed = 0.0;
     }
     if(Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance) {
-      System.out.println("stop X");
       xSpeed = 0.0;
     }
 
+    //limits max speed and min speed (min speed to stop jittering)
     xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0);
     ySpeed = MathUtil.clamp(ySpeed, -1.0, 1.0);
     rot = MathUtil.clamp(rot, -0.5, 0.5);
@@ -111,10 +104,7 @@ public class BackReefLineUpCommand extends Command {
     ySpeed = MathUtil.applyDeadband(ySpeed, 0.1);
     rot = MathUtil.applyDeadband(rot, 0.05);
 
-    System.out.println("Into drive: " + xSpeed + ", " + ySpeed + ", " + rot);
-
-    // this.m_drive.drive(xSpeed, ySpeed, rot, false);
-    this.m_drive.headingDrive(0.333, xSpeed, ySpeed, Math.cos(rot), Math.sin(rot), false);
+    this.m_drive.headingDrive(TakeOverTelopConstants.kMaxSpeed, xSpeed, ySpeed, Math.cos(rot), Math.sin(rot), false);
   }
 
   // Called once the command ends or is interrupted.
@@ -127,16 +117,13 @@ public class BackReefLineUpCommand extends Command {
     this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
     double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kBackLimeLightToFrame;
 
+    double errorX = Math.abs(this.m_lastKnownPose.getRotation().getZ());
+    double errorY = Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ());
+    double errorRot = Math.abs(this.m_lastKnownPose.getX());
 
-    double errorX = Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ());
-    double errorY = Math.abs(this.m_lastKnownPose.getX());
-    double errorRot = Math.abs(this.m_lastKnownPose.getRotation().getZ());
-
-    System.out.println("Errors: X: " + errorX + ", Y: " + errorY + ", Rot: " + errorRot);
-
-    return false;
-    // errorX < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error
-    // errorY < TakeOverTelopConstants.kMaxErrorDistance && // Forward-Backward offset in with error
-    // errorRot < TakeOverTelopConstants.kMaxErrorRotation; // Yaw rotation offset in with error
+    return
+    errorX < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error
+    errorY < TakeOverTelopConstants.kMaxErrorDistance && // Forward-Backward offset in with error
+    errorRot < TakeOverTelopConstants.kMaxErrorRotation; // Yaw rotation offset in with error
   }
 }

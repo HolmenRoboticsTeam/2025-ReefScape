@@ -144,7 +144,7 @@ public final class Constants {
 
     public static final double kMotorToDrumGearRatio = 7.2;
 
-    public static final int kMaxCurrentLimit = 50;
+    public static final int kMaxCurrentLimit = 60;
     public static final double kMaxVoltage = 12;
 
     public static final double kMaxVelocity = 0.0005;
@@ -154,15 +154,17 @@ public final class Constants {
     public static final double kExtensionI = 0.0;
     public static final double kExtensionD = 0.0;
 
-    //All the following are in meters
-    public static final double kHomeExtension = 0.05;
+    //All of the following are in meters
+    public static final double kHomeExtension = 0.01;
+
+    //These 2 are mid points to stop gravity from slamming the elevator into the end
     public static final double kPreHomeExtension = 0.39;
     public static final double kFarHomeExtension = 0.79;
 
     public static final double kLevel1Extend = 0.0;
     public static final double kLevel2Extend = 0.255;
     public static final double kLevel3Extend = 0.486;
-    public static final double kLevel4Extend = 0.5; //1.25
+    public static final double kLevel4Extend = 1.25;
     public static final double kCoralStationExtend = 0.03;
 
     public static final double kExtensionErrorAllowed = 0.05;
@@ -207,7 +209,7 @@ public final class Constants {
 
   public static final class TakeOverTelopConstants {
 
-    public static final double kMaxSpeed = 1.0; // Scale based on kMaxSpeed
+    public static final double kMaxSpeed = 0.333; // Scale based on kMaxSpeed
     public static final double kMaxErrorDistance = 0.005; //Meters
     public static final double kMaxErrorRotation = 1.0; //Degrees
 

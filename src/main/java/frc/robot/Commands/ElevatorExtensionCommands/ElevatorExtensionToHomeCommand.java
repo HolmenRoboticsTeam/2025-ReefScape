@@ -36,6 +36,7 @@ public class ElevatorExtensionToHomeCommand extends Command {
   @Override
   public void execute() {
 
+    //mid slowing points to stop the elevator from slamming
     if(this.m_elevatorExtension.getCurrentExtension() > 0.8) {
       this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kFarHomeExtension);
     } else if(this.m_elevatorExtension.getCurrentExtension() > 0.4) {

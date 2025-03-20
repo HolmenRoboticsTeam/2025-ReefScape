@@ -44,27 +44,8 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
       new TrapezoidProfile.Constraints(ElevatorExtensionConstants.kMaxVelocity, ElevatorExtensionConstants.kMaxAcceleration)
     );
 
-    SparkMaxConfig leftExtensionConfig = new SparkMaxConfig();
-    SparkMaxConfig rightExtensionConfig = new SparkMaxConfig();
-
-      leftExtensionConfig.inverted(false);
-      rightExtensionConfig.inverted(true);
-
-      // Turns inputs and outputs from motor rotation into the extension
-      // 0.02425 is r (2.0 * Math.PI * 0.02425) = 0.15236724 meters, 0.16269 seems to
-      // be a better conversion?
-      double positionConversionFactor = (0.16269) / ElevatorExtensionConstants.kMotorToDrumGearRatio;
-
-      leftExtensionConfig.encoder.positionConversionFactor(positionConversionFactor);
-      rightExtensionConfig.encoder.positionConversionFactor(positionConversionFactor);
-
-      leftExtensionConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ElevatorExtensionConstants.kMaxCurrentLimit)
-          .voltageCompensation(ElevatorExtensionConstants.kMaxVoltage);
-      rightExtensionConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ElevatorExtensionConstants.kMaxCurrentLimit)
-          .voltageCompensation(ElevatorExtensionConstants.kMaxVoltage);
-
-    this.m_leftExtensionMotor.configure(leftExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    this.m_rightExtensionMotor.configure(rightExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.m_leftExtensionMotor.configure(ElevatorExtensionConfig.leftExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.m_rightExtensionMotor.configure(ElevatorExtensionConfig.rightExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
   }
 

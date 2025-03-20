@@ -5,31 +5,28 @@
 package frc.robot.Commands.CommandGroups;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.GripperDropCommand;
 import frc.robot.Commands.RumbleCommand;
-import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel2Command;
+import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToCoralStationCommand;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel4Command;
-import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel2Command;
+import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToCoralStationCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel4Command;
-import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel2Command;
+import frc.robot.Commands.GripperPivotCommands.GripperPivotToCoralStationCommand;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel4Command;
-import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorExtensionSubsystem;
 import frc.robot.subsystems.ElevatorPivotSubsystem;
-import frc.robot.subsystems.GripperPivotSubsystem;
 import frc.robot.subsystems.GripperIntakeSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.GripperPivotSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Level4CommandGroup extends SequentialCommandGroup {
-  /** Creates a new AprilTagLevel2Command. */
-  public Level4CommandGroup(CommandXboxController controller, ElevatorPivotSubsystem elevatorPivot,
+public class CoralStationCommandGroup extends SequentialCommandGroup {
+  /** Creates a new CoralStationCommandGroup. */
+  public CoralStationCommandGroup(CommandXboxController controller, ElevatorPivotSubsystem elevatorPivot,
     ElevatorExtensionSubsystem elevatorExtension, GripperPivotSubsystem gripperPivot, GripperIntakeSubsystem gripperIntake) {
 
 
@@ -37,29 +34,30 @@ public class Level4CommandGroup extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
 
-      new ElevatorPivotToLevel4Command(elevatorPivot, true),
+      new ElevatorPivotToCoralStationCommand(elevatorPivot, true),
+
 
       //Moves gripper pivot and extension, but keeps pivot up
       new ParallelDeadlineGroup(
-          new GripperPivotToLevel4Command(gripperPivot, true), //Group waits on this command
-        new ElevatorExtensionToLevel4Command(elevatorExtension, false),
-        new ElevatorPivotToLevel4Command(elevatorPivot, false)
+          new GripperPivotToCoralStationCommand(gripperPivot, true), //Group waits on this command
+        new ElevatorExtensionToCoralStationCommand(elevatorExtension, false),
+        new ElevatorPivotToCoralStationCommand(elevatorPivot, false)
       ),
 
       //Scores coral, and keeps pivot, extension, and gripper pivot up
       new ParallelDeadlineGroup(
           new WaitCommand(0.33), //Group waits on this command
         new GripperDropCommand(gripperIntake),
-        new GripperPivotToLevel4Command(gripperPivot, true),
-        new ElevatorExtensionToLevel4Command(elevatorExtension, false),
-        new ElevatorPivotToLevel4Command(elevatorPivot, false)
+        new GripperPivotToCoralStationCommand(gripperPivot, true),
+        new ElevatorExtensionToCoralStationCommand(elevatorExtension, false),
+        new ElevatorPivotToCoralStationCommand(elevatorPivot, false)
       ),
 
       //Drops gripper pivot, extension, and rumbles, but keeps pivot up
       new ParallelDeadlineGroup(
           new WaitCommand(0.33), //Group waits on this command
         new RumbleCommand(controller, 0.25, true),
-        new ElevatorPivotToLevel4Command(elevatorPivot, false)
+        new ElevatorPivotToCoralStationCommand(elevatorPivot, false)
       ),
 
       //Tells driver all subsystem are going to home
