@@ -58,7 +58,10 @@
     "edu.wpi.first.math.**.struct.*",
   ],
   "cSpell.words": [
+    "cameraspace",
     "odometry",
-    "Setpoint"
+    "Setpoint",
+    "targetpose",
+    "wpilibj"
   ]
 }

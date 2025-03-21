@@ -5,7 +5,6 @@
 package frc.robot.Commands.ElevatorPivotCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ElevatorExtensionConstants;
 import frc.robot.Constants.ElevatorPivotConstants;
 import frc.robot.subsystems.ElevatorPivotSubsystem;
 
