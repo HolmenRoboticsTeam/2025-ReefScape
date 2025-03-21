@@ -18,7 +18,7 @@ public class LimelightSubsystem extends SubsystemBase {
   private String m_limelightName;
 
   private NetworkTable m_limelightNetworkTable;
-  private Pose3d m_visionMeasurement;
+  private Pose3d m_visionMeasurement = new Pose3d();
 
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem(String key) {

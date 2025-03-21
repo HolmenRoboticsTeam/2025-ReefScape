@@ -5,6 +5,8 @@
 package frc.robot.Commands.GripperPivotCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.Constants.GlobalVariables;
 import frc.robot.Constants.GripperPivotConstants;
 import frc.robot.subsystems.GripperPivotSubsystem;
 
@@ -44,7 +46,11 @@ public class GripperPivotToLevel2Command extends Command {
   public boolean isFinished() {
     double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle() - GripperPivotConstants.kLevel2Angle);
 
-    return angleError < GripperPivotConstants.kAngleErrorAllowed &&
-    this.m_allowEndCondition;
+    if(angleError < GripperPivotConstants.kAngleErrorAllowed) {
+
+      GlobalVariables.gripperAtSetpoint = true;
+    }
+
+    return angleError < GripperPivotConstants.kAngleErrorAllowed && this.m_allowEndCondition;
   }
 }

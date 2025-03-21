@@ -13,9 +13,13 @@ import frc.robot.Commands.GripperDropCommand;
 import frc.robot.Commands.RumbleCommand;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel2Command;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel4Command;
+import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel4Command;
+import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToSecondStageCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel2Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel4Command;
+import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel4Command;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel2Command;
+import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel4Command;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel4Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorExtensionSubsystem;
@@ -47,32 +51,34 @@ public class Level4CommandGroup extends SequentialCommandGroup {
 
       //Moves gripper pivot and extension, but keeps pivot up
       new ParallelDeadlineGroup(
-          new GripperPivotToLevel4Command(gripperPivot, true), //Group waits on this command
+          new GripperPivotToLevel4Command(gripperPivot, false), //Group waits on this command
         new ElevatorExtensionToLevel4Command(elevatorExtension, false),
         new ElevatorPivotToLevel4Command(elevatorPivot, false)
-      ),
-
-      //Scores coral, and keeps pivot, extension, and gripper pivot up
-      new ParallelDeadlineGroup(
-          new WaitCommand(0.33), //Group waits on this command
-        new GripperDropCommand(gripperIntake),
-        new GripperPivotToLevel4Command(gripperPivot, true),
-        new ElevatorExtensionToLevel4Command(elevatorExtension, false),
-        new ElevatorPivotToLevel4Command(elevatorPivot, false)
-      ),
-
-      //Drops gripper pivot, extension, and rumbles, but keeps pivot up
-      new ParallelDeadlineGroup(
-          new WaitCommand(0.33), //Group waits on this command
-        new RumbleCommand(controller, 0.25, true),
-        new ElevatorPivotToLevel4Command(elevatorPivot, false)
-      ),
-
-      //Tells driver all subsystem are going to home
-      new ParallelDeadlineGroup(
-          new WaitCommand(0.1), //Group waits on this command
-        new RumbleCommand(controller, 1.0, false)
       )
+
+      // //Scores coral, and keeps pivot, extension, and gripper pivot up
+      // new ParallelDeadlineGroup(
+      //     new WaitCommand(0.5), //Group waits on this command
+      //   new GripperDropCommand(gripperIntake),
+      //   new GripperPivotToLevel4Command(gripperPivot, true),
+      //   new ElevatorExtensionToLevel4Command(elevatorExtension, false),
+      //   new ElevatorPivotToLevel4Command(elevatorPivot, false)
+      // ),
+
+      // //Drops gripper pivot, extension, and rumbles, but keeps pivot up
+      // new ParallelDeadlineGroup(
+      //     new WaitCommand(0.5), //Group waits on this command
+      //   new RumbleCommand(controller, 0.25, true),
+      //   new ElevatorExtensionToLevel4Command(elevatorExtension, false),
+      //   new ElevatorPivotToLevel4Command(elevatorPivot, false)
+      // ),
+
+      // //Tells driver all subsystem are going to home
+      // new ParallelDeadlineGroup(
+      //     new WaitCommand(0.1), //Group waits on this command
+      //   new RumbleCommand(controller, 1.0, false),
+      //   new ElevatorPivotToLevel4Command(elevatorPivot, false)
+      // )
 
     );
   }

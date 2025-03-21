@@ -23,6 +23,12 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final class GlobalVariables {
+
+    public static boolean gripperAtSetpoint = false;
+  }
+
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
@@ -121,7 +127,7 @@ public final class Constants {
     public static final double kMaxVelocity = 0.05;
     public static final double kMaxAcceleration = 0.01;
 
-    public static final double kPivotP = 0.7;
+    public static final double kPivotP = 1.2;
     public static final double kPivotI = 0.0;
     public static final double kPivotD = 0.0;
 
@@ -129,9 +135,9 @@ public final class Constants {
 
     public static final double kLevel1Angle = Rotation2d.fromDegrees(0).getRadians();
     public static final double kLevel2Angle = Rotation2d.fromDegrees(57.643).getRadians();
-    public static final double kLevel3Angle = Rotation2d.fromDegrees(70.0).getRadians();
+    public static final double kLevel3Angle = Rotation2d.fromDegrees(75.0).getRadians();
     public static final double kLevel4Angle = Rotation2d.fromDegrees(80.0).getRadians();
-    public static final double kCoralStationAngle = Rotation2d.fromDegrees(85.0).getRadians();
+    public static final double kCoralStationAngle = Rotation2d.fromDegrees(75.0).getRadians();
 
     public static final double kAngleErrorAllowed = 0.1;
 
@@ -163,7 +169,7 @@ public final class Constants {
 
     public static final double kLevel1Extend = 0.0;
     public static final double kLevel2Extend = 0.255;
-    public static final double kLevel3Extend = 0.65;
+    public static final double kLevel3Extend = 0.68;
     public static final double kLevel4Extend = 1.25;
     public static final double kCoralStationExtend = 0.03;
 
@@ -176,13 +182,13 @@ public final class Constants {
 
     public static final int kMotorID = 14;
 
-    public static final int kMaxCurrentLimit = 20;
+    public static final int kMaxCurrentLimit = 25;
     public static final double kMaxVoltage = 12;
 
-    public static final double kMaxVelocity = 0.0001;
-    public static final double kMaxAcceleration = 0.00005;
+    public static final double kMaxVelocity = 0.0005;
+    public static final double kMaxAcceleration = 0.0001;
 
-    public static final double kPivotP = 0.15;
+    public static final double kPivotP = 0.3;
     public static final double kPivotI = 0.0;
     public static final double kPivotD = 0.0;
 
@@ -190,18 +196,18 @@ public final class Constants {
 
     public static final double kHomeAngle = Rotation2d.fromDegrees(0.0).getRadians();
 
-    public static final double kLevel1Angle = Rotation2d.fromDegrees(0.0).getRadians();
-    public static final double kLevel2Angle = Rotation2d.fromDegrees(175 + kSlackError).getRadians();
+    public static final double kLevel1Angle = Rotation2d.fromDegrees(90.0).getRadians();
+    public static final double kLevel2Angle = Rotation2d.fromDegrees(175.0 + kSlackError).getRadians();
     public static final double kLevel3Angle = Rotation2d.fromDegrees(185.0 + kSlackError).getRadians();
     public static final double kLevel4Angle = Rotation2d.fromDegrees(185.0 + kSlackError).getRadians();
-    public static final double kCoralStationAngle = Rotation2d.fromDegrees(10.0).getRadians();
+    public static final double kCoralStationAngle = Rotation2d.fromDegrees(27.0).getRadians();
 
     public static final double kAngleErrorAllowed = 0.1;
   }
 
   public static final class GripperIntakeConstants {
 
-    public static final double kMaxSpeed = 0.25;
+    public static final double kMaxSpeed = 0.50;
 
     public static final int kMotorID = 15;
 
@@ -211,19 +217,13 @@ public final class Constants {
 
   public static final class TakeOverTelopConstants {
 
-    public static final double kMaxSpeed = 0.333; // Scale based on kMaxSpeed
+    public static final double kMaxSpeed = 0.333;
     public static final double kMaxErrorDistance = 0.005; //Meters
-    public static final double kMaxErrorRotation = 1.0; //Degrees
-
     public static final double kFrontLimeLightToFrame = 0.36; //Meters
     public static final double kBackLimeLightToFrame = 0.05; //Meters
 
     //Y Distance is the forward distance when the robot is facing the april tag
     public static final double kReefYDistance = 0.1; //Meters (from frame to reef wall)
-    public static final double kCoralStationYDistance = 0.089; //Meters
-
-    // This double is the threshold that stops and xy movement to prevent losing the april tag
-    public static final double kTranslationLockOut = 0.333;
   }
 
   public static final class NeoMotorConstants {

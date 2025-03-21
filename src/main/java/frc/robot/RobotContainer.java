@@ -26,8 +26,11 @@ import frc.robot.Commands.CommandGroups.AprilTagLevel3CommandGroup;
 import frc.robot.Commands.CommandGroups.AprilTagLevel4CommandGroup;
 import frc.robot.Commands.CommandGroups.CoralStationCommandGroup;
 import frc.robot.Commands.CommandGroups.Level2CommandGroup;
+import frc.robot.Commands.CommandGroups.Level2DownCommandGroup;
 import frc.robot.Commands.CommandGroups.Level3CommandGroup;
+import frc.robot.Commands.CommandGroups.Level3DownCommandGroup;
 import frc.robot.Commands.CommandGroups.Level4CommandGroup;
+import frc.robot.Commands.CommandGroups.Level4DownCommandGroup;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToCoralStationCommand;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToHomeCommand;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel2Command;
@@ -44,6 +47,7 @@ import frc.robot.Commands.GripperPivotCommands.GripperPivotToCoralStationCommand
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel2Command;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel3Command;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel4Command;
+import frc.robot.Constants.GlobalVariables;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorExtensionSubsystem;
@@ -52,6 +56,7 @@ import frc.robot.subsystems.GripperPivotSubsystem;
 import frc.robot.subsystems.GripperIntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -179,26 +184,55 @@ public class RobotContainer {
       new GripperDropCommand(this.m_gripperIntake)
     );
 
-    this.m_driverController.x().whileTrue(new RunCommand(
+    this.m_driverController.y().whileTrue(new RunCommand(
       () -> m_drive.setX(),
        this.m_drive
     ));
 
-    // Planned for real Matches (Check wait time.) (AND TEST BEFORE COMP! please...)
-    this.m_level2Place.onTrue(new Level2CommandGroup(
+    this.m_driverController.x().whileTrue(new RunCommand(
+            () -> this.m_drive.headingDrive(
+                0.0,
+                0.0,
+                0.0,
+                Math.cos(Math.toRadians(54.0)),
+                Math.sin(Math.toRadians(54.0)),
+                true
+                ),
+            this.m_drive
+    ));
+
+    this.m_driverController.b().whileTrue(new RunCommand(
+            () -> this.m_drive.headingDrive(
+                0.0,
+                0.0,
+                0.0,
+                Math.cos(Math.toRadians(-54.0)),
+                Math.sin(Math.toRadians(-54.0)),
+                true
+                ),
+            this.m_drive
+    ));
+
+    this.m_level2Place.onTrue(new ConditionalCommand(
+      new Level2DownCommandGroup(m_driverController, m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake), //Run this when gripper is not at setpoint
+      new Level2CommandGroup(m_driverController, m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake), //Ren this when gripper is at setpoint
+      () -> GlobalVariables.gripperAtSetpoint //I'm not sure if this is the right way to use lamoda.
+    ));
+
+    this.m_level3Place.onTrue(new ConditionalCommand(
+      new Level3DownCommandGroup(m_driverController, m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake), //Run this when gripper is not at setpoint
+      new Level3CommandGroup(m_driverController, m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake), //Ren this when gripper is at setpoint
+      () -> GlobalVariables.gripperAtSetpoint //I'm not sure if this is the right way to use lamoda.
+    ));
+
+    this.m_coralStationGrab.whileTrue(new CoralStationCommandGroup(
       this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     ));
 
-    this.m_level3Place.onTrue(new Level3CommandGroup(
-      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
-    ));
-
-    this.m_coralStationGrab.onTrue(new CoralStationCommandGroup(
-      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
-    ));
-
-    this.m_level4Place.onTrue(new Level4CommandGroup(
-      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    this.m_level4Place.onTrue(new ConditionalCommand(
+      new Level4DownCommandGroup(m_driverController, m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake), //Run this when gripper is not at setpoint
+      new Level4CommandGroup(m_driverController, m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake), //Ren this when gripper is at setpoint
+      () -> GlobalVariables.gripperAtSetpoint //I'm not sure if this is the right way to use lamoda.
     ));
 
     this.m_apriltagBackReef.whileTrue(
