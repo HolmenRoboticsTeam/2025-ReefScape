@@ -6,6 +6,7 @@ package frc.robot.Commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.TakeOverTelopConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -46,15 +47,45 @@ public class FrontReefLineUpCommand extends Command {
     this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
     double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kFrontLimeLightToFrame;
 
+    int currentID = this.m_limelight.getCurrentID();
+
+    // Set goal rotation
+    double tagetAngle = 0.0;
+
+    if(currentID == 7 || currentID == 18) {
+      tagetAngle = 0.0;
+    } else if(currentID == 10 || currentID == 21) {
+      tagetAngle = 180.0;
+    } else if(currentID == 6 || currentID == 17) {
+      tagetAngle = -50.0;
+    } else if(currentID == 8 || currentID == 19) {
+      tagetAngle = 50;
+    } else if(currentID == 11 || currentID == 20) {
+      tagetAngle = -130.0;
+    } else if(currentID == 9 || currentID == 22) {
+      tagetAngle = 130.0;
+    }
+
     //Pulls offsets
-    double ySpeed = 5.0 * this.m_lastKnownPose.getX();
-    double xSpeed = -5.0 * (limelightToApriltagZ - this.m_lastKnownPose.getZ());
+    double ySpeed = 7.0 * this.m_lastKnownPose.getX();
+    double xSpeed = -7.0 * (limelightToApriltagZ - this.m_lastKnownPose.getZ());
+
+    //Check if with in error, if so, zero them
+    if(Math.abs(this.m_lastKnownPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance) {
+      ySpeed = 0.0;
+    }
+    if(Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance) {
+      xSpeed = 0.0;
+    }
 
     //limits max speed
     xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0);
     ySpeed = MathUtil.clamp(ySpeed, -1.0, 1.0);
+    tagetAngle = MathUtil.clamp(tagetAngle, -1.0, 1.0);
 
-    this.m_drive.headingDrive(TakeOverTelopConstants.kMaxSpeed, xSpeed, ySpeed, 0.0, 0.0, false);
+    SmartDashboard.putString("Front Limelight Command OUT", "xSpeed: " + xSpeed + ", ySpeed: " + ySpeed + ", rot: " + tagetAngle);
+
+    this.m_drive.headingDrive(TakeOverTelopConstants.kMaxSpeed, xSpeed, ySpeed, Math.cos(tagetAngle), Math.sin(tagetAngle), false);
   }
 
   // Called once the command ends or is interrupted.

@@ -42,7 +42,7 @@ public class GipperPivotToHomeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle() - GripperPivotConstants.kCoralStationAngle);
+    double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle());
 
     if(angleError < GripperPivotConstants.kAngleErrorAllowed) {
 

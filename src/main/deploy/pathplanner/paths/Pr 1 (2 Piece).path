@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.0,
+        "x": 7.144672131147541,
         "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.327692807269057,
-        "y": 4.002879207308807
+        "x": 6.472364919732817,
+        "y": 4.002874841255755
       },
       "isLocked": false,
       "linkedName": null
@@ -48,7 +48,7 @@
   "folder": "Center 2 Piece Paths",
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 135.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

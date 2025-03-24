@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -64,6 +65,9 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
 
     double leftOutput = -this.m_leftExtensionPIDController.calculate(deltaLength);
     double rightOutput = -this.m_rightExtensionPIDController.calculate(deltaLength);
+
+    leftOutput = MathUtil.clamp(leftOutput, -0.5, 0.5);
+    rightOutput = MathUtil.clamp(rightOutput, -0.5, 0.5);
 
     this.m_leftExtensionMotor.set(leftOutput);
     this.m_rightExtensionMotor.set(rightOutput);

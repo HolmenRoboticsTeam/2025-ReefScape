@@ -5,17 +5,18 @@
 package frc.robot.Commands.GripperPivotCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.GlobalVariables;
 import frc.robot.Constants.GripperPivotConstants;
 import frc.robot.subsystems.GripperPivotSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class GripperPivotToLevel1Command extends Command {
+public class GripperPivotToLowerAlgeaRemoveCommand extends Command {
 
   private GripperPivotSubsystem m_gripperPivot;
   private boolean m_allowEndCondition;
 
   /** Creates a new GripperPivotToLevel1Command. */
-  public GripperPivotToLevel1Command(GripperPivotSubsystem gripperPivot, boolean allowEndCondition) {
+  public GripperPivotToLowerAlgeaRemoveCommand(GripperPivotSubsystem gripperPivot, boolean allowEndCondition) {
 
     this.m_gripperPivot = gripperPivot;
     this.m_allowEndCondition = allowEndCondition;
@@ -31,7 +32,7 @@ public class GripperPivotToLevel1Command extends Command {
   @Override
   public void execute() {
 
-    this.m_gripperPivot.setTargetAngle(GripperPivotConstants.kLevel1Angle);
+    this.m_gripperPivot.setTargetAngle(GripperPivotConstants.kLevel2Angle - 1.0);
 
   }
 
@@ -42,9 +43,13 @@ public class GripperPivotToLevel1Command extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle() - GripperPivotConstants.kLevel1Angle);
+    double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle() - GripperPivotConstants.kLevel2Angle);
 
-    return angleError < GripperPivotConstants.kAngleErrorAllowed + 0.5 &&
-    this.m_allowEndCondition;
+    if(angleError < GripperPivotConstants.kAngleErrorAllowed) {
+
+      GlobalVariables.gripperAtSetpoint = true;
+    }
+
+    return angleError < GripperPivotConstants.kAngleErrorAllowed && this.m_allowEndCondition;
   }
 }

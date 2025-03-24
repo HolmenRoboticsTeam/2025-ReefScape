@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Just Forward"
+            "pathName": "Pr 1 (2 Piece)"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Place Level 3 (April Tag)"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Testing Autos",
+  "folder": null,
   "choreoAuto": false
 }

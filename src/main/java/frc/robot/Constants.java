@@ -134,7 +134,7 @@ public final class Constants {
     public static final double kHomeAngle = Rotation2d.fromDegrees(25.0).getRadians();
 
     public static final double kLevel1Angle = Rotation2d.fromDegrees(0).getRadians();
-    public static final double kLevel2Angle = Rotation2d.fromDegrees(57.643).getRadians();
+    public static final double kLevel2Angle = Rotation2d.fromDegrees(62.0).getRadians();
     public static final double kLevel3Angle = Rotation2d.fromDegrees(75.0).getRadians();
     public static final double kLevel4Angle = Rotation2d.fromDegrees(80.0).getRadians();
     public static final double kCoralStationAngle = Rotation2d.fromDegrees(75.0).getRadians();
@@ -153,10 +153,10 @@ public final class Constants {
     public static final int kMaxCurrentLimit = 60;
     public static final double kMaxVoltage = 12;
 
-    public static final double kMaxVelocity = 0.0005;
+    public static final double kMaxVelocity = 0.000000000005;
     public static final double kMaxAcceleration = 0.0001;
 
-    public static final double kExtensionP = 2.4;
+    public static final double kExtensionP = 2.7;
     public static final double kExtensionI = 0.0;
     public static final double kExtensionD = 0.0;
 
@@ -164,13 +164,13 @@ public final class Constants {
     public static final double kHomeExtension = 0.01;
 
     //These 2 are mid points to stop gravity from slamming the elevator into the end
-    public static final double kPreHomeExtension = 0.39;
-    public static final double kFarHomeExtension = 0.79;
+    public static final double kPreHomeExtension = 0.28;
+    public static final double kFarHomeExtension = 0.48;
 
     public static final double kLevel1Extend = 0.0;
-    public static final double kLevel2Extend = 0.255;
+    public static final double kLevel2Extend = 0.3;
     public static final double kLevel3Extend = 0.68;
-    public static final double kLevel4Extend = 1.25;
+    public static final double kLevel4Extend = 1.19;
     public static final double kCoralStationExtend = 0.03;
 
     public static final double kSecondStageTrip = 0.75;
@@ -188,7 +188,7 @@ public final class Constants {
     public static final double kMaxVelocity = 0.0005;
     public static final double kMaxAcceleration = 0.0001;
 
-    public static final double kPivotP = 0.3;
+    public static final double kPivotP = 0.4;
     public static final double kPivotI = 0.0;
     public static final double kPivotD = 0.0;
 
@@ -199,8 +199,8 @@ public final class Constants {
     public static final double kLevel1Angle = Rotation2d.fromDegrees(90.0).getRadians();
     public static final double kLevel2Angle = Rotation2d.fromDegrees(175.0 + kSlackError).getRadians();
     public static final double kLevel3Angle = Rotation2d.fromDegrees(185.0 + kSlackError).getRadians();
-    public static final double kLevel4Angle = Rotation2d.fromDegrees(185.0 + kSlackError).getRadians();
-    public static final double kCoralStationAngle = Rotation2d.fromDegrees(27.0).getRadians();
+    public static final double kLevel4Angle = Rotation2d.fromDegrees(188.0 + kSlackError).getRadians();
+    public static final double kCoralStationAngle = Rotation2d.fromDegrees(30.0).getRadians();
 
     public static final double kAngleErrorAllowed = 0.1;
   }
@@ -218,12 +218,13 @@ public final class Constants {
   public static final class TakeOverTelopConstants {
 
     public static final double kMaxSpeed = 0.333;
-    public static final double kMaxErrorDistance = 0.005; //Meters
-    public static final double kFrontLimeLightToFrame = 0.36; //Meters
+    public static final double kMaxRotationSpeed = 0.1;
+    public static final double kMaxErrorDistance = 0.05; //Meters
+    public static final double kFrontLimeLightToFrame = 0.37; //Meters
     public static final double kBackLimeLightToFrame = 0.05; //Meters
 
     //Y Distance is the forward distance when the robot is facing the april tag
-    public static final double kReefYDistance = 0.1; //Meters (from frame to reef wall)
+    public static final double kReefYDistance = 0.09; //Meters (from frame to reef wall)
   }
 
   public static final class NeoMotorConstants {
