@@ -38,7 +38,7 @@ public class GripperPivotSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    SmartDashboard.putNumber("CurrentGripperAngle", getCurrentAngle());
+    SmartDashboard.putNumber("CurrentGripperAngle", Math.toDegrees(getCurrentAngle()));
   }
 
   public void setTargetAngle(double targetAngle) {

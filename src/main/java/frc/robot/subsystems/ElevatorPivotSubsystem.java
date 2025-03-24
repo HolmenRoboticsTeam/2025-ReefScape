@@ -61,7 +61,7 @@ public class ElevatorPivotSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("CurrentPivotAngle", this.getCurrentAngle());
+    SmartDashboard.putNumber("CurrentPivotAngle", Math.toDegrees(this.getCurrentAngle()));
 
   }
 

@@ -131,13 +131,15 @@ public final class Constants {
     public static final double kPivotI = 0.0;
     public static final double kPivotD = 0.0;
 
-    public static final double kHomeAngle = Rotation2d.fromDegrees(25.0).getRadians();
+    public static final double kHomeAngle = Rotation2d.fromDegrees(30).getRadians();
 
     public static final double kLevel1Angle = Rotation2d.fromDegrees(0).getRadians();
     public static final double kLevel2Angle = Rotation2d.fromDegrees(62.0).getRadians();
     public static final double kLevel3Angle = Rotation2d.fromDegrees(75.0).getRadians();
-    public static final double kLevel4Angle = Rotation2d.fromDegrees(80.0).getRadians();
-    public static final double kCoralStationAngle = Rotation2d.fromDegrees(75.0).getRadians();
+    public static final double kLevel4Angle = Rotation2d.fromDegrees(82.0).getRadians();
+    public static final double kCoralStationAngle = Rotation2d.fromDegrees(70.0).getRadians();
+
+    public static final double kUpperAlgeaRemove = Rotation2d.fromDegrees(70.0).getRadians();
 
     public static final double kAngleErrorAllowed = 0.1;
 
@@ -197,17 +199,20 @@ public final class Constants {
     public static final double kHomeAngle = Rotation2d.fromDegrees(0.0).getRadians();
 
     public static final double kLevel1Angle = Rotation2d.fromDegrees(90.0).getRadians();
-    public static final double kLevel2Angle = Rotation2d.fromDegrees(175.0 + kSlackError).getRadians();
+    public static final double kLevel2Angle = Rotation2d.fromDegrees(170.0 + kSlackError).getRadians();
     public static final double kLevel3Angle = Rotation2d.fromDegrees(185.0 + kSlackError).getRadians();
-    public static final double kLevel4Angle = Rotation2d.fromDegrees(188.0 + kSlackError).getRadians();
-    public static final double kCoralStationAngle = Rotation2d.fromDegrees(30.0).getRadians();
+    public static final double kLevel4Angle = Rotation2d.fromDegrees(179.0 + kSlackError).getRadians();
+    public static final double kCoralStationAngle = Rotation2d.fromDegrees(27.0).getRadians();
+
+    public static final double kUpperAlgeaRemove = Rotation2d.fromDegrees(160.0 + kSlackError).getRadians();
+    public static final double kLowerAlgeaRemove = Rotation2d.fromDegrees(160.0 + kSlackError).getRadians();
 
     public static final double kAngleErrorAllowed = 0.1;
   }
 
   public static final class GripperIntakeConstants {
 
-    public static final double kMaxSpeed = 0.50;
+    public static final double kMaxSpeed = 0.66;
 
     public static final int kMotorID = 15;
 
@@ -219,9 +224,9 @@ public final class Constants {
 
     public static final double kMaxSpeed = 0.333;
     public static final double kMaxRotationSpeed = 0.1;
-    public static final double kMaxErrorDistance = 0.05; //Meters
-    public static final double kFrontLimeLightToFrame = 0.37; //Meters
-    public static final double kBackLimeLightToFrame = 0.05; //Meters
+    public static final double kMaxErrorDistance = 0.03; //Meters
+    public static final double kFrontLimeLightToFrame = 0.38; //Meters
+    public static final double kBackLimeLightToFrame = 0.06; //Meters
 
     //Y Distance is the forward distance when the robot is facing the april tag
     public static final double kReefYDistance = 0.09; //Meters (from frame to reef wall)

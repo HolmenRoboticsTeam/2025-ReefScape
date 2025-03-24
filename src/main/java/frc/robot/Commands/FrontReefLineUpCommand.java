@@ -52,22 +52,22 @@ public class FrontReefLineUpCommand extends Command {
     // Set goal rotation
     double tagetAngle = 0.0;
 
-    if(currentID == 7 || currentID == 18) {
-      tagetAngle = 0.0;
-    } else if(currentID == 10 || currentID == 21) {
-      tagetAngle = 180.0;
-    } else if(currentID == 6 || currentID == 17) {
-      tagetAngle = -50.0;
-    } else if(currentID == 8 || currentID == 19) {
-      tagetAngle = 50;
-    } else if(currentID == 11 || currentID == 20) {
-      tagetAngle = -130.0;
-    } else if(currentID == 9 || currentID == 22) {
-      tagetAngle = 130.0;
-    }
+    // if(currentID == 7 || currentID == 18) {
+    //   tagetAngle = 0.0;
+    // } else if(currentID == 10 || currentID == 21) {
+    //   tagetAngle = 180.0;
+    // } else if(currentID == 6 || currentID == 17) {
+    //   tagetAngle = -50.0;
+    // } else if(currentID == 8 || currentID == 19) {
+    //   tagetAngle = 50;
+    // } else if(currentID == 11 || currentID == 20) {
+    //   tagetAngle = -130.0;
+    // } else if(currentID == 9 || currentID == 22) {
+    //   tagetAngle = 130.0;
+    // }
 
     //Pulls offsets
-    double ySpeed = 7.0 * this.m_lastKnownPose.getX();
+    double ySpeed = 8.0 * this.m_lastKnownPose.getX();
     double xSpeed = -7.0 * (limelightToApriltagZ - this.m_lastKnownPose.getZ());
 
     //Check if with in error, if so, zero them

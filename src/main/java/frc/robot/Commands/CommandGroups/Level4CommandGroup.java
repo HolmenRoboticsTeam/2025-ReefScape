@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Commands.GripperDropCommand;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel4Command;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToLevel4Command;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel4Command;
@@ -46,8 +45,7 @@ public class Level4CommandGroup extends SequentialCommandGroup {
       ),
 
       new ParallelCommandGroup(
-        new GripperDropCommand(gripperIntake),
-        new GripperPivotToLevel4Command(gripperPivot, false), //Group waits on this command
+        new GripperPivotToLevel4Command(gripperPivot, false),
         new ElevatorExtensionToLevel4Command(elevatorExtension, false),
         new ElevatorPivotToLevel4Command(elevatorPivot, false)
       )

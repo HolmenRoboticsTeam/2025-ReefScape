@@ -23,6 +23,7 @@ import frc.robot.Commands.CommandGroups.Level3DownCommandGroup;
 import frc.robot.Commands.CommandGroups.Level4CommandGroup;
 import frc.robot.Commands.CommandGroups.Level4DownCommandGroup;
 import frc.robot.Commands.CommandGroups.LowerAlgeaRemoveCommandGroup;
+import frc.robot.Commands.CommandGroups.UpperAlgeaRemoveCommandGroup;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToHomeCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToHomeCommand;
 import frc.robot.Commands.GripperPivotCommands.GipperPivotToHomeCommand;
@@ -65,8 +66,8 @@ public class RobotContainer {
   private final JoystickButton m_level3Place = new JoystickButton(m_buttonBox, 5);
   private final JoystickButton m_level4Place = new JoystickButton(m_buttonBox,6);
   private final JoystickButton m_coralStationGrab = new JoystickButton(m_buttonBox, 3);
-  private final JoystickButton m_apriltagBackReef = new JoystickButton(m_buttonBox, 7);
   private final JoystickButton m_apriltagFrontReef = new JoystickButton(m_buttonBox, 2);
+  private final JoystickButton m_upperAlgeaRemove = new JoystickButton(m_buttonBox, 7);
   private final JoystickButton m_lowerAlgeaRemove = new JoystickButton(m_buttonBox, 1);
 
 
@@ -173,14 +174,14 @@ public class RobotContainer {
       this.m_drive
     ));
 
-    this.m_driverController.y().whileTrue(new RunCommand(
+    this.m_driverController.x().whileTrue(new RunCommand(
       () -> m_drive.setX(),
-       this.m_drive
+      this.m_drive
     ));
 
     //Player Station line up
 
-    this.m_driverController.x().whileTrue(new RunCommand(
+    this.m_driverController.leftStick().whileTrue(new RunCommand(
             () -> this.m_drive.headingDrive(
                 0.0,
                 0.0,
@@ -192,7 +193,7 @@ public class RobotContainer {
             this.m_drive
     ));
 
-    this.m_driverController.b().whileTrue(new RunCommand(
+    this.m_driverController.rightStick().whileTrue(new RunCommand(
             () -> this.m_drive.headingDrive(
                 0.0,
                 0.0,
@@ -204,52 +205,9 @@ public class RobotContainer {
             this.m_drive
     ));
 
-    //Reef Line up
-
-    this.m_driverController.povDown().whileTrue(new RunCommand(
-      () -> this.m_drive.headingDrive(
-          0.0,
-          0.0,
-          0.0,
-          Math.cos(Math.toRadians(-130.0)),
-          Math.sin(Math.toRadians(-130.0)),
-          true
-          ),
-      this.m_drive
-));
-    this.m_driverController.povRight().whileTrue(new RunCommand(
-      () -> this.m_drive.headingDrive(
-          0.0,
-          0.0,
-          0.0,
-          Math.cos(Math.toRadians(-50.0)),
-          Math.sin(Math.toRadians(-50.0)),
-          true
-          ),
-      this.m_drive
-));
-    this.m_driverController.povUp().whileTrue(new RunCommand(
-      () -> this.m_drive.headingDrive(
-          0.0,
-          0.0,
-          0.0,
-          Math.cos(Math.toRadians(130.0)),
-          Math.sin(Math.toRadians(130.0)),
-          true
-          ),
-      this.m_drive
-));
-    this.m_driverController.povLeft().whileTrue(new RunCommand(
-      () -> this.m_drive.headingDrive(
-          0.0,
-          0.0,
-          0.0,
-          Math.cos(Math.toRadians(50.0)),
-          Math.sin(Math.toRadians(50.0)),
-          true
-          ),
-      this.m_drive
-));
+    this.m_driverController.leftTrigger(0.5).whileTrue(
+      new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront)
+    );
 
     this.m_level2Place.whileTrue(
       new Level2CommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
@@ -277,8 +235,12 @@ public class RobotContainer {
       new Level4DownCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
     ); 
 
-    this.m_apriltagBackReef.whileTrue(
-      new BackReefLineUpCommand(this.m_drive, this.m_limelightBack)
+    this.m_upperAlgeaRemove.whileTrue(
+      new UpperAlgeaRemoveCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
+    );
+
+    this.m_upperAlgeaRemove.onFalse(
+      new Level3DownCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
     );
 
     this.m_apriltagFrontReef.whileTrue(

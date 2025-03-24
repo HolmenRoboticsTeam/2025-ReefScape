@@ -10,13 +10,13 @@ import frc.robot.Constants.GripperPivotConstants;
 import frc.robot.subsystems.GripperPivotSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class GripperPivotToLowerAlgeaRemoveCommand extends Command {
+public class GripperPivotToUpperAlgeaRemoveCommand extends Command {
 
   private GripperPivotSubsystem m_gripperPivot;
   private boolean m_allowEndCondition;
 
   /** Creates a new GripperPivotToLevel1Command. */
-  public GripperPivotToLowerAlgeaRemoveCommand(GripperPivotSubsystem gripperPivot, boolean allowEndCondition) {
+  public GripperPivotToUpperAlgeaRemoveCommand(GripperPivotSubsystem gripperPivot, boolean allowEndCondition) {
 
     this.m_gripperPivot = gripperPivot;
     this.m_allowEndCondition = allowEndCondition;
@@ -32,7 +32,7 @@ public class GripperPivotToLowerAlgeaRemoveCommand extends Command {
   @Override
   public void execute() {
 
-    this.m_gripperPivot.setTargetAngle(GripperPivotConstants.kLowerAlgeaRemove);
+    this.m_gripperPivot.setTargetAngle(GripperPivotConstants.kUpperAlgeaRemove);
 
   }
 
@@ -43,7 +43,7 @@ public class GripperPivotToLowerAlgeaRemoveCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle() - GripperPivotConstants.kLowerAlgeaRemove);
+    double angleError = Math.abs(this.m_gripperPivot.getCurrentAngle() - GripperPivotConstants.kUpperAlgeaRemove);
 
     if(angleError < GripperPivotConstants.kAngleErrorAllowed) {
 
