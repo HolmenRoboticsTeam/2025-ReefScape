@@ -36,14 +36,16 @@ public class ElevatorExtensionToHomeCommand extends Command {
   @Override
   public void execute() {
 
-    //mid slowing points to stop the elevator from slamming
-    if(this.m_elevatorExtension.getCurrentExtension() > ElevatorExtensionConstants.kFarHomeExtension + 0.2) {
-      this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kFarHomeExtension);
-    } else if(this.m_elevatorExtension.getCurrentExtension() > ElevatorExtensionConstants.kPreHomeExtension + 0.2) {
-      this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kPreHomeExtension);
-    } else {
-      this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kHomeExtension);
-    }
+    //mid slowing points to stop the elevator from slamming (Should not be needed)
+    // if(this.m_elevatorExtension.getCurrentExtension() > ElevatorExtensionConstants.kFarHomeExtension + 0.2) {
+    //   this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kFarHomeExtension);
+    // } else if(this.m_elevatorExtension.getCurrentExtension() > ElevatorExtensionConstants.kPreHomeExtension + 0.2) {
+    //   this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kPreHomeExtension);
+    // } else {
+    //   this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kHomeExtension);
+    // }
+
+    this.m_elevatorExtension.setTargetExtension(ElevatorExtensionConstants.kHomeExtension);
 
   }
 
@@ -56,7 +58,7 @@ public class ElevatorExtensionToHomeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double positionError = Math.abs(this.m_elevatorExtension.getCurrentExtension() - ElevatorExtensionConstants.kLevel1Extend);
+    double positionError = Math.abs(this.m_elevatorExtension.getCurrentExtension() - ElevatorExtensionConstants.kHomeExtension);
 
     return positionError < ElevatorExtensionConstants.kExtensionErrorAllowed &&
     this.m_allowEndCondition;

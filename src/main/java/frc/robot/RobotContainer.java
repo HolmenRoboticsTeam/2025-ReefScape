@@ -62,13 +62,13 @@ public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   private final XboxController m_buttonBox = new XboxController(OIConstants.kButtonBoxControllerPort);
 
-  private final JoystickButton m_level2Place = new JoystickButton(m_buttonBox, 4);
-  private final JoystickButton m_level3Place = new JoystickButton(m_buttonBox, 5);
-  private final JoystickButton m_level4Place = new JoystickButton(m_buttonBox,6);
-  private final JoystickButton m_coralStationGrab = new JoystickButton(m_buttonBox, 3);
-  private final JoystickButton m_apriltagFrontReef = new JoystickButton(m_buttonBox, 2);
-  private final JoystickButton m_upperAlgeaRemove = new JoystickButton(m_buttonBox, 7);
-  private final JoystickButton m_lowerAlgeaRemove = new JoystickButton(m_buttonBox, 1);
+  private final JoystickButton m_level2Place = new JoystickButton(this.m_buttonBox, 4);
+  private final JoystickButton m_level3Place = new JoystickButton(this.m_buttonBox, 5);
+  private final JoystickButton m_level4Place = new JoystickButton(this.m_buttonBox,6);
+  private final JoystickButton m_coralStationGrab = new JoystickButton(this.m_buttonBox, 3);
+  private final JoystickButton m_apriltagFrontReef = new JoystickButton(this.m_buttonBox, 7);
+  private final JoystickButton m_upperAlgeaRemove = new JoystickButton(this.m_buttonBox, 2);
+  private final JoystickButton m_lowerAlgeaRemove = new JoystickButton(this.m_buttonBox, 1);
 
 
   private final SendableChooser<Command> m_autoChooser;
@@ -107,10 +107,16 @@ public class RobotContainer {
     NamedCommands.registerCommand("Gripper Grab", new GripperGrabCommand(this.m_gripperIntake));
     NamedCommands.registerCommand("Gripper Drop", new GripperDropCommand(this.m_gripperIntake));
 
-    NamedCommands.registerCommand("Front Reef Line Up", new FrontReefLineUpCommand(m_drive, m_limelightFront));
-    NamedCommands.registerCommand("Back Reef Line Up", new BackReefLineUpCommand(m_drive, m_limelightBack));
+    NamedCommands.registerCommand("Front Reef Line Up", new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront));
+    NamedCommands.registerCommand("Back Reef Line Up", new BackReefLineUpCommand(this.m_drive, this.m_limelightBack));
 
-    NamedCommands.registerCommand("L1 Gripper", new GripperPivotToLevel1Command(this.m_gripperPivot, true));
+    NamedCommands.registerCommand("Upper Algea Remove", new UpperAlgeaRemoveCommandGroup(
+      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    ));
+
+    NamedCommands.registerCommand("Lower Algea Remove", new LowerAlgeaRemoveCommandGroup(
+      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+    ));
 
     // Configure default commands
     m_drive.setDefaultCommand(

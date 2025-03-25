@@ -71,10 +71,6 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     this.m_gyro.reset();
 
-    SmartDashboard.putNumber("P", m_steeringPIDController.getP());
-    SmartDashboard.putNumber("I", m_steeringPIDController.getI());
-    SmartDashboard.putNumber("D", m_steeringPIDController.getD());
-
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     RobotConfig config = null;

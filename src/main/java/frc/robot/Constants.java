@@ -32,7 +32,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 2.0;
+    public static final double kMaxSpeedMetersPerSecond = 4.0;
 
     public static final double kMaxAngularSpeed = 2 * Math.PI ; // radians per second
 
@@ -67,7 +67,7 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
 
     //PID Controller
-    public static final double kTurningP = 0.005;
+    public static final double kTurningP = 0.01;
     public static final double kTurningI = 0.0;
     public static final double kTurningD = 0.00025;
     public static final TrapezoidProfile.Constraints kTurningControllerConstraints = new TrapezoidProfile.Constraints(
@@ -165,9 +165,9 @@ public final class Constants {
     //All of the following are in meters
     public static final double kHomeExtension = 0.01;
 
-    //These 2 are mid points to stop gravity from slamming the elevator into the end
-    public static final double kPreHomeExtension = 0.28;
-    public static final double kFarHomeExtension = 0.48;
+    //These 2 are mid points to stop gravity from slamming the elevator into the end (Should not be needed)
+    // public static final double kPreHomeExtension = 0.28;
+    // public static final double kFarHomeExtension = 0.48;
 
     public static final double kLevel1Extend = 0.0;
     public static final double kLevel2Extend = 0.3;

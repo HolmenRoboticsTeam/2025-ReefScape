@@ -13,31 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Place Level 4"
+            "name": "Place Level 4 (April Tag)"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Pr 2 (2&3 Piece)"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Grab Coral Station"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Pr 3 (2 Piece)"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Place Level 4"
+            "pathName": "Pr 2 (1 Piece & Sweap)"
           }
         }
       ]
