@@ -27,7 +27,6 @@ import frc.robot.Commands.CommandGroups.UpperAlgeaRemoveCommandGroup;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToHomeCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToHomeCommand;
 import frc.robot.Commands.GripperPivotCommands.GipperPivotToHomeCommand;
-import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel1Command;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorExtensionSubsystem;
@@ -79,29 +78,29 @@ public class RobotContainer {
   public RobotContainer() {
 
     NamedCommands.registerCommand("Place Level 2", new Level2CommandGroup(
-      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+      this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot
     ));
     NamedCommands.registerCommand("Place Level 3", new Level3CommandGroup(
-      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+      this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot
     ));
     NamedCommands.registerCommand("Grab Coral Station", new CoralStationCommandGroup(
-      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+      this.m_elevatorPivot, this.m_gripperPivot, this.m_gripperIntake
     ));
     NamedCommands.registerCommand("Place Level 4", new Level4CommandGroup(
-      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+      this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot
     ));
 
     NamedCommands.registerCommand("Place Level 2 (April Tag)", new SequentialCommandGroup(
       new FrontReefLineUpCommand(m_drive, m_limelightFront),
-      new Level2CommandGroup(m_driverController, m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake)
+      new Level2CommandGroup(m_elevatorPivot, m_elevatorExtension, m_gripperPivot)
     ));
     NamedCommands.registerCommand("Place Level 3 (April Tag)", new SequentialCommandGroup(
       new FrontReefLineUpCommand(m_drive, m_limelightFront),
-      new Level3CommandGroup(m_driverController, m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake)
+      new Level3CommandGroup(m_elevatorPivot, m_elevatorExtension, m_gripperPivot)
     ));
     NamedCommands.registerCommand("Place Level 4 (April Tag)", new SequentialCommandGroup(
       new FrontReefLineUpCommand(m_drive, m_limelightFront),
-      new Level4CommandGroup(m_driverController, m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake)
+      new Level4CommandGroup(m_elevatorPivot, m_elevatorExtension, m_gripperPivot)
     ));
 
     NamedCommands.registerCommand("Gripper Grab", new GripperGrabCommand(this.m_gripperIntake));
@@ -111,11 +110,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("Back Reef Line Up", new BackReefLineUpCommand(this.m_drive, this.m_limelightBack));
 
     NamedCommands.registerCommand("Upper Algea Remove", new UpperAlgeaRemoveCommandGroup(
-      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+      this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     ));
 
     NamedCommands.registerCommand("Lower Algea Remove", new LowerAlgeaRemoveCommandGroup(
-      this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
+      this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake
     ));
 
     // Configure default commands
@@ -175,6 +174,18 @@ public class RobotContainer {
       new GripperDropCommand(this.m_gripperIntake)
     );
 
+    this.m_driverController.b().whileTrue(new RunCommand(
+      () -> this.m_drive.headingDrive(
+                MathUtil.applyDeadband(this.m_driverController.getRightTriggerAxis() * 0.25, 0.05),
+                MathUtil.applyDeadband(-this.m_driverController.getLeftY() * 0.25, 0.1),
+                MathUtil.applyDeadband(-this.m_driverController.getLeftX() * 0.25, 0.1),
+                MathUtil.applyDeadband(-this.m_driverController.getRightY() * 0.25, 0.1),
+                MathUtil.applyDeadband(this.m_driverController.getRightX() * 0.25, 0.1),
+                true
+                ),
+      this.m_drive
+    ));
+
     this.m_driverController.a().whileTrue(new RunCommand(
       () -> this.m_drive.zeroHeading(),
       this.m_drive
@@ -216,37 +227,37 @@ public class RobotContainer {
     );
 
     this.m_level2Place.whileTrue(
-      new Level2CommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
+      new Level2CommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
     );
     this.m_level2Place.onFalse(
-      new Level2DownCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
-    ); 
+      new Level2DownCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
+    );
 
     this.m_level3Place.whileTrue(
-      new Level3CommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
+      new Level3CommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
     );
     this.m_level3Place.onFalse(
-      new Level3DownCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
-    ); 
+      new Level3DownCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
+    );
 
     this.m_coralStationGrab.whileTrue(
-      new CoralStationCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
+      new CoralStationCommandGroup(this.m_elevatorPivot, this.m_gripperPivot, this.m_gripperIntake)
     );
 
     this.m_level4Place.whileTrue(
-      new Level4CommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
+      new Level4CommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
     );
 
     this.m_level4Place.onFalse(
-      new Level4DownCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
-    ); 
+      new Level4DownCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
+    );
 
     this.m_upperAlgeaRemove.whileTrue(
-      new UpperAlgeaRemoveCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
+      new UpperAlgeaRemoveCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
     );
 
     this.m_upperAlgeaRemove.onFalse(
-      new Level3DownCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
+      new Level3DownCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
     );
 
     this.m_apriltagFrontReef.whileTrue(
@@ -254,11 +265,11 @@ public class RobotContainer {
     );
 
     this.m_lowerAlgeaRemove.whileTrue(
-      new LowerAlgeaRemoveCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
+      new LowerAlgeaRemoveCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
     );
 
     this.m_lowerAlgeaRemove.onFalse(
-      new Level2DownCommandGroup(this.m_driverController, this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
+      new Level2DownCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
     );
 
 

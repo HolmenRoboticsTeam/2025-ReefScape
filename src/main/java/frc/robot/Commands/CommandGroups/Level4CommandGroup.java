@@ -21,8 +21,7 @@ import frc.robot.subsystems.GripperIntakeSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Level4CommandGroup extends SequentialCommandGroup {
   /** Creates a new AprilTagLevel2Command. */
-  public Level4CommandGroup(CommandXboxController controller, ElevatorPivotSubsystem elevatorPivot,
-    ElevatorExtensionSubsystem elevatorExtension, GripperPivotSubsystem gripperPivot, GripperIntakeSubsystem gripperIntake) {
+  public Level4CommandGroup(ElevatorPivotSubsystem elevatorPivot, ElevatorExtensionSubsystem elevatorExtension, GripperPivotSubsystem gripperPivot) {
 
 
     // Add your commands in the addCommands() call, e.g.

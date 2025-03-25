@@ -21,8 +21,7 @@ import frc.robot.subsystems.GripperPivotSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Level3DownCommandGroup extends SequentialCommandGroup {
   /** Creates a new Level3DownCommandGroup. */
-  public Level3DownCommandGroup(CommandXboxController controller, ElevatorPivotSubsystem elevatorPivot,
-    ElevatorExtensionSubsystem elevatorExtension, GripperPivotSubsystem gripperPivot, GripperIntakeSubsystem gripperIntake) {
+  public Level3DownCommandGroup(ElevatorPivotSubsystem elevatorPivot, ElevatorExtensionSubsystem elevatorExtension, GripperPivotSubsystem gripperPivot) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(

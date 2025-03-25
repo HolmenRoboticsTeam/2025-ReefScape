@@ -22,8 +22,7 @@ import frc.robot.subsystems.GripperPivotSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CoralStationCommandGroup extends SequentialCommandGroup {
   /** Creates a new CoralStationCommandGroup. */
-  public CoralStationCommandGroup(CommandXboxController controller, ElevatorPivotSubsystem elevatorPivot,
-    ElevatorExtensionSubsystem elevatorExtension, GripperPivotSubsystem gripperPivot, GripperIntakeSubsystem gripperIntake) {
+  public CoralStationCommandGroup(ElevatorPivotSubsystem elevatorPivot, GripperPivotSubsystem gripperPivot, GripperIntakeSubsystem gripperIntake) {
 
 
     // Add your commands in the addCommands() call, e.g.

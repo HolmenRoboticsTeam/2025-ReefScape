@@ -29,8 +29,8 @@ import frc.robot.subsystems.GripperIntakeSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class UpperAlgeaRemoveCommandGroup extends SequentialCommandGroup {
   /** Creates a new AprilTagLevel2Command. */
-  public UpperAlgeaRemoveCommandGroup(CommandXboxController controller, ElevatorPivotSubsystem elevatorPivot,
-    ElevatorExtensionSubsystem elevatorExtension, GripperPivotSubsystem gripperPivot, GripperIntakeSubsystem gripperIntake) {
+  public UpperAlgeaRemoveCommandGroup(ElevatorPivotSubsystem elevatorPivot, ElevatorExtensionSubsystem elevatorExtension,
+  GripperPivotSubsystem gripperPivot, GripperIntakeSubsystem gripperIntake) {
 
 
     // Add your commands in the addCommands() call, e.g.
