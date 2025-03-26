@@ -67,6 +67,10 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
 
     //PID Controller
+    public static final double kDrivingP = 0.04;
+    public static final double kDrivingI = 0.0;
+    public static final double kDrivingD = 0.0;
+
     public static final double kTurningP = 0.01;
     public static final double kTurningI = 0.0;
     public static final double kTurningD = 0.00025;

@@ -26,16 +26,14 @@ public class Level2DownCommandGroup extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
 
-    //Scores coral, and keeps pivot, extension, and gripper pivot up
       new ParallelDeadlineGroup(
-          new GipperPivotToHomeCommand(gripperPivot, true),
+          new GipperPivotToHomeCommand(gripperPivot, true),  //Group waits on this command
         new ElevatorExtensionToLevel2Command(elevatorExtension, false),
         new ElevatorPivotToLevel2Command(elevatorPivot, false)
       ),
 
-      //Drops gripper pivot, extension, and rumbles, but keeps pivot up
       new ParallelDeadlineGroup(
-        new ElevatorExtensionToHomeCommand(elevatorExtension, true),
+          new ElevatorExtensionToHomeCommand(elevatorExtension, true),  //Group waits on this command
         new ElevatorPivotToLevel2Command(elevatorPivot, false)
       )
 

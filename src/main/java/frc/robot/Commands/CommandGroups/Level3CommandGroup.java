@@ -30,13 +30,11 @@ public class Level3CommandGroup extends SequentialCommandGroup {
 
       new ElevatorPivotToLevel3Command(elevatorPivot, true),
 
-      //Moves extension, but keeps pivot up
       new ParallelDeadlineGroup(
-          new ElevatorExtensionToSecondStageCommand(elevatorExtension, true),
+          new ElevatorExtensionToSecondStageCommand(elevatorExtension, true),  //Group waits on this command
         new ElevatorPivotToLevel3Command(elevatorPivot, false)
       ),
 
-      //Moves gripper pivot and extension, but keeps pivot up
       new ParallelCommandGroup(
           new GripperPivotToLevel3Command(gripperPivot, false),
         new ElevatorExtensionToLevel3Command(elevatorExtension, false),

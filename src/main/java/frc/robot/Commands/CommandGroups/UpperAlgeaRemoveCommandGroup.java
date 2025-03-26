@@ -39,13 +39,11 @@ public class UpperAlgeaRemoveCommandGroup extends SequentialCommandGroup {
 
       new ElevatorPivotToUpperAgleaCommand(elevatorPivot, true),
 
-      //Moves extension, but keeps pivot up
       new ParallelDeadlineGroup(
-          new ElevatorExtensionToLevel3Command(elevatorExtension, true),
+          new ElevatorExtensionToLevel3Command(elevatorExtension, true), //Group waits on this command
         new ElevatorPivotToUpperAgleaCommand(elevatorPivot, false)
       ),
 
-      //Moves gripper pivot and extension, but keeps pivot up
       new ParallelCommandGroup(
         new GripperDropCommand(gripperIntake),
         new GripperPivotToUpperAlgeaRemoveCommand(gripperPivot, false),

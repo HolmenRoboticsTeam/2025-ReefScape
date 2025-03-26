@@ -7,12 +7,10 @@ package frc.robot.Commands.CommandGroups;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.GripperGrabCommand;
 import frc.robot.Commands.ElevatorPivotCommands.ElevatorPivotToCoralStationCommand;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToCoralStationCommand;
 import frc.robot.Commands.GripperPivotCommands.GripperPivotToLevel1Command;
-import frc.robot.subsystems.ElevatorExtensionSubsystem;
 import frc.robot.subsystems.ElevatorPivotSubsystem;
 import frc.robot.subsystems.GripperIntakeSubsystem;
 import frc.robot.subsystems.GripperPivotSubsystem;
@@ -36,13 +34,11 @@ public class CoralStationCommandGroup extends SequentialCommandGroup {
         new ElevatorPivotToCoralStationCommand(elevatorPivot, false)
       ),
 
-      //Moves gripper pivot and extension, but keeps pivot up
       new ParallelDeadlineGroup(
           new GripperPivotToCoralStationCommand(gripperPivot, true), //Group waits on this command
         new ElevatorPivotToCoralStationCommand(elevatorPivot, false)
       ),
 
-      //grabs coral, and keeps pivot, extension, and gripper pivot up
       new ParallelCommandGroup(
         new GripperGrabCommand(gripperIntake),
         new GripperPivotToCoralStationCommand(gripperPivot, false),

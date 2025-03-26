@@ -4,6 +4,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElevatorExtensionConstants;
 import frc.robot.Constants.ElevatorPivotConstants;
 import frc.robot.Constants.GripperIntakeConstants;
@@ -32,7 +33,7 @@ public final class MotorConfigs {
       drivingConfig.closedLoop
           .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
           // These are example gains you may need to them for your own robot!
-          .pid(0.04, 0, 0)
+          .pid(DriveConstants.kDrivingP, DriveConstants.kDrivingI, DriveConstants.kDrivingD)
           .velocityFF(drivingVelocityFeedForward)
           .outputRange(-1, 1);
 
@@ -48,7 +49,7 @@ public final class MotorConfigs {
       turningConfig.closedLoop
           .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
           // These are example gains you may need to them for your own robot!
-          .pid(1, 0, 0)
+          .pid(DriveConstants.kTurningP, DriveConstants.kTurningI, DriveConstants.kTurningD)
           .outputRange(-1, 1)
           // Enable PID wrap around for the turning motor. This will allow the PID
           // controller to go through 0 to get to the setpoint i.e. going from 350 degrees

@@ -83,8 +83,6 @@ public class FrontReefLineUpCommand extends Command {
     ySpeed = MathUtil.clamp(ySpeed, -1.0, 1.0);
     tagetAngle = MathUtil.clamp(tagetAngle, -1.0, 1.0);
 
-    SmartDashboard.putString("Front Limelight Command OUT", "xSpeed: " + xSpeed + ", ySpeed: " + ySpeed + ", rot: " + tagetAngle);
-
     this.m_drive.headingDrive(TakeOverTelopConstants.kMaxSpeed, xSpeed, ySpeed, Math.cos(tagetAngle), Math.sin(tagetAngle), false);
   }
 
