@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Commands.BackReefLineUpCommand;
+import frc.robot.Commands.FieldOdometryCommand;
 import frc.robot.Commands.FrontReefLineUpCommand;
 import frc.robot.Commands.GripperDropCommand;
 import frc.robot.Commands.GripperGrabCommand;
@@ -38,6 +39,7 @@ import frc.robot.subsystems.GripperPivotSubsystem;
 import frc.robot.subsystems.GripperIntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -146,6 +148,8 @@ public class RobotContainer {
     this.m_gripperPivot.setDefaultCommand(
       new GipperPivotToHomeCommand(this.m_gripperPivot, false)
     );
+
+    this.m_limelightBack.setDefaultCommand(new FieldOdometryCommand(this.m_drive, this.m_limelightFront, this.m_limelightBack));
 
     // Add a button to run pathfinding commands to SmartDashboard
     // SmartDashboard.putData("Pathfind to up-left", AutoBuilder.pathfindToPose(

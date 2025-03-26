@@ -44,7 +44,7 @@ public class FrontReefLineUpCommand extends Command {
       return;
     }
 
-    this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
+    this.m_lastKnownPose = this.m_limelight.getTargetPoseInCameraSpace();
     double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kFrontLimeLightToFrame;
 
     int currentID = this.m_limelight.getCurrentID();
@@ -93,7 +93,7 @@ public class FrontReefLineUpCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    this.m_lastKnownPose = this.m_limelight.getVisionMeasurement();
+    this.m_lastKnownPose = this.m_limelight.getTargetPoseInCameraSpace();
     double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kFrontLimeLightToFrame;
 
     double errorX = Math.abs(this.m_lastKnownPose.getX());

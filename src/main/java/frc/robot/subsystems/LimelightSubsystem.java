@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -14,9 +16,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LimelightSubsystem extends SubsystemBase {
 
   private String m_limelightName;
-
   private NetworkTable m_limelightNetworkTable;
-  private Pose3d m_visionMeasurement = new Pose3d();
+
+  private Pose3d m_targetPoseCameraSpace = new Pose3d();
+  private Pose2d m_robotPoseFieldSpace = new Pose2d();
 
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem(String key) {
@@ -30,23 +33,32 @@ public class LimelightSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    double[] targetPose = m_limelightNetworkTable.getEntry("targetpose_cameraspace").getDoubleArray(new double[7]);
+    double[] targetPoseCameraSpace = m_limelightNetworkTable.getEntry("targetpose_cameraspace").getDoubleArray(new double[7]);
     SmartDashboard.putBoolean(this.m_limelightName + " tv", this.m_limelightNetworkTable.getEntry("tv").getDouble(0.0) == 1.0);
-    SmartDashboard.putNumber(this.m_limelightName + " translationX", targetPose[0]);
+    SmartDashboard.putNumber(this.m_limelightName + " translationX", targetPoseCameraSpace[0]);
     // SmartDashboard.putNumber(this.m_limelightName + " translationY", targetPose[1]);
-    SmartDashboard.putNumber(this.m_limelightName + " translationZ", targetPose[2]);
+    SmartDashboard.putNumber(this.m_limelightName + " translationZ", targetPoseCameraSpace[2]);
     // SmartDashboard.putNumber(this.m_limelightName + " pitch", targetPose[3]);
-    SmartDashboard.putNumber(this.m_limelightName + " yaw", targetPose[4]);
+    SmartDashboard.putNumber(this.m_limelightName + " yaw", targetPoseCameraSpace[4]);
     // SmartDashboard.putNumber(this.m_limelightName + " roll", targetPose[5]);
 
-    this.m_visionMeasurement = new Pose3d(
-      targetPose[0], // X
-      targetPose[1], // Y
-      targetPose[2], // Z
+    this.m_targetPoseCameraSpace = new Pose3d(
+      targetPoseCameraSpace[0], // X
+      targetPoseCameraSpace[1], // Y
+      targetPoseCameraSpace[2], // Z
       new Rotation3d(
-        targetPose[5], // Roll
-        targetPose[3], // Pitch
-        targetPose[4]  // Yaw
+        targetPoseCameraSpace[5], // Roll
+        targetPoseCameraSpace[3], // Pitch
+        targetPoseCameraSpace[4]  // Yaw
+    ));
+
+    double[] robotPoseFieldSpace = m_limelightNetworkTable.getEntry("botpose").getDoubleArray(new double[7]);
+
+    this.m_robotPoseFieldSpace = new Pose2d(
+      robotPoseFieldSpace[0] + (17.551 / 2.0), // X
+      robotPoseFieldSpace[1] + (8.052 / 2.0), // Y
+      new Rotation2d(
+        Math.toRadians(robotPoseFieldSpace[5])  // Yaw
     ));
 
   }
@@ -56,9 +68,13 @@ public class LimelightSubsystem extends SubsystemBase {
     return this.m_limelightNetworkTable.getEntry("tv").getDouble(0.0) == 1.0;
   }
 
-  public Pose3d getVisionMeasurement() {
+  public Pose3d getTargetPoseInCameraSpace() {
 
-    return this.m_visionMeasurement;
+    return this.m_targetPoseCameraSpace;
+  }
+
+  public Pose2d getRobotPoseInFieldSpace() {
+    return this.m_robotPoseFieldSpace;
   }
 
   public int getCurrentID() {
