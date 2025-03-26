@@ -6,8 +6,11 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -130,7 +133,7 @@ public class RobotContainer {
                 MathUtil.applyDeadband(this.m_driverController.getRightX(), 0.1),
                 true
                 ),
-            this.m_drive));
+            this.m_drive)); //Group waits on this command
 
     this.m_elevatorPivot.setDefaultCommand(
       new ElevatorPivotToHomeCommand(this.m_elevatorPivot)
@@ -144,11 +147,24 @@ public class RobotContainer {
       new GipperPivotToHomeCommand(this.m_gripperPivot, false)
     );
 
+    // Add a button to run pathfinding commands to SmartDashboard
+    // SmartDashboard.putData("Pathfind to up-left", AutoBuilder.pathfindToPose(
+    //   new Pose2d(0.5, 0.5, Rotation2d.fromDegrees(0)),
+    //   new PathConstraints(
+    //     2.0, 2.0,
+    //     Math.toRadians(360), Math.toRadians(540)
+    //   ),
+    //   0
+    // ));
+
     m_autoChooser = AutoBuilder.buildAutoChooser("Back up (Default)");
+    // this.m_autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+    //   (stream) -> stream.filter(auto -> auto.getName().startsWith(""))
+    // );
 
     // Another option that allows you to specify the default auto by its name
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-    SmartDashboard.putData("Auto Chooser", m_autoChooser);
+    SmartDashboard.putData("Auto Chooser (PICK YOUR AUTO!)", this.m_autoChooser);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -166,13 +182,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    this.m_driverController.leftBumper().whileTrue(
-      new GripperGrabCommand(this.m_gripperIntake)
-    );
+    //DRIVER CONTROLLER COMMANDS:
 
-    this.m_driverController.rightBumper().whileTrue(
-      new GripperDropCommand(this.m_gripperIntake)
-    );
+    //Util buttons
 
     this.m_driverController.b().whileTrue(new RunCommand(
       () -> this.m_drive.headingDrive(
@@ -195,6 +207,16 @@ public class RobotContainer {
       () -> m_drive.setX(),
       this.m_drive
     ));
+
+    //Gripper Controls
+
+    this.m_driverController.leftBumper().whileTrue(
+      new GripperGrabCommand(this.m_gripperIntake)
+    );
+
+    this.m_driverController.rightBumper().whileTrue(
+      new GripperDropCommand(this.m_gripperIntake)
+    );
 
     //Player Station line up
 
@@ -226,6 +248,10 @@ public class RobotContainer {
       new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront)
     );
 
+    //BUTTON BOX COMMANDS:
+
+    //Preset levels postitions
+
     this.m_level2Place.whileTrue(
       new Level2CommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
     );
@@ -247,31 +273,31 @@ public class RobotContainer {
     this.m_level4Place.whileTrue(
       new Level4CommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
     );
-
     this.m_level4Place.onFalse(
       new Level4DownCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
     );
 
+    //Algea remove
+
     this.m_upperAlgeaRemove.whileTrue(
       new UpperAlgeaRemoveCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
     );
-
     this.m_upperAlgeaRemove.onFalse(
       new Level3DownCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
-    );
-
-    this.m_apriltagFrontReef.whileTrue(
-      new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront)
     );
 
     this.m_lowerAlgeaRemove.whileTrue(
       new LowerAlgeaRemoveCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot, this.m_gripperIntake)
     );
-
     this.m_lowerAlgeaRemove.onFalse(
       new Level2DownCommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)
     );
 
+    //April Tags
+
+    this.m_apriltagFrontReef.whileTrue(
+      new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront)
+    );
 
   }
 
