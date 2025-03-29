@@ -21,6 +21,7 @@ import frc.robot.Commands.GripperDropCommand;
 import frc.robot.Commands.GripperGrabCommand;
 import frc.robot.Commands.CommandGroups.CoralStationCommandGroup;
 import frc.robot.Commands.CommandGroups.Level2CommandGroup;
+import frc.robot.Commands.CommandGroups.Level2CommandGroupGripper;
 import frc.robot.Commands.CommandGroups.Level2DownCommandGroup;
 import frc.robot.Commands.CommandGroups.Level3CommandGroup;
 import frc.robot.Commands.CommandGroups.Level3DownCommandGroup;
@@ -96,22 +97,22 @@ public class RobotContainer {
     ));
 
     NamedCommands.registerCommand("Place Level 2 (April Tag)", new SequentialCommandGroup(
-      new FrontReefLineUpCommand(m_drive, m_limelightFront),
-      new Level2CommandGroup(m_elevatorPivot, m_elevatorExtension, m_gripperPivot)
+      new FrontReefLineUpCommand(m_drive, m_limelightFront, true),
+      new Level2CommandGroupGripper(m_elevatorPivot, m_elevatorExtension, m_gripperPivot, m_gripperIntake)
     ));
     NamedCommands.registerCommand("Place Level 3 (April Tag)", new SequentialCommandGroup(
-      new FrontReefLineUpCommand(m_drive, m_limelightFront),
+      new FrontReefLineUpCommand(m_drive, m_limelightFront, true),
       new Level3CommandGroup(m_elevatorPivot, m_elevatorExtension, m_gripperPivot)
     ));
     NamedCommands.registerCommand("Place Level 4 (April Tag)", new SequentialCommandGroup(
-      new FrontReefLineUpCommand(m_drive, m_limelightFront),
+      new FrontReefLineUpCommand(m_drive, m_limelightFront, true),
       new Level4CommandGroup(m_elevatorPivot, m_elevatorExtension, m_gripperPivot)
     ));
 
     NamedCommands.registerCommand("Gripper Grab", new GripperGrabCommand(this.m_gripperIntake));
     NamedCommands.registerCommand("Gripper Drop", new GripperDropCommand(this.m_gripperIntake));
 
-    NamedCommands.registerCommand("Front Reef Line Up", new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront));
+    NamedCommands.registerCommand("Front Reef Line Up", new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront, true));
     NamedCommands.registerCommand("Back Reef Line Up", new BackReefLineUpCommand(this.m_drive, this.m_limelightBack));
 
     NamedCommands.registerCommand("Upper Algea Remove", new UpperAlgeaRemoveCommandGroup(
@@ -162,13 +163,10 @@ public class RobotContainer {
     // ));
 
     m_autoChooser = AutoBuilder.buildAutoChooser("Back up (Default)");
-    // this.m_autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
-    //   (stream) -> stream.filter(auto -> auto.getName().startsWith(""))
-    // );
 
     // Another option that allows you to specify the default auto by its name
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-    SmartDashboard.putData("Auto Chooser (PICK YOUR AUTO!)", this.m_autoChooser);
+    SmartDashboard.putData("Proper Auto Chooser", this.m_autoChooser);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -249,7 +247,7 @@ public class RobotContainer {
     ));
 
     this.m_driverController.leftTrigger(0.5).whileTrue(
-      new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront)
+      new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront, false)
     );
 
     //BUTTON BOX COMMANDS:
@@ -300,7 +298,7 @@ public class RobotContainer {
     //April Tags
 
     this.m_apriltagFrontReef.whileTrue(
-      new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront)
+      new FrontReefLineUpCommand(this.m_drive, this.m_limelightFront, false)
     );
 
   }

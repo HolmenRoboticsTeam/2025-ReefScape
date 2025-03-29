@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Pr 1 (1&2 Piece)"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Place Level 4 (April Tag)"
+            "pathName": "Pr 1 (1 Piece & Double Sweep)"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Pr 2 (1 Piece & Sweap)"
+            "pathName": "Pr 2 (1 Piece & Double Sweep)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Pr 3 (1 Piece & Double Sweep)"
           }
         }
       ]

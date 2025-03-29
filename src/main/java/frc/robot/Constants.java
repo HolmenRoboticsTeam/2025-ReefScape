@@ -32,9 +32,9 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 3.0;
+    public static final double kMaxSpeedMetersPerSecond = 4.8; //Zoom Zoom
 
-    public static final double kMaxAngularSpeed = 2 * Math.PI ; // radians per second
+    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(29.0);
@@ -71,7 +71,7 @@ public final class Constants {
     public static final double kDrivingI = 0.0;
     public static final double kDrivingD = 0.0;
 
-    public static final double kTurningP = 0.01;
+    public static final double kTurningP = 0.03;
     public static final double kTurningI = 0.0;
     public static final double kTurningD = 0.00025;
     public static final TrapezoidProfile.Constraints kTurningControllerConstraints = new TrapezoidProfile.Constraints(
@@ -137,13 +137,13 @@ public final class Constants {
 
     public static final double kHomeAngle = Rotation2d.fromDegrees(30).getRadians();
 
-    public static final double kLevel1Angle = Rotation2d.fromDegrees(0).getRadians();
-    public static final double kLevel2Angle = Rotation2d.fromDegrees(62.0).getRadians();
-    public static final double kLevel3Angle = Rotation2d.fromDegrees(75.0).getRadians();
-    public static final double kLevel4Angle = Rotation2d.fromDegrees(82.0).getRadians();
-    public static final double kCoralStationAngle = Rotation2d.fromDegrees(70.0).getRadians();
+    public static double kLevel1Angle = Rotation2d.fromDegrees(0).getRadians();
+    public static double kLevel2Angle = Rotation2d.fromDegrees(62.0).getRadians();
+    public static double kLevel3Angle = Rotation2d.fromDegrees(75.0).getRadians();
+    public static double kLevel4Angle = Rotation2d.fromDegrees(82.0).getRadians();
+    public static double kCoralStationAngle = Rotation2d.fromDegrees(74.0).getRadians();
 
-    public static final double kUpperAlgeaRemove = Rotation2d.fromDegrees(70.0).getRadians();
+    public static double kUpperAlgeaRemove = Rotation2d.fromDegrees(67.0).getRadians();
 
     public static final double kAngleErrorAllowed = 0.1;
 
@@ -173,15 +173,15 @@ public final class Constants {
     // public static final double kPreHomeExtension = 0.28;
     // public static final double kFarHomeExtension = 0.48;
 
-    public static final double kLevel1Extend = 0.0;
-    public static final double kLevel2Extend = 0.3;
-    public static final double kLevel3Extend = 0.68;
-    public static final double kLevel4Extend = 1.19;
-    public static final double kCoralStationExtend = 0.03;
+    public static double kLevel1Extend = 0.0;
+    public static double kLevel2Extend = 0.3;
+    public static double kLevel3Extend = 0.68;
+    public static double kLevel4Extend = 1.19;
+    public static double kCoralStationExtend = 0.03;
 
-    public static final double kSecondStageTrip = 0.75;
+    public static double kSecondStageTrip = 0.75;
 
-    public static final double kExtensionErrorAllowed = 0.05;
+    public static final double kExtensionErrorAllowed = 0.1;
   }
 
   public static final class GripperPivotConstants {
@@ -202,18 +202,17 @@ public final class Constants {
 
     public static final double kHomeAngle = Rotation2d.fromDegrees(0.0).getRadians();
 
-    public static final double kLevel1Angle = Rotation2d.fromDegrees(90.0).getRadians();
-    public static final double kLevel2Angle = Rotation2d.fromDegrees(170.0 + kSlackError).getRadians();
-    public static final double kLevel3Angle = Rotation2d.fromDegrees(182.0 + kSlackError).getRadians();
-    public static final double kLevel4Angle = Rotation2d.fromDegrees(175.0 + kSlackError).getRadians();
-    public static final double kCoralStationAngle = Rotation2d.fromDegrees(27.0).getRadians();
+    public static double kLevel1Angle = Rotation2d.fromDegrees(90.0).getRadians();
+    public static double kLevel2Angle = Rotation2d.fromDegrees(166.0 + kSlackError).getRadians();
+    public static double kLevel3Angle = Rotation2d.fromDegrees(182.0 + kSlackError).getRadians();
+    public static double kLevel4Angle = Rotation2d.fromDegrees(175.0 + kSlackError).getRadians();
+    public static double kCoralStationAngle = Rotation2d.fromDegrees(30.0).getRadians();
 
-    public static final double kUpperAlgeaRemove = Rotation2d.fromDegrees(160.0 + kSlackError).getRadians();
-    public static final double kLowerAlgeaRemove = Rotation2d.fromDegrees(160.0 + kSlackError).getRadians();
+    public static double kUpperAlgeaRemove = Rotation2d.fromDegrees(157.0 + kSlackError).getRadians();
+    public static double kLowerAlgeaRemove = Rotation2d.fromDegrees(157.0 + kSlackError).getRadians();
 
     public static final double kAngleErrorAllowed = 0.1;
   }
-
   public static final class GripperIntakeConstants {
 
     public static final double kMaxSpeed = 0.66;
@@ -226,19 +225,22 @@ public final class Constants {
 
   public static final class TakeOverTelopConstants {
 
-    public static final double kMaxSpeed = 0.333;
-    public static final double kMaxRotationSpeed = 0.1;
-    public static final double kMaxErrorDistance = 0.03; //Meters
+    public static final double kMaxSpeed = 0.0;
+    public static final double kMaxErrorDistance = 0.05; //Meters
+    public static final double kMaxCommandEndError = 0.1;
+
     public static final double kFrontLimeLightToFrame = 0.38; //Meters
     public static final double kBackLimeLightToFrame = 0.06; //Meters
 
-    //Y Distance is the forward distance when the robot is facing the april tag
-    public static final double kReefYDistance = 0.09; //Meters (from frame to reef wall)
+    //X Distance is the forward distance when the robot is facing the april tag
+    public static final double kReefXDistance = 0.15; //Meters (from frame to reef wall)
+    public static final double kReefYDistance = 0.0127; //Meters
   }
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
 }
 
 

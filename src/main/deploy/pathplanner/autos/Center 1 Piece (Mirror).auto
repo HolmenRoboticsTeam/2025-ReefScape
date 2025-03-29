@@ -7,25 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Twist pt1"
+            "pathName": "Pr 1 (1 Piece & Double Sweep) (Mirror)"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Twist pt2"
+            "name": "Place Level 2 (April Tag)"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Testing Autos",
+  "folder": null,
   "choreoAuto": false
 }

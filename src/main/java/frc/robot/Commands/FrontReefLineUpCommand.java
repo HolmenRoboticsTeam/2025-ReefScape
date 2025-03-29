@@ -20,13 +20,17 @@ public class FrontReefLineUpCommand extends Command {
 
   private Pose3d m_lastKnownPose;
 
+  private boolean m_allowEndCondition;
+
   /** Creates a new LimelightReefLevel4. */
-  public FrontReefLineUpCommand(DriveSubsystem drive, LimelightSubsystem limelight) {
+  public FrontReefLineUpCommand(DriveSubsystem drive, LimelightSubsystem limelight, boolean allowEndCondition) {
 
     this.m_drive = drive;
     this.m_limelight = limelight;
 
     this.m_lastKnownPose = null;
+
+    this.m_allowEndCondition = allowEndCondition;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive, limelight);
   }
@@ -41,37 +45,48 @@ public class FrontReefLineUpCommand extends Command {
 
     if(!this.m_limelight.hasValidTarget()) {
       //No target found then stop
+      this.m_drive.drive(0, 0, 0, false);
       return;
     }
 
     this.m_lastKnownPose = this.m_limelight.getTargetPoseInCameraSpace();
-    double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kFrontLimeLightToFrame;
+    double limelightToApriltagZ = TakeOverTelopConstants.kReefXDistance + TakeOverTelopConstants.kFrontLimeLightToFrame;
 
     int currentID = this.m_limelight.getCurrentID();
 
     // Set goal rotation
-    double tagetAngle = 0.0;
+    double targetAngle = 0.0;
 
-    // if(currentID == 7 || currentID == 18) {
-    //   tagetAngle = 0.0;
-    // } else if(currentID == 10 || currentID == 21) {
-    //   tagetAngle = 180.0;
-    // } else if(currentID == 6 || currentID == 17) {
-    //   tagetAngle = -50.0;
-    // } else if(currentID == 8 || currentID == 19) {
-    //   tagetAngle = 50;
-    // } else if(currentID == 11 || currentID == 20) {
-    //   tagetAngle = -130.0;
-    // } else if(currentID == 9 || currentID == 22) {
-    //   tagetAngle = 130.0;
-    // }
+    if(currentID == 7 || currentID == 18) {
+      targetAngle = 0.0;
+    } else if(currentID == 10 || currentID == 21) {
+      targetAngle = 180.0;
+    } else if(currentID == 8 || currentID == 17) {
+      targetAngle = -50.0;
+    } else if(currentID == 6 || currentID == 19) {
+      targetAngle = 50;
+    } else if(currentID == 9 || currentID == 20) {
+      targetAngle = -130.0;
+    } else if(currentID == 11 || currentID == 22) {
+      targetAngle = 130.0;
+    }
+    
+    targetAngle = Math.toRadians(targetAngle);
 
     //Pulls offsets
-    double ySpeed = 8.0 * this.m_lastKnownPose.getX();
+    double ySpeed = 7.0 * (TakeOverTelopConstants.kReefYDistance + this.m_lastKnownPose.getX());
     double xSpeed = -7.0 * (limelightToApriltagZ - this.m_lastKnownPose.getZ());
 
+    // // When both speeds are too low to move, increase them
+    if(Math.abs(TakeOverTelopConstants.kReefYDistance + this.m_lastKnownPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance &&
+    Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance) {
+
+      xSpeed *= 3.0;
+      ySpeed *= 3.0;
+    }
+
     //Check if with in error, if so, zero them
-    if(Math.abs(this.m_lastKnownPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance) {
+    if(Math.abs(TakeOverTelopConstants.kReefYDistance + this.m_lastKnownPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance) {
       ySpeed = 0.0;
     }
     if(Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance) {
@@ -81,9 +96,10 @@ public class FrontReefLineUpCommand extends Command {
     //limits max speed
     xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0);
     ySpeed = MathUtil.clamp(ySpeed, -1.0, 1.0);
-    tagetAngle = MathUtil.clamp(tagetAngle, -1.0, 1.0);
 
-    this.m_drive.headingDrive(TakeOverTelopConstants.kMaxSpeed, xSpeed, ySpeed, Math.cos(tagetAngle), Math.sin(tagetAngle), false);
+    SmartDashboard.putString("To Drive", "xSpeed: " + xSpeed + ", ySpeed: " + ySpeed + ", rot: " + targetAngle);
+
+    this.m_drive.headingDrive(TakeOverTelopConstants.kMaxSpeed, xSpeed, ySpeed, Math.cos(targetAngle), Math.sin(targetAngle), false);
   }
 
   // Called once the command ends or is interrupted.
@@ -94,13 +110,14 @@ public class FrontReefLineUpCommand extends Command {
   @Override
   public boolean isFinished() {
     this.m_lastKnownPose = this.m_limelight.getTargetPoseInCameraSpace();
-    double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kFrontLimeLightToFrame;
+    double limelightToApriltagZ = TakeOverTelopConstants.kReefXDistance + TakeOverTelopConstants.kFrontLimeLightToFrame;
 
-    double errorX = Math.abs(this.m_lastKnownPose.getX());
+    double errorX = Math.abs(TakeOverTelopConstants.kReefYDistance + this.m_lastKnownPose.getX());
     double errorY = Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ());
 
     return
-    errorX < TakeOverTelopConstants.kMaxErrorDistance && // Left-Right offset in with error
-    errorY < TakeOverTelopConstants.kMaxErrorDistance; // Forward-Backward offset in with error
+    errorX < TakeOverTelopConstants.kMaxCommandEndError && // Left-Right offset in with error
+    errorY < TakeOverTelopConstants.kMaxCommandEndError && // Forward-Backward offset in with error
+    this.m_allowEndCondition;
   }
-}
+} 

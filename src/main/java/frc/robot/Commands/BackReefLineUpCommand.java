@@ -44,7 +44,7 @@ public class BackReefLineUpCommand extends Command {
     }
 
     this.m_lastKnownPose = this.m_limelight.getTargetPoseInCameraSpace();
-    double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kBackLimeLightToFrame;
+    double limelightToApriltagZ = TakeOverTelopConstants.kReefXDistance + TakeOverTelopConstants.kBackLimeLightToFrame;
 
     //Pulls offsets
     double ySpeed = -5.0 * this.m_lastKnownPose.getX();
@@ -65,7 +65,7 @@ public class BackReefLineUpCommand extends Command {
   @Override
   public boolean isFinished() {
     this.m_lastKnownPose = this.m_limelight.getTargetPoseInCameraSpace();;
-    double limelightToApriltagZ = TakeOverTelopConstants.kReefYDistance + TakeOverTelopConstants.kBackLimeLightToFrame;
+    double limelightToApriltagZ = TakeOverTelopConstants.kReefXDistance + TakeOverTelopConstants.kBackLimeLightToFrame;
 
     double errorX = Math.abs(this.m_lastKnownPose.getX());
     double errorY = Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ());

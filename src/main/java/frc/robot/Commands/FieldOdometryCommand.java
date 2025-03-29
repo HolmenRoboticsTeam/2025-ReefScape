@@ -61,7 +61,10 @@ public class FieldOdometryCommand extends Command {
       this.m_lastDrivePose = this.m_drive.getPose();
     }
 
-    System.out.println("Limelight: " + this.m_lastLimelightPose);
+    if(this.m_lastLimelightPose == null || this.m_lastDrivePose == null){
+      this.m_field.setRobotPose(this.m_drive.getPose());
+      return;
+    }
 
 
     Pose2d currentPose = new Pose2d(
@@ -70,7 +73,6 @@ public class FieldOdometryCommand extends Command {
       this.m_drive.getPose().getRotation().minus(this.m_lastDrivePose.getRotation()).plus(this.m_lastLimelightPose.getRotation())
     );
 
-    System.out.println("Curret: " + currentPose);
 
     this.m_field.setRobotPose(currentPose);
   }

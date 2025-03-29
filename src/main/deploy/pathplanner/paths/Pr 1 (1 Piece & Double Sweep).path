@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.473006143636607,
-        "y": 4.002873501323632
+        "x": 7.1686475409836055,
+        "y": 4.84016393442623
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.9,
-        "y": 4.0
+        "x": 5.142725409836065,
+        "y": 5.223770491803278
       },
       "prevControl": {
-        "x": 6.638618190757584,
-        "y": 4.0
+        "x": 6.821004098360655,
+        "y": 5.799180327868852
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Center (Part 1 to 2)"
+      "linkedName": "Center Sweep (Part 1 to 2)"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 180.0,
     "nominalVoltage": 12.0,
@@ -42,12 +42,12 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "Center 2 Piece Paths",
   "idealStartingState": {
-    "velocity": 0.0,
+    "velocity": 0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true

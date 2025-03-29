@@ -1,0 +1,102 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.111782786885246,
+        "y": 5.799180327868853
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.026465428948871,
+        "y": 5.237521440376315
+      },
+      "isLocked": false,
+      "linkedName": "Center Sweep (Part 2 to 3)"
+    },
+    {
+      "anchor": {
+        "x": 6.173668032786885,
+        "y": 4.624385245901639
+      },
+      "prevControl": {
+        "x": 6.049795905112475,
+        "y": 4.878879393240899
+      },
+      "nextControl": {
+        "x": 6.46529407826852,
+        "y": 4.0252422168754185
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.173668032786885,
+        "y": 3.485553278688525
+      },
+      "prevControl": {
+        "x": 6.270801906095815,
+        "y": 3.7808367549080777
+      },
+      "nextControl": {
+        "x": 6.09554830037911,
+        "y": 3.2480721059431104
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.262602459016393,
+        "y": 2.7902663934426233
+      },
+      "prevControl": {
+        "x": 5.447512449749277,
+        "y": 2.9585170853495657
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Center Sweep (Part 3 to 4)"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": -119.99999999999999
+    },
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": 128.23382517744696
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Upper Algea Remove",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": 3.0,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 0.75,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 90.0,
+    "maxAngularAcceleration": 90.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 124.6951535312339
+  },
+  "reversed": false,
+  "folder": "Center 2 Piece Paths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -118.68614757373945
+  },
+  "useDefaultConstraints": false
+}

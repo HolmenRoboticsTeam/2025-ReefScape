@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorExtensionConstants;
+import frc.robot.Constants.ElevatorPivotConstants;
 import frc.robot.MotorConfigs.ElevatorExtensionConfig;
 
 public class ElevatorExtensionSubsystem extends SubsystemBase {
@@ -46,6 +47,12 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
     this.m_leftExtensionMotor.configure(ElevatorExtensionConfig.leftExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     this.m_rightExtensionMotor.configure(ElevatorExtensionConfig.rightExtensionConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+    SmartDashboard.putNumber("Extension-kLevel1Extend", ElevatorExtensionConstants.kLevel1Extend);
+    SmartDashboard.putNumber("Extension-kLevel2Extend", ElevatorExtensionConstants.kLevel2Extend);
+    SmartDashboard.putNumber("Extension-kLevel3Extend", ElevatorExtensionConstants.kLevel3Extend);
+    SmartDashboard.putNumber("Extension-kLevel4Extend", ElevatorExtensionConstants.kLevel4Extend);
+    SmartDashboard.putNumber("Extension-kCoralStationExtend", ElevatorExtensionConstants.kCoralStationExtend);
+    SmartDashboard.putNumber("Extension-kSecondStageTrip", ElevatorExtensionConstants.kSecondStageTrip);
   }
 
   @Override
@@ -53,6 +60,12 @@ public class ElevatorExtensionSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("CurrentElevatorExtension", getCurrentExtension());
 
+    ElevatorExtensionConstants.kLevel1Extend = SmartDashboard.getNumber("Extension-kLevel1Extend", ElevatorExtensionConstants.kLevel1Extend);
+    ElevatorExtensionConstants.kLevel2Extend = SmartDashboard.getNumber("Extension-kLevel2Extend", ElevatorExtensionConstants.kLevel2Extend);
+    ElevatorExtensionConstants.kLevel3Extend = SmartDashboard.getNumber("Extension-kLevel3Extend", ElevatorExtensionConstants.kLevel3Extend);
+    ElevatorExtensionConstants.kLevel4Extend = SmartDashboard.getNumber("Extension-kLevel4Extend", ElevatorExtensionConstants.kLevel4Extend);
+    ElevatorExtensionConstants.kCoralStationExtend = SmartDashboard.getNumber("Extension-kCoralStationExtend", ElevatorExtensionConstants.kCoralStationExtend);
+    ElevatorExtensionConstants.kSecondStageTrip = SmartDashboard.getNumber("Extension-kSecondStageTrip", ElevatorExtensionConstants.kSecondStageTrip);
   }
 
   /**

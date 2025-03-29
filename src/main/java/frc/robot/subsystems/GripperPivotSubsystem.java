@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ElevatorPivotConstants;
 import frc.robot.Constants.GripperPivotConstants;
 import frc.robot.MotorConfigs.GripperPivotConfig;
 
@@ -32,6 +33,14 @@ public class GripperPivotSubsystem extends SubsystemBase {
     );
 
     this.m_pivotMotor.configure(GripperPivotConfig.pivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    SmartDashboard.putNumber("Griper-kLevel1Angle", GripperPivotConstants.kLevel1Angle);
+    SmartDashboard.putNumber("Griper-kLevel2Angle", GripperPivotConstants.kLevel2Angle);
+    SmartDashboard.putNumber("Griper-kLevel3Angle", GripperPivotConstants.kLevel3Angle);
+    SmartDashboard.putNumber("Griper-kLevel4Angle", GripperPivotConstants.kLevel4Angle);
+    SmartDashboard.putNumber("Griper-kCoralStationAngle", GripperPivotConstants.kCoralStationAngle);
+    SmartDashboard.putNumber("Griper-kUpperAlgeaRemove", GripperPivotConstants.kUpperAlgeaRemove);
+    SmartDashboard.putNumber("Griper-kLowerAlgeaRemove", GripperPivotConstants.kLowerAlgeaRemove);
   }
 
   @Override
@@ -39,6 +48,14 @@ public class GripperPivotSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
 
     SmartDashboard.putNumber("CurrentGripperAngle", Math.toDegrees(getCurrentAngle()));
+
+    GripperPivotConstants.kLevel1Angle = SmartDashboard.getNumber("Griper-kLevel1Angle", GripperPivotConstants.kLevel1Angle);
+    GripperPivotConstants.kLevel2Angle = SmartDashboard.getNumber("Griper-kLevel2Angle", GripperPivotConstants.kLevel2Angle);
+    GripperPivotConstants.kLevel3Angle = SmartDashboard.getNumber("Griper-kLevel3Angle", GripperPivotConstants.kLevel3Angle);
+    GripperPivotConstants.kLevel4Angle = SmartDashboard.getNumber("Griper-kLevel4Angle", GripperPivotConstants.kLevel4Angle);
+    GripperPivotConstants.kCoralStationAngle = SmartDashboard.getNumber("Griper-kCoralStationAngle", GripperPivotConstants.kCoralStationAngle);
+    GripperPivotConstants.kUpperAlgeaRemove = SmartDashboard.getNumber("Griper-kUpperAlgeaRemove", GripperPivotConstants.kUpperAlgeaRemove);
+    GripperPivotConstants.kLowerAlgeaRemove = SmartDashboard.getNumber("Griper-kLowerAlgeaRemove", GripperPivotConstants.kLowerAlgeaRemove);
   }
 
   public void setTargetAngle(double targetAngle) {
