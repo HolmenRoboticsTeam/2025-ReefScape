@@ -144,6 +144,7 @@ public final class Constants {
     public static double kCoralStationAngle = Rotation2d.fromDegrees(74.0).getRadians();
 
     public static double kUpperAlgeaRemove = Rotation2d.fromDegrees(67.0).getRadians();
+    public static double kLowerAlgeaRemove = Rotation2d.fromDegrees(59.0).getRadians();
 
     public static final double kAngleErrorAllowed = 0.1;
 
@@ -209,7 +210,7 @@ public final class Constants {
     public static double kCoralStationAngle = Rotation2d.fromDegrees(30.0).getRadians();
 
     public static double kUpperAlgeaRemove = Rotation2d.fromDegrees(157.0 + kSlackError).getRadians();
-    public static double kLowerAlgeaRemove = Rotation2d.fromDegrees(157.0 + kSlackError).getRadians();
+    public static double kLowerAlgeaRemove = Rotation2d.fromDegrees(155.0 + kSlackError).getRadians();
 
     public static final double kAngleErrorAllowed = 0.1;
   }
@@ -233,8 +234,8 @@ public final class Constants {
     public static final double kBackLimeLightToFrame = 0.06; //Meters
 
     //X Distance is the forward distance when the robot is facing the april tag
-    public static final double kReefXDistance = 0.15; //Meters (from frame to reef wall)
-    public static final double kReefYDistance = 0.0127; //Meters
+    public static final double kReefXDistance = 0.02; //Meters (from frame to reef wall) //Should be 0.07
+    public static final double kReefYDistance = 0.0; //Meters
   }
 
   public static final class NeoMotorConstants {

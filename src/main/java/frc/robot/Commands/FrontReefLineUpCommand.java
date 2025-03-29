@@ -6,6 +6,7 @@ package frc.robot.Commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.TakeOverTelopConstants;
@@ -21,6 +22,8 @@ public class FrontReefLineUpCommand extends Command {
   private Pose3d m_lastKnownPose;
 
   private boolean m_allowEndCondition;
+
+  private double m_lastTimeSeen;
 
   /** Creates a new LimelightReefLevel4. */
   public FrontReefLineUpCommand(DriveSubsystem drive, LimelightSubsystem limelight, boolean allowEndCondition) {
@@ -47,6 +50,8 @@ public class FrontReefLineUpCommand extends Command {
       //No target found then stop
       this.m_drive.drive(0, 0, 0, false);
       return;
+    } else {
+      this.m_lastTimeSeen = DriverStation.getMatchTime();
     }
 
     this.m_lastKnownPose = this.m_limelight.getTargetPoseInCameraSpace();
@@ -61,14 +66,14 @@ public class FrontReefLineUpCommand extends Command {
       targetAngle = 0.0;
     } else if(currentID == 10 || currentID == 21) {
       targetAngle = 180.0;
-    } else if(currentID == 8 || currentID == 17) {
-      targetAngle = -50.0;
-    } else if(currentID == 6 || currentID == 19) {
-      targetAngle = 50;
-    } else if(currentID == 9 || currentID == 20) {
-      targetAngle = -130.0;
-    } else if(currentID == 11 || currentID == 22) {
-      targetAngle = 130.0;
+    } else if(currentID == 8 || currentID == 19) {
+      targetAngle = -60.0;
+    } else if(currentID == 6 || currentID == 17) {
+      targetAngle = 60;
+    } else if(currentID == 9 || currentID == 22) {
+      targetAngle = -120.0;
+    } else if(currentID == 11 || currentID == 20) {
+      targetAngle = 120.0;
     }
     
     targetAngle = Math.toRadians(targetAngle);
@@ -81,8 +86,8 @@ public class FrontReefLineUpCommand extends Command {
     if(Math.abs(TakeOverTelopConstants.kReefYDistance + this.m_lastKnownPose.getX()) < TakeOverTelopConstants.kMaxErrorDistance &&
     Math.abs(limelightToApriltagZ - this.m_lastKnownPose.getZ()) < TakeOverTelopConstants.kMaxErrorDistance) {
 
-      xSpeed *= 3.0;
-      ySpeed *= 3.0;
+      xSpeed *= 6.0;
+      ySpeed *= 6.0;
     }
 
     //Check if with in error, if so, zero them
@@ -109,6 +114,14 @@ public class FrontReefLineUpCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+
+    //
+    if(!this.m_limelight.hasValidTarget() && Math.abs(this.m_lastTimeSeen - DriverStation.getMatchTime()) > 3.0) {
+
+      return m_allowEndCondition;
+    }
+
+
     this.m_lastKnownPose = this.m_limelight.getTargetPoseInCameraSpace();
     double limelightToApriltagZ = TakeOverTelopConstants.kReefXDistance + TakeOverTelopConstants.kFrontLimeLightToFrame;
 

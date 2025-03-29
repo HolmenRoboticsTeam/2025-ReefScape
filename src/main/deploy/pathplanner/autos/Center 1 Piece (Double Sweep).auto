@@ -11,15 +11,53 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Pr 2 (1 Piece & Double Sweep)"
+            "name": "Place Level 2 (April Tag)"
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "Pr 3 (1 Piece & Double Sweep)"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Pr 2 (1 Piece & Double Sweep)"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Upper Algea Remove"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Pr 3 (1 Piece & Double Sweep)"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Upper Algea Remove"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Down Level 2"
           }
         }
       ]

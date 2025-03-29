@@ -38,7 +38,7 @@ public class ElevatorPivotToLevel2Command extends Command {
   @Override
   public void execute() {
 
-    this.m_elevatorPivot.setTargetAngle(ElevatorPivotConstants.kLevel2Angle);
+    this.m_elevatorPivot.setTargetAngle(ElevatorPivotConstants.kLowerAlgeaRemove);
   }
 
   // Called once the command ends or is interrupted.
@@ -51,7 +51,7 @@ public class ElevatorPivotToLevel2Command extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double positionError = Math.abs(this.m_elevatorPivot.getCurrentAngle() - ElevatorPivotConstants.kLevel2Angle);
+    double positionError = Math.abs(this.m_elevatorPivot.getCurrentAngle() - ElevatorPivotConstants.kLowerAlgeaRemove);
 
     return positionError < ElevatorPivotConstants.kAngleErrorAllowed &&
     this.m_allowEndCondition;

@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.262602459016393,
-        "y": 2.7902663934426233
+        "x": 4.81905737704918,
+        "y": 2.5984631147540984
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.03320611802031,
-        "y": 3.202998565448926
+        "x": 5.5383196721311485,
+        "y": 2.1669057377049183
       },
       "isLocked": false,
       "linkedName": "Center Sweep (Part 3 to 4)"
     },
     {
       "anchor": {
-        "x": 6.041803278688524,
-        "y": 3.1738729508196717
+        "x": 6.017827868852459,
+        "y": 3.2098360655737705
       },
       "prevControl": {
-        "x": 6.089754098360655,
-        "y": 2.850204918032787
+        "x": 6.0418032786885245,
+        "y": 2.6584016393442615
       },
       "nextControl": {
-        "x": 5.985586251319779,
-        "y": 3.553337885558698
+        "x": 6.00116506478581,
+        "y": 3.593080559106696
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.041803278688524,
-        "y": 4.552459016393443
+        "x": 6.017827868852459,
+        "y": 4.864139344262295
       },
       "prevControl": {
-        "x": 5.997942806374462,
-        "y": 4.306336569289593
+        "x": 5.973967396538398,
+        "y": 4.618016897158445
       },
       "nextControl": null,
       "isLocked": false,
@@ -52,14 +52,7 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Lower Algea Remove",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 0.75,
     "maxAcceleration": 3.0,

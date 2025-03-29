@@ -109,6 +109,16 @@ public class RobotContainer {
       new Level4CommandGroup(m_elevatorPivot, m_elevatorExtension, m_gripperPivot)
     ));
 
+    NamedCommands.registerCommand("Down Level 2", new Level2DownCommandGroup(
+      this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot
+    ));
+    NamedCommands.registerCommand("Down Level 3", new Level3DownCommandGroup(
+      this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot
+    ));
+    NamedCommands.registerCommand("Down Level 4", new Level4DownCommandGroup(
+      this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot
+    ));
+
     NamedCommands.registerCommand("Gripper Grab", new GripperGrabCommand(this.m_gripperIntake));
     NamedCommands.registerCommand("Gripper Drop", new GripperDropCommand(this.m_gripperIntake));
 
@@ -151,16 +161,6 @@ public class RobotContainer {
     );
 
     this.m_limelightBack.setDefaultCommand(new FieldOdometryCommand(this.m_drive, this.m_limelightFront, this.m_limelightBack));
-
-    // Add a button to run pathfinding commands to SmartDashboard
-    // SmartDashboard.putData("Pathfind to up-left", AutoBuilder.pathfindToPose(
-    //   new Pose2d(0.5, 0.5, Rotation2d.fromDegrees(0)),
-    //   new PathConstraints(
-    //     2.0, 2.0,
-    //     Math.toRadians(360), Math.toRadians(540)
-    //   ),
-    //   0
-    // ));
 
     m_autoChooser = AutoBuilder.buildAutoChooser("Back up (Default)");
 
@@ -252,7 +252,7 @@ public class RobotContainer {
 
     //BUTTON BOX COMMANDS:
 
-    //Preset levels postitions
+    //Preset levels positions
 
     this.m_level2Place.whileTrue(
       new Level2CommandGroup(this.m_elevatorPivot, this.m_elevatorExtension, this.m_gripperPivot)

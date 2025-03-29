@@ -33,27 +33,27 @@
     {
       "anchor": {
         "x": 6.173668032786885,
-        "y": 3.485553278688525
+        "y": 3.545491803278688
       },
       "prevControl": {
         "x": 6.270801906095815,
-        "y": 3.7808367549080777
+        "y": 3.840775279498241
       },
       "nextControl": {
         "x": 6.09554830037911,
-        "y": 3.2480721059431104
+        "y": 3.3080106305332735
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.262602459016393,
-        "y": 2.7902663934426233
+        "x": 4.81905737704918,
+        "y": 2.5984631147540984
       },
       "prevControl": {
-        "x": 5.447512449749277,
-        "y": 2.9585170853495657
+        "x": 5.042664174799159,
+        "y": 2.710266513629088
       },
       "nextControl": null,
       "isLocked": false,
@@ -72,14 +72,7 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Upper Algea Remove",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": 3.0,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 0.75,
     "maxAcceleration": 3.0,

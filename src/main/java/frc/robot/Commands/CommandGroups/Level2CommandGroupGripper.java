@@ -7,6 +7,7 @@ package frc.robot.Commands.CommandGroups;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.GripperDropCommand;
 import frc.robot.Commands.ElevatorExtensionCommands.ElevatorExtensionToLevel2Command;
@@ -43,7 +44,8 @@ public class Level2CommandGroupGripper extends SequentialCommandGroup {
         new ElevatorPivotToLevel2Command(elevatorPivot, false)
       ),
 
-      new ParallelCommandGroup(
+      new ParallelDeadlineGroup(
+        new WaitCommand(0.5),
         new GripperDropCommand(gripperIntake),
         new GripperPivotToLevel2Command(gripperPivot, false),
         new ElevatorExtensionToLevel2Command(elevatorExtension, false),
